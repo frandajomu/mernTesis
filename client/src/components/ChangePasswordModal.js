@@ -8,19 +8,40 @@ const ChangePasswordModal = ({ isOpen, cerrado }) => {
 
     const { register, handleSubmit, formState, reset } = useForm({ resolver: ChangePasswordResolver });
     const { errors } = formState;
+    
+    /*
+    const myContainer = useRef(null);
+    const myContainerNode = myContainer.current
+    
+    const buttonRef = useRef(null);
+    const buttonRefNode = buttonRef.current
+    console.log(buttonRefNode);
+
+    function handleCloseModal(){            
+        myContainerNode.classList.remove("show");
+        myContainerNode.removeAttribute("style", "role");
+        document.querySelectorAll(".modal-backdrop")
+                .forEach(el => el.classList.remove("modal-backdrop"));
+    }
+
+    function handleCloseButtonModal(){            
+        buttonRefNode.setAttribute('data-bs-dismiss', "modal");
+    }*/
+
     const onSubmit = (formData) => {
+        window.location.reload(false);
         //formData funcionara para enviar los datos al Backend
-        alert("Contraseña Cambiada")
+        cerrado();
     }
 
     useEffect(() => {
         if (!isOpen) {
             reset();
         }
-    }, [isOpen, reset])
+    }, [isOpen, reset]);
 
     return (
-        <div>
+        <>
             {/* Modal Cambiar Contraseña */}
             <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
@@ -61,12 +82,12 @@ const ChangePasswordModal = ({ isOpen, cerrado }) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" onClick={cerrado} className="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <BotonMoradoModal type="submit" className="btn" onClick={handleSubmit(onSubmit)} >Aceptar</BotonMoradoModal>
+                            <BotonMoradoModal type="submit" className="btn" onClick={handleSubmit(onSubmit)}>Aceptar</BotonMoradoModal>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

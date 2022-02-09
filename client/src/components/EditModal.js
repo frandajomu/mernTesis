@@ -12,9 +12,12 @@ const EditModal = ({ isOpen, cerrado }) => {
     const { register, handleSubmit, formState, reset } = useForm({ resolver: EditAccountResolver });
     const { errors } = formState;
 
-    const onSubmit = (formData, e) => {
+
+    const onSubmit = (formData) => {
         //formData funcionara para enviar los datos al Backend
-        alert(updateUser(formData))
+        window.location.reload(false);
+        updateUser(formData);
+        cerrado();
     }
 
     useEffect(() => {
@@ -116,7 +119,7 @@ const EditModal = ({ isOpen, cerrado }) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" onClick={cerrado} className="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <BotonMoradoModal type="submit" className="btn" onClick={handleSubmit(onSubmit)} data-bs-dismiss="modal">Aceptar</BotonMoradoModal>
+                            <BotonMoradoModal type="submit" className="btn" onClick={handleSubmit(onSubmit)}>Aceptar</BotonMoradoModal>
                         </div>
                     </div>
                 </div>

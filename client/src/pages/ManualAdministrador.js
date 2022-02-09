@@ -9,3 +9,5 @@ const ManualAdministrador = () => {
 }
  
 export default ManualAdministrador;
+
+

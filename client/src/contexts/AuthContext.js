@@ -11,7 +11,25 @@ const useAuth = () => {
 }
 
 const AuthProvider = ({ children }) => {
-    const [usuario, cambiarUsuario] = useState(null);
+    const [usuario, cambiarUsuario] = useState(
+        {
+            id: 1, 
+            name: "Francisco", 
+            lastname: "Joven Munar",
+            personalID: "1007194112",
+            datebirth: "26-08-1998",
+            genero: "Masculino",
+            blood: "A+",
+            EPS: "Sanitas",
+            celular: "3152661756",
+            direccion: "Carrera 9A # 14-102 Sur",
+            ciudad: "Pitalito",
+            departamento: "Huila",
+            email: "u20162151390@usco.edu.co",
+            password: "1ui12122132jabdyabsd",
+            role: roles.admin
+        }
+    );
     const navigate = useNavigate();
 
     const login = (userCredentials, fromLocation) => {

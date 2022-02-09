@@ -11,8 +11,8 @@ import { ReactComponent as Profile } from './../images/Profile.svg';
 const MiPerfil = () => {
     const { usuario } = useAuth();
 
-    const [cambiarContraseña, abiertoContraseña, cerradoContraseña] = useModal(); 
-    const [cambiarDatos, abiertoDatos, cerradoDatos] = useModal(); 
+    const [cambiarContraseña, abiertoContraseña, cerradoContraseña] = useModal();
+    const [cambiarDatos, abiertoDatos, cerradoDatos] = useModal();
 
     return (
         <>
@@ -60,7 +60,7 @@ const MiPerfil = () => {
             />
             <EditModal
                 isOpen={cambiarDatos}
-                cerrado={cerradoDatos} 
+                cerrado={cerradoDatos}
             />
         </>
     );
