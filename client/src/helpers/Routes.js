@@ -10,7 +10,7 @@ const routes ={
     agendar: "/agendarPruebas",
     editarAgenda: (editarId) => (editarId ? `/editarAgenda/${editarId}` : "/editarAgenda/:id"),
     manual: {
-        admin: "/manual/medico",
+        admin: "/manual/admin",
         medico: "/manual/medico",
         laboratorio: "/manual/paciente",
         paciente: "/manual/laboratorio"

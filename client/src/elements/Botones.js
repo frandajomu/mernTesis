@@ -4,9 +4,9 @@ import theme from '../theme';
 
 const BotonBlanco = styled(Link)`
     background: #ffff;
+    color: ${theme.moradoOscuro};
     border: none;
     border-radius: 30px;
-    color: ${theme.moradoOscuro};
     padding: 0.3rem 1.1rem;
     
     font-size: 1rem;
@@ -18,6 +18,7 @@ const BotonBlanco = styled(Link)`
     transition: .3s ease all;
  
     &:hover {
+        color: ${theme.moradoOscuro};
         background: ${theme.grisClaro}};
     }
 `;

@@ -1,8 +1,4 @@
-/*
-    DEMO STYLE
-*/
-
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap');
 :root{
     --moradoOscuro: #240046;
     --moradoClaro: #9D4EDD;
@@ -10,29 +6,6 @@
     --naranjaClaro: #EE7527;
     --grisClaro: #E8EFF1;
     --grisClaro2: #CBDDE2;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #ffffff;
-}
-
-
-
-a,
-a:hover,
-a:focus {
-    color: inherit;
-    text-decoration: none;
-    transition: all 0.3s;
-}
-
-.navbar {
-    padding: 15px 10px;
-    background: #fff;
-    border: none;
-    border-radius: 0;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-btn {
@@ -81,13 +54,26 @@ a:focus {
 }
 
 #sidebar ul p {
+    text-decoration: none;
+    transition: all 0.3s;
+    font-family: 'Outfit';
+    font-weight: 200;
+    font-size: 1.1em;
+    
     color: #fff;
     padding: 10px;
+    
 }
 
 #sidebar ul li a {
-    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-family: 'Outfit';
+    font-weight: 300;
     font-size: 1.1em;
+
+    padding: 10px;
     display: block;
 }
 
@@ -159,8 +145,7 @@ button.download {
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
-
-@media (max-width: 1920px) {
+@media (max-width: 600px) {
     #sidebar {
         margin-right: -250px;
     }

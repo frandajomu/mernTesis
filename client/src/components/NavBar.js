@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import routes from '../helpers/Routes';
 import NavBarRenderRoles from '../helpers/NavBarRenderRoles';
 import { BotonBarra, BotonMenu } from '../helpers/NavBarLogin';
+import './NavBar.css';
 
 const NavBar = ({ contenido }) => {
     return (
@@ -14,11 +15,11 @@ const NavBar = ({ contenido }) => {
             <div className="wrapper">
                 <div id="content" className="container-flex">
                     <nav className="navbar navbar-expand-lg navbar-dark" style={{ 'backgroundColor': theme.moradoOscuro }}>
-                        <div className="container pe-lg-5 ps-lg-5">
+                        <div className="container py-lg-0 pe-lg-5 ps-lg-5">
                             <Link to={routes.home} >
-                                <LogoADN alt="" id="logoHidde" width="180" />
+                                <LogoADN className="py-1 py-lg-0"alt="" id="logoHidde" width="185" />
                             </Link>
-                            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 d-none d-md-block">
+                            <ul className="navbar-nav ms-auto mb-lg-0 d-none d-md-block">
                                 <li className="nav-item">
                                     <Link to={routes.home} className="nav-link me-3" aria-current="page">Inicio</Link>
                                 </li>

@@ -72,7 +72,7 @@ const NavBarRenderRoles = () => {
                     </ul>
                 </li>
                 <li><Link to={routes.estadisticas}>Estadísticas</Link></li>
-                <li><Link to={routes.manual.paciente}>Manual del administrador</Link></li>
+                <li><Link to={routes.manual.admin}>Manual del administrador</Link></li>
                 <li><Link to={routes.perfil}>Perfil</Link></li>
             </>
         );
