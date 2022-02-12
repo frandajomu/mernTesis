@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReactComponent as LogoADN } from './../images/LogoADN.svg';
 import { ReactComponent as Bars } from './../images/bars.svg';
 import theme from '../theme';
@@ -9,7 +9,14 @@ import NavBarRenderRoles from '../helpers/NavBarRenderRoles';
 import { BotonBarra, BotonMenu } from '../helpers/NavBarLogin';
 import './NavBar.css';
 
-const NavBar = ({ contenido }) => {
+const NavBar = ({ contenido, abrirLogin }) => {
+
+    const [estaActivo, setActivo] = useState('false');
+
+    const SiderbarClick = () => {
+        setActivo(!estaActivo);
+    }
+
     return (
         <div>
             <div className="wrapper">
@@ -17,21 +24,21 @@ const NavBar = ({ contenido }) => {
                     <nav className="navbar navbar-expand-lg navbar-dark" style={{ 'backgroundColor': theme.moradoOscuro }}>
                         <div className="container py-lg-0 pe-lg-5 ps-lg-5">
                             <Link to={routes.home} >
-                                <LogoADN className="py-1 py-lg-0"alt="" id="logoHidde" width="185" />
+                                <LogoADN className={`py-1 py-lg-0 ${estaActivo ? "active" : null}`}alt="" id="logoHidde" width="185" />
                             </Link>
                             <ul className="navbar-nav ms-auto mb-lg-0 d-none d-md-block">
                                 <li className="nav-item">
                                     <Link to={routes.home} className="nav-link me-3" aria-current="page">Inicio</Link>
                                 </li>
                             </ul>
-                            <BotonBarra />
-                            <Bars type="button" id="sidebarCollapse" alt="" width="25" />
+                            <BotonBarra abrirLogin = {abrirLogin} />
+                            <Bars type="button" id="sidebarCollapse" alt="" width="25" onClick={SiderbarClick}/>
                         </div>
                     </nav>
                     {contenido}
                 </div>
 
-                <nav id="sidebar">
+                <nav id="sidebar" className={estaActivo ? "active" : null}>
                     <div className="sidebar-header">
                         
                     </div>
@@ -50,7 +57,7 @@ const NavBar = ({ contenido }) => {
                     </ul>
 
                     <ul className="list-unstyled CTAs">
-                        <BotonMenu />
+                        <BotonMenu  abrirLogin = {abrirLogin} />
                     </ul>
                 </nav>
             </div>

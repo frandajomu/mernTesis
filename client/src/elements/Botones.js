@@ -7,7 +7,7 @@ const BotonBlanco = styled(Link)`
     color: ${theme.moradoOscuro};
     border: none;
     border-radius: 30px;
-    padding: 0.3rem 1.1rem;
+    padding: 0.1rem 0.9rem;
     
     font-size: 1rem;
     font-weight: 500;

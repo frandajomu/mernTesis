@@ -1,56 +1,57 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { Modal } from 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import { BotonMoradoModal } from '../elements/Botones';
 import theme from '../theme';
 import { useForm } from 'react-hook-form';
 import ChangePasswordResolver from '../validations/ChangePasswordResolver';
+import { notError, notExito } from '../elements/notifyToasty';
 
 const ChangePasswordModal = ({ isOpen, cerrado }) => {
 
     const { register, handleSubmit, formState, reset } = useForm({ resolver: ChangePasswordResolver });
     const { errors } = formState;
-    
-    /*
-    const myContainer = useRef(null);
-    const myContainerNode = myContainer.current
-    
-    const buttonRef = useRef(null);
-    const buttonRefNode = buttonRef.current
-    console.log(buttonRefNode);
 
-    function handleCloseModal(){            
-        myContainerNode.classList.remove("show");
-        myContainerNode.removeAttribute("style", "role");
-        document.querySelectorAll(".modal-backdrop")
-                .forEach(el => el.classList.remove("modal-backdrop"));
+    //Configuración del modal
+    const modalRef = useRef()
+
+    const showModal = () => {
+        const modalEle = modalRef.current
+        const bsModal = new Modal(modalEle, {
+            backdrop: 'static',
+            keyboard: false
+        })
+        bsModal.show()
     }
+    useEffect(() => { if (isOpen) { showModal() } }, [isOpen])
 
-    function handleCloseButtonModal(){            
-        buttonRefNode.setAttribute('data-bs-dismiss', "modal");
-    }*/
-
-    const onSubmit = (formData) => {
-        window.location.reload(false);
-        //formData funcionara para enviar los datos al Backend
+    const hideModal = () => {
+        const modalEle = modalRef.current
+        const bsModal = bootstrap.Modal.getInstance(modalEle)
+        bsModal.hide()
+        reset();
         cerrado();
     }
 
-    useEffect(() => {
-        if (!isOpen) {
-            reset();
-        }
-    }, [isOpen, reset]);
+    //Envio de datos del formulario (Backend)
+    const onSubmit = (formData) => {
+        //formData funcionara para enviar los datos al Backend
+        hideModal();
+        notError({textoNot: "Hubo un error al intentar cambiar la contraseña."});
+        notExito({textoNot: "Contraseña cambiada correctamente."});
+    }
 
     return (
         <>
             {/* Modal Cambiar Contraseña */}
-            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal fade" ref={modalRef} tabIndex="-1">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header" style={{ "backgroundColor": theme.moradoOscuro }}>
                             <div className="col d-flex justify-content-center">
                                 <h4 className="modal-title text-light" id="staticBackdropLabel"><b>NUEVA CONTRASEÑA</b></h4>
                             </div>
-                            <button type="button" onClick={cerrado} className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" className="btn-close btn-close-white" aria-label="Close" onClick={hideModal}></button>
                         </div>
                         <div className="modal-body d-flex justify-content-center" style={{ "color": theme.moradoOscuro }}>
                             <div className="col-sm-8 col-12">
@@ -81,7 +82,7 @@ const ChangePasswordModal = ({ isOpen, cerrado }) => {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" onClick={cerrado} className="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" className="btn btn-outline-secondary" onClick={hideModal}>Cancelar</button>
                             <BotonMoradoModal type="submit" className="btn" onClick={handleSubmit(onSubmit)}>Aceptar</BotonMoradoModal>
                         </div>
                     </div>

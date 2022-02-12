@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap');
 :root{
-    --moradoOscuro: #240046;
-    --moradoClaro: #9D4EDD;
+    --moradoOscuro: #241A44;
+    --moradoClaro: #3B3470;
     --naranjaOscuro: #ED6D1A;
-    --naranjaClaro: #EE7527;
+    --naranjaClaro: #E97D36;
     --grisClaro: #E8EFF1;
     --grisClaro2: #CBDDE2;
 }
@@ -145,7 +145,7 @@ button.download {
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
-@media (max-width: 600px) {
+@media (max-width: 1920px) {
     #sidebar {
         margin-right: -250px;
     }

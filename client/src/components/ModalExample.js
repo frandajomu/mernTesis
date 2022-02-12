@@ -3,8 +3,7 @@ import * as bootstrap from 'bootstrap';
 import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import ChangePasswordResolver from '../validations/ChangePasswordResolver';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { notExito, notError } from '../elements/notifyToasty';
 
 
 const ModalExample = () => {
@@ -25,35 +24,27 @@ const ModalExample = () => {
     bsModal.hide()
   }
 
-  const notify = () => toast.success('Wow so easy!', {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored"
-})
-
   const { register, handleSubmit, formState } = useForm({ resolver: ChangePasswordResolver });
   const { errors } = formState;
+
 
   const onSubmit = (formData) => {
     //formData funcionara para enviar los datos al Backend
     hideModal();
-    notify();
+    notExito({textoNot: "Hola"});
+    notError({textoNot: "Error"});
   }
 
   return (
     <div className="addEmployee">
       <button type="button" className="btn btn-primary" onClick={showModal}>Add Employee</button>
+      
       <div className="modal fade" ref={modalRef} tabIndex="-1" >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">Modal title</h5>
-              <button type="button" className="btn-close" onClick={hideModal} aria-label="Close"></button>
+              <button type="button" className="btn-close btn-close-white" onClick={hideModal} aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit(onSubmit)}>

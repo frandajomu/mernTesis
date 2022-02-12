@@ -14,6 +14,7 @@ const AuthProvider = ({ children }) => {
     const [usuario, cambiarUsuario] = useState(
         null
     );
+    
     const navigate = useNavigate();
 
     const login = (userCredentials, fromLocation) => {
