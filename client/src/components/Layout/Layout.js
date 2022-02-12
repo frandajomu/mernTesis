@@ -1,26 +1,20 @@
 import React from 'react';
-import useModal from '../../hooks/useModal';
-import Login from '../../pages/Login';
+import { useLocation } from 'react-router-dom';
+import routes from '../../helpers/Routes';
 import NavBar from "../NavBar";
 
-
 const Layout = ({ children }) => {
-    const [isOpenLogin, openLogin, closeLogin] = useModal();
+        const location = useLocation();
+        
+        if(location.pathname === routes.login){
+            return children
+        }else{
+        return (
+            <div>
+                <NavBar contenido={children}/>
+            </div>
+        );}
 
-    if (isOpenLogin) {
-        return (
-            <div>
-                <Login cerrarLogin={closeLogin}/>
-            </div>
-        );
-    } else {
-        return (
-            <div>
-                <NavBar contenido={children} abrirLogin={openLogin}/>
-            </div>
-        );
-    }
- 
 }
 
 export default Layout;

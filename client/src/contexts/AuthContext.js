@@ -17,7 +17,7 @@ const AuthProvider = ({ children }) => {
     
     const navigate = useNavigate();
 
-    const login = (userCredentials, fromLocation) => {
+    const login = (userCredentials) => {
         cambiarUsuario(
             {
                 id: 1, 
@@ -37,11 +37,11 @@ const AuthProvider = ({ children }) => {
                 role: roles.admin
             }
         );
-        if(fromLocation){
-            navigate(fromLocation, {replace:true});
-        }
     }
-    const logout = () => cambiarUsuario(null);
+    const logout = () => {
+        cambiarUsuario(null);
+        navigate('/')
+    }
     //Función para saber si alguien esta logged
     const islogged = () => !!usuario;
     //Actualizando Datos de usuario
