@@ -20,6 +20,7 @@ const Login = () => {
 
     const { register, handleSubmit, formState, reset } = useForm();
     const { errors } = formState;
+    console.log(errors);
 
     const [recContra, olvide, cancelar] = useModal();
     const handleRedirect = () => navigate(routes.home);
