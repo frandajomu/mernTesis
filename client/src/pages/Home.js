@@ -17,7 +17,7 @@ const Home = () => {
             <div className="row">
                 {/*Imagén con Parallax*/}
                 <BannerImg className="col">
-                    <div className="col-10 col-lg-4 ms-md-5 ps-md-5 ms-3 ps-3 text-light py-5 my-5 py-sm-5 my-sm-5">
+                    <div className="col-10 col-lg-4 ms-lg-5 ps-lg-5 ms-3 ps-3 text-light py-3 my-3 py-sm-4 my-sm-4">
                         <h1 className="h2"> Test de ADN fetal en sangre materna</h1>
                         <p className="my-3 d-none d-sm-block">Es una prueba medica que analiza el ADN fetal para descartar anomalías genéticas en el bebé.</p>
                         <a type="button" className="btn btn-outline-light" href="#VerMas" >Ver más</a>
@@ -27,7 +27,7 @@ const Home = () => {
                 {/*Tarjetas Caracteristicas*/}
                 <section className="d-none d-sm-block">
                     <div className="container">
-                        <div className="row align-items-center my-5">
+                        <div className="row align-items-center my-5 my-md-1 my-lg-5">
                             <div className="col-md-3 py-3 text-center">
                                 <CardsStyle className="card py-3">
                                     <CardsA className="mx-auto" width="60%" alt="CardsA" />
@@ -219,6 +219,10 @@ const BannerImg = styled.div`
     display: flex;
     align-items: center;
     text-align: left;
+    @media (max-width: 700px){
+        background-attachment: inherit;
+        height: 100%;
+    }
 `;
 
 const CardsStyle = styled.div`

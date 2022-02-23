@@ -49,7 +49,7 @@ const EditModal = ({ isOpen, cerrado }) => {
             reset(
                 {
                     name: usuario.name,
-                    lastname: usuario.lastname,
+                    lastname: usuario.lastnameA,
                     personalID: usuario.personalID,
                     email: usuario.email,
                     role: usuario.role

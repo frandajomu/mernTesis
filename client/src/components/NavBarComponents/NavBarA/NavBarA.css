@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap');
+:root{
+    --moradoOscuro: #241A44;
+    --moradoClaro: #3B3470;
+    --naranjaOscuro: #ED6D1A;
+    --naranjaClaro: #E97D36;
+    --grisClaro: #E8EFF1;
+    --grisClaro2: #CBDDE2;
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: var(--naranjaOscuro);
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#sidebar.active {
+    margin-right: -250px;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: var(--naranjaClaro);
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--naranjaClaro);
+}
+
+#sidebar ul p {
+    text-decoration: none;
+    transition: all 0.3s;
+    font-family: 'Outfit';
+    font-weight: 200;
+    font-size: 1.1em;
+    
+    color: #fff;
+    padding: 10px;
+    
+}
+
+#sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-family: 'Outfit';
+    font-weight: 300;
+    font-size: 1.1em;
+
+    padding: 10px;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+    color: var(--naranjaOscuro);
+    background: #fff;
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    color: #fff;
+    background: var(--naranjaClaro);
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    position: relative;
+    top: 5px;
+    right: -100px;
+    transform: translateY(-50%);
+}
+
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: var(--naranjaClaro);
+}
+
+ul.CTAs {
+    padding-top: 20px;
+    padding-left: 60px;
+}
+
+ul.CTAs button {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+button.download {
+    background: #fff;
+    color: var(--naranjaOscuro);
+}
+
+
+#sidebarCollapse {
+    fill: #fff;
+}
+#sidebarCollapse:hover {
+    fill: #E8EFF1;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+    width: 100%;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+@media (max-width: 1920px) {
+    #sidebar {
+        margin-right: -250px;
+    }
+    #sidebar.active {
+        margin-right: 0;
+    }
+    #sidebarCollapse span {
+        display: none;
+    }
+}

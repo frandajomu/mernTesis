@@ -7,6 +7,16 @@
     --grisClaro: #E8EFF1;
     --grisClaro2: #CBDDE2;
 }
+@media (max-width: 700px) {
+
+.wrapper{
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
 
 .navbar-btn {
     box-shadow: none;
@@ -24,23 +34,56 @@
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
-.wrapper {
-    display: flex;
-    width: 100%;
-    align-items: stretch;
-    overflow: hidden;
-}
-
 #sidebar {
-    min-width: 250px;
-    max-width: 250px;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    right: -250px;
+    height: 100vh;
+    z-index: 999;
     background: var(--naranjaOscuro);
     color: #fff;
     transition: all 0.3s;
+    overflow-y: scroll;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
 }
 
 #sidebar.active {
-    margin-right: -250px;
+    right: 0px;
+}
+
+#dismiss {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    background: var(--naranjaOscuro);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    cursor: pointer;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+#dismiss:hover {
+    background: var(--naranjaClaro);
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 998;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+.overlay.active {
+    display: block;
+    opacity: 1;
 }
 
 #sidebar .sidebar-header {
@@ -124,7 +167,6 @@ button.download {
     color: var(--naranjaOscuro);
 }
 
-
 #sidebarCollapse {
     fill: #fff;
 }
@@ -140,43 +182,6 @@ button.download {
     width: 100%;
     min-height: 100vh;
     transition: all 0.3s;
+    position: absolute;
 }
-
-/* ---------------------------------------------------
-    MEDIAQUERIES
------------------------------------------------------ */
-@media (max-width: 1920px) {
-    #sidebar {
-        margin-right: -250px;
-    }
-    #sidebar.active {
-        margin-right: 0;
-    }
-    #sidebarCollapse span {
-        display: none;
-    }
-}
-
-@media (max-width: 500px) {
-    #logoHidde.active{
-        display: none;
-    }
-    .wrapper {
-        display: flex;
-        width: 100%;
-        align-items: stretch;
-        overflow: visible;
-    }
-}
-
-@media (max-width: 278px) {
-    #logoHidde {
-        display: none;
-    }
-    .wrapper {
-        display: flex;
-        width: 100%;
-        align-items: stretch;
-        overflow: visible;
-    }
 }
