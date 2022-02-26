@@ -164,4 +164,32 @@ const BotonFormulario = styled.button`
 
 `;
 
-export {BotonBlanco, BotonMorado, BotonMoradoDelineado, BotonEditar, BotonEliminar, BotonNaranjaModal, BotonMoradoModal, BotonFormulario};
+const BotonIconoListaUsers = styled.button`
+    outline: none;
+    background: ${theme.grisClaro};
+    border: none;
+    width: 1.5rem; 
+    height: 1.5rem; 
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 0.31rem; /* 5px */
+    transition: .3s ease all;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ 
+    &:hover {
+        background: ${theme.grisClaro2};
+    }
+ 
+    svg {
+        width: 0.8rem; /* 18px */
+        fill: ${theme.moradoOscuro}
+    }
+ 
+    @media (max-width: 50rem) { /* 80px */
+        opacity: 1;
+    }
+`;
+
+export {BotonBlanco, BotonMorado, BotonMoradoDelineado, BotonEditar, BotonEliminar, BotonNaranjaModal, BotonMoradoModal, BotonFormulario, BotonIconoListaUsers};

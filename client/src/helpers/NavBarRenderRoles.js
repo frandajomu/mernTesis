@@ -16,7 +16,7 @@ const NavBarRenderRoles = () => {
                     <a href="#Exam" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Exámenes</a>
                     <ul className="collapse list-unstyled" id="Exam">
                         <li><Link to={routes.agendar}>Agendar Prueba</Link></li>
-                        <li><Link to={routes.ver.realizado}>Ver Pruebas</Link></li>
+                        <li><Link to={routes.agendado}>Ver Pruebas</Link></li>
                     </ul>
                 </li>
                 <li><Link to={routes.estadisticas}>Estadísticas</Link></li>
@@ -33,7 +33,7 @@ const NavBarRenderRoles = () => {
                     <a href="#Exam" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Exámenes</a>
                     <ul className="collapse list-unstyled" id="Exam">
                         <li><Link to={routes.cargarResultado}>Cargar Resultado</Link></li>
-                        <li><Link to={routes.ver.realizado}>Ver Pruebas</Link></li>
+                        <li><Link to={routes.agendado}>Ver Pruebas</Link></li>
                     </ul>
                 </li>
                 <li><Link to={routes.estadisticas}>Estadísticas</Link></li>
@@ -61,7 +61,7 @@ const NavBarRenderRoles = () => {
                     <ul className="collapse list-unstyled" id="Exam">
                         <li><Link to={routes.agendar}>Agendar Prueba</Link></li>
                         <li><Link to={routes.cargarResultado}>Cargar Resultado</Link></li>
-                        <li><Link to={routes.ver.realizado}>Ver Pruebas</Link></li>
+                        <li><Link to={routes.agendado}>Ver Pruebas</Link></li>
                     </ul>
                 </li>
                 <li>

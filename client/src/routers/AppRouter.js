@@ -11,7 +11,7 @@ import EditarAgenda from "../pages/EditarAgenda";
 import EditarResultado from "../pages/EditarResultado";
 import Estadisticas from '../pages/Estadisticas';
 import ExamenAgendado from "../pages/ExamenAgendado";
-import ExamenRealizado from "../pages/ExamenRealizado";
+import EditarUsuarioAdmin from "../pages/EditarUsuarioAdmin";
 import Home from "../pages/Home";
 import ListaDeUsuarios from '../pages/ListaDeUsuarios';
 import Login from "../pages/Login";
@@ -34,8 +34,8 @@ const AppRouter = () => {
             <Route exact path={routes.login} element={<PublicRoute><Login /></PublicRoute>} />
 
             {/* Médico y Laboratorio */}
-            <Route exact path={routes.ver.agendado} element={<PrivateRoute><ExamenAgendado /></PrivateRoute>} />
-            <Route exact path={routes.ver.realizado} element={<PrivateRoute><ExamenRealizado /></PrivateRoute>} />
+            <Route exact path={routes.agendado} element={<PrivateRoute><ExamenAgendado /></PrivateRoute>} />
+            
             <Route exact path={routes.estadisticas} element={<PrivateRoute><Estadisticas /></PrivateRoute>} />
             <Route exact path={routes.perfil} element={<PrivateRoute><MiPerfil /></PrivateRoute>} />
 
@@ -58,6 +58,7 @@ const AppRouter = () => {
             <Route exact path={routes.manual.admin} element={<PrivateRoute role={roles.admin}><ManualAdministrador /></PrivateRoute>} />
             <Route exact path={routes.agregarUsuarios} element={<PrivateRoute role={roles.admin}><AgregarUsuarioAdmin /></PrivateRoute>} />
             <Route exact path={routes.listaUsuarios} element={<PrivateRoute role={roles.admin}><ListaDeUsuarios /></PrivateRoute>} />
+            <Route exact path={routes.editarUsuario()} element={<PrivateRoute role={roles.admin}><EditarUsuarioAdmin /></PrivateRoute>} />
 
             <Route path="*" element={<NotFoundPage />} />
         </Routes>

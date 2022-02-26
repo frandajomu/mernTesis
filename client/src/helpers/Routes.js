@@ -1,14 +1,12 @@
 
 const routes ={
     home: "/",
-    ver: { 
-        agendado: "/ver/agendado",
-        realizado: "/ver/realizado"
-    },
+    agendado: "/pruebas",
     estadisticas: "/estadisticas",
     perfil: "/perfil",
     agendar: "/agendarPruebas",
     editarAgenda: (editarId) => (editarId ? `/editarAgenda/${editarId}` : "/editarAgenda/:id"),
+    editarUsuario: (UsuarioId) => (UsuarioId ? `/editarUsuario/${UsuarioId}` : "/editarUsuario/:id"),
     manual: {
         admin: "/manual/admin",
         medico: "/manual/medico",

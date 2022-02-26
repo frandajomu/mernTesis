@@ -7,7 +7,10 @@ const schema = yup.object().shape({
     lastname: yup.string().required("Debes ingresar un apellido"),
     personalID: yup.string().required("Debes ingresar tu numero de identificación"),
     email: yup.string().required("Debes ingresar un correo"),
-    role: yup.string().required("Debes seleccionar un rol de usuario").oneOf(Object.keys(roles), "El rol no es valido"),
+    role: yup
+        .string()
+        .required("Debes seleccionar un rol de usuario")
+        .oneOf([roles.admin, roles.medico, roles.laboratorio, roles.paciente], "El rol no es valido"),
 })
 
 export default yupResolver(schema);

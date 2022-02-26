@@ -29,7 +29,10 @@ const schema = yup.object().shape({
     passwordConfirmation: yup
         .string()
         .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
-    role: yup.string().required("Debes seleccionar un rol de usuario").oneOf(Object.keys(roles), "El rol no es valido"),
+    role: yup
+        .string()
+        .required("Debes seleccionar un rol de usuario")
+        .oneOf([roles.admin, roles.medico, roles.laboratorio, roles.paciente], "El rol no es valido"),
 })
 
 export default yupResolver(schema);

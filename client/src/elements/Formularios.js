@@ -7,10 +7,13 @@ const ContenedorMayor = styled.div`
     border-width: 2px;
     border-style: solid;
     border-color: ${theme.moradoOscuro};
-    padding: 2.2rem 2.5rem;
+    padding: ${(props) => props.lista ? '2rem 2.8rem' : '2.2rem 2.5rem'};
     font-size: 18px;
     font-weight: 500;
     background: #ffff;
+    @media (max-width: 420px) {
+        border-width: ${(props) => props.lista ? '0px' : '2px'};
+    }
 `;
 
 const InputCont = styled.input`
@@ -65,4 +68,17 @@ const InputContB = styled.div`
     }
 `;
 
-export {ContenedorMayor, InputCont, SelectorA, LineaBotones, InputContB};
+/* Contendedores Lista de Usuarios */
+const DataUsuario = styled.td`
+    border-radius: 30px;
+    color: ${theme.moradoOscuro};
+    padding: 0.2rem 1rem;
+    border-width: 2px;
+    border-style: solid;
+    border-color: ${theme.moradoOscuro};
+    font-size: 18px;
+    font-weight: 500;
+`;
+
+
+export {ContenedorMayor, InputCont, SelectorA, LineaBotones, InputContB, DataUsuario};

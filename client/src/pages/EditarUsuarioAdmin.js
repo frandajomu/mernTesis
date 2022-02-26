@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { ContenedorMayor, InputCont, InputContB, LineaBotones, SelectorA } from '../elements/Formularios';
 import { BotonFormulario, BotonMorado } from '../elements/Botones';
@@ -9,10 +9,13 @@ import { addDays } from 'date-fns';
 import AgregarUsuarioResolver from '../validations/AgregarUsuarioResolver';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-//import { notError } from '../elements/notifyToasty';
-import getUnixTime from 'date-fns/getUnixTime';
+import { useParams } from 'react-router-dom';
+import useGetUsuario from '../hooks/useGetUsuario';
+import fromUnixTime from 'date-fns/fromUnixTime'
 
-const AgregarUsuarioAdmin = () => {
+const EditarUsuarioAdmin = () => {
+    const { id } = useParams();
+    const [usuario] = useGetUsuario({ id });
 
     //Uso del hook useForm para adquirir los datos del Formulario
     const { control, register, handleSubmit, formState, reset } = useForm({ resolver: AgregarUsuarioResolver });
@@ -20,11 +23,38 @@ const AgregarUsuarioAdmin = () => {
 
     //Envio de datos al backend
     const onSubmit = (formData) => {
-        const a = getUnixTime(formData.datebirth)
         //formData funcionara para enviar los datos al Backend
-        console.log(a);
+        console.log(formData);
         reset();
     }
+
+    useEffect(() => {
+        if (usuario) {
+            reset(
+                {
+                    name: usuario.name,
+                    lastnameA: usuario.lastnameA,
+                    lastnameB: usuario.lastnameB,
+                    personalIDtype: usuario.personalIDtype,
+                    personalID: usuario.personalID,
+                    datebirth: fromUnixTime(usuario.datebirth),
+                    genero: usuario.genero,
+                    bloodType: usuario.bloodType,
+                    blood: usuario.blood,
+                    EPS: usuario.EPS,
+                    celular: usuario.celular,
+                    celular2: usuario.celular2,
+                    direccion: usuario.direccion,
+                    ciudad: usuario.ciudad,
+                    departamento: usuario.departamento,
+                    email: usuario.email,
+                    password: usuario.password,
+                    passwordConfirmation: usuario.passwordConfirmation,
+                    role: usuario.role
+                }
+            )
+        }
+    }, [reset, usuario]);
 
     //Logica Renderización de Formulario
     const [Next, setSiguiente] = useState(0);
@@ -38,11 +68,11 @@ const AgregarUsuarioAdmin = () => {
 
     return (
         <>
-            <Helmet><title>Agregar Usuario</title></Helmet>
+            <Helmet><title>Editar Usuario</title></Helmet>
             <div className="container py-4">
                 <div className="row">
                     <div className="col-11 col-md-7 mx-auto my-auto">
-                        <h1 className="h2 mb-4 text-center text-primary" style={{ "fontWeight": "700" }}>Agregar Usuario</h1>
+                        <h1 className="h2 mb-4 text-center text-primary" style={{ "fontWeight": "700" }}>Editar Usuario</h1>
                         <div className="row">
                             <div className="col-12 justify-content-between mb-3 d-none d-lg-flex">
                                 <LineaBotones></LineaBotones>
@@ -205,7 +235,7 @@ const AgregarUsuarioAdmin = () => {
                                         </div>
                                         <div className="d-flex justify-content-between mt-4 pt-2">
                                             <BotonMorado type="button" onClick={atras}>Atrás</BotonMorado>
-                                            <BotonMorado type="button" onClick={handleSubmit(onSubmit)}>Crear</BotonMorado>
+                                            <BotonMorado type="button" onClick={handleSubmit(onSubmit)}>Editar</BotonMorado>
                                         </div>
                                     </>
                                 }
@@ -219,4 +249,5 @@ const AgregarUsuarioAdmin = () => {
     );
 }
 
-export default AgregarUsuarioAdmin;
+export default EditarUsuarioAdmin;
+

@@ -54,9 +54,9 @@ const EditModal = ({ isOpen, cerrado }) => {
                     email: usuario.email,
                     role: usuario.role
                 }
-            )     
+            )
         }
-    }, [reset,usuario]);
+    }, [reset, usuario]);
 
     return (
         <div>
@@ -120,9 +120,10 @@ const EditModal = ({ isOpen, cerrado }) => {
                                     <div className="mb-3">
                                         <label htmlFor="role" className="form-label">Rol de Usuario</label>
                                         <select className="form-select" {...register("role")}>
-                                            {Object.keys(roles).map( role =>(
-                                                <option key={role}>{role}</option>
-                                            ))}
+                                            <option defaultValue>{roles.admin}</option>
+                                            <option value="1">{roles.medico}</option>
+                                            <option value="2">{roles.laboratorio}</option>
+                                            <option value="3">{roles.paciente}</option>
                                         </select>
                                         {errors?.role && (
                                             <div className="form-text">
