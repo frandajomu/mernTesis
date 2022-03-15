@@ -27,10 +27,32 @@ const InputCont = styled.input`
     font-weight: 500;
 `;
 
+const InputText = styled.textarea`
+    border-radius: 25px;
+    color: ${theme.moradoOscuro};
+    padding: 0.3rem 1.1rem;
+    border-width: 2px;
+    border-style: solid;
+    border-color: ${theme.moradoOscuro};
+    font-size: 18px;
+    font-weight: 500;
+`;
+
+const MostrarText = styled.span`
+    border-radius: 25px;
+    color: ${theme.moradoOscuro};
+    padding: 0.3rem 1.1rem;
+    border-width: 2px;
+    border-style: solid;
+    border-color: ${theme.moradoOscuro};
+    font-size: 0.9rem;
+    font-weight: 500;
+`;
+
 const SelectorA = styled.select`
     border-radius: 30px;
     color: ${theme.moradoOscuro};
-    padding: 0.2rem 2rem;
+    padding: ${(props) => props.exam ? '0.2rem 1rem' : '0.2rem 1.5rem'}; 
     border-width: 2px;
     border-style: solid;
     border-color: ${theme.moradoOscuro};
@@ -42,7 +64,7 @@ const LineaBotones = styled.div`
     position: absolute;
     top: 10rem;
     height: 2px;
-    width: 45%;
+    width: ${(props) => props.exam ? '20%' : '45%'};
     background-color: ${theme.moradoOscuro};
 `;
 
@@ -80,5 +102,9 @@ const DataUsuario = styled.td`
     font-weight: 500;
 `;
 
+const Checkbox = styled.div`
+    font-weight: 400;
+    color: ${theme.moradoOscuro};
+`;
 
-export {ContenedorMayor, InputCont, SelectorA, LineaBotones, InputContB, DataUsuario};
+export {ContenedorMayor, InputCont, InputText, MostrarText, SelectorA, LineaBotones, InputContB, DataUsuario, Checkbox};

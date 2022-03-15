@@ -148,7 +148,6 @@ const BotonFormulario = styled.button`
     padding: 0.2rem 1.1rem;
     border-width: 2px;
     border-style: solid;
-
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;

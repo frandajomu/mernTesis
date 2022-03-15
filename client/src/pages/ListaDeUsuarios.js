@@ -11,6 +11,8 @@ import DeleteUsuario from '../components/DeleteUsuario';
 import roles from '../helpers/Roles';
 import theme from '../theme';
 import routes from '../helpers/Routes';
+import MostrarDatosUser from '../components/MostrarDatosUser';
+import useModal from '../hooks/useModal';
 
 const ListaDeUsuarios = () => {
     //Obtenemos Lista de Usuarios de la DB
@@ -30,6 +32,13 @@ const ListaDeUsuarios = () => {
         }
         setnoUser(listaUser.find(esUsuario))
     }, [listaUser, option])
+
+    //Usamos hook modal para mostrar datos del usuario
+    const [isDatosEdit, datosEditAbierto, datosEditCerrado] = useModal();
+    const handleClick = (id) => {
+        setIDUser(id);
+        datosEditAbierto();
+    }
 
     return (
         <>
@@ -54,7 +63,7 @@ const ListaDeUsuarios = () => {
                             </div>
                         </div>
                         <ContenedorMayor lista>
-                            <table className="table text-primary">
+                            <table className="table text-primary ">
                                 <thead>
                                     <tr>
                                         <th scope="col">Nombre</th>
@@ -70,7 +79,7 @@ const ListaDeUsuarios = () => {
                                                     <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
                                                     <td>{lista.role}</td>
                                                     <td className="d-none d-lg-block">{lista.personalID}</td>
-                                                    <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={`/editarUsuario/${lista.id}`}><IconoEditar /></BotonIconoListaUsers></td>
+                                                    <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista.id)}><IconoEditar /></BotonIconoListaUsers></td>
                                                     <td className="px-1 mx-0">
                                                         <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista.id)}>
                                                             <IconoBorrar />
@@ -84,7 +93,7 @@ const ListaDeUsuarios = () => {
                                                     <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
                                                     <td>{lista.role}</td>
                                                     <td className="d-none d-lg-block">{lista.personalID}</td>
-                                                    <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.editarUsuario(lista.id)}><IconoEditar /></BotonIconoListaUsers></td>
+                                                    <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista.id)}><IconoEditar /></BotonIconoListaUsers></td>
                                                     <td className="px-1 mx-0">
                                                         <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista.id)}>
                                                             <IconoBorrar />
@@ -121,6 +130,10 @@ const ListaDeUsuarios = () => {
                 </div>
             </div>
             <DeleteUsuario idUser={idUser} />
+            <MostrarDatosUser
+                idUser={idUser}
+                isOpen={isDatosEdit}
+                cerrado={datosEditCerrado} />
             <Fondo />
         </>
     );

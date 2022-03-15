@@ -13,9 +13,9 @@ const routes ={
         laboratorio: "/manual/paciente",
         paciente: "/manual/laboratorio"
     },
-    resultado: (resultadoId) => (resultadoId ? `/resultado/:${resultadoId}` : "/resultado/:id"),
-    cargarResultado: "/cargarResultado",
-    editarResultado: (editarId) => (editarId ? `/editarResultado/:${editarId}` : "/editarResultado/:id"),
+    resultado: (resultadoId) => (resultadoId ? `/resultado/${resultadoId}` : "/resultado/:id"),
+    cargarResultado: (cargarId) => (cargarId ? `/cargarResultado/${cargarId}` : "/cargarResultado/:id"),
+    editarResultado: (editarId) => (editarId ? `/editarResultado/${editarId}` : "/editarResultado/:id"),
     registro: "/registroAdmin",
     login: "/login",
     listaUsuarios: "/listaUsuarios",

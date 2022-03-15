@@ -1,11 +1,13 @@
 import React from 'react';
 
 const Estadisticas = () => {
-    return ( 
-        <div>
-            <h1>Estadísticas</h1>
-        </div>
-     );
+
+    return (
+
+        <>
+        <h1>Estadisticas</h1>
+        </>
+    );
 }
- 
+
 export default Estadisticas;

@@ -10,7 +10,6 @@ import ConoceMas from '../pages/ConoceMas';
 import EditarAgenda from "../pages/EditarAgenda";
 import EditarResultado from "../pages/EditarResultado";
 import Estadisticas from '../pages/Estadisticas';
-import ExamenAgendado from "../pages/ExamenAgendado";
 import EditarUsuarioAdmin from "../pages/EditarUsuarioAdmin";
 import Home from "../pages/Home";
 import ListaDeUsuarios from '../pages/ListaDeUsuarios';
@@ -24,6 +23,7 @@ import NotFoundPage from "../pages/NotFoundPage";
 import Resultados from "../pages/Resultados";
 import PrivateRoute from './PrivateRoutes';
 import PublicRoute from './PublicRoute';
+import Examenes from '../pages/Examenes';
 
 const AppRouter = () => {
     return (
@@ -34,8 +34,7 @@ const AppRouter = () => {
             <Route exact path={routes.login} element={<PublicRoute><Login /></PublicRoute>} />
 
             {/* Médico y Laboratorio */}
-            <Route exact path={routes.agendado} element={<PrivateRoute><ExamenAgendado /></PrivateRoute>} />
-            
+            <Route exact path={routes.agendado} element={<PrivateRoute><Examenes /></PrivateRoute>} />
             <Route exact path={routes.estadisticas} element={<PrivateRoute><Estadisticas /></PrivateRoute>} />
             <Route exact path={routes.perfil} element={<PrivateRoute><MiPerfil /></PrivateRoute>} />
 
@@ -49,7 +48,7 @@ const AppRouter = () => {
             <Route exact path={routes.manual.paciente} element={<PrivateRoute role={roles.paciente}><ManualPaciente /></PrivateRoute>} />
 
             {/* Laboratorio */}
-            <Route exact path={routes.cargarResultado} element={<PrivateRoute role={roles.laboratorio}><CargarResultado /></PrivateRoute>} />
+            <Route exact path={routes.cargarResultado()} element={<PrivateRoute role={roles.laboratorio}><CargarResultado /></PrivateRoute>} />
             <Route exact path={routes.editarResultado()} element={<PrivateRoute role={roles.laboratorio}><EditarResultado /></PrivateRoute>} />
             <Route exact path={routes.manual.laboratorio} element={<PrivateRoute role={roles.laboratorio}><ManualLaboratorio /></PrivateRoute>} />
 
