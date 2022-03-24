@@ -3,13 +3,16 @@ import { BotonNaranjaModal } from '../elements/Botones';
 import theme from '../theme';
 import { ReactComponent as AlertaLogo } from './../images/AlertaLogo.svg';
 import { notExito } from '../elements/notifyToasty';
+import useDeleteUsuario from '../hooks/useDeleteUsuario';
 
-const DeleteUsuario = ({idUser}) => {
+const DeleteUsuario = ({idUser, dataUsers}) => {
+    const [DeleteUserData] = useDeleteUsuario({id: idUser});
     
     const handleDelete = () => {
         //En esta parte se realiza una petición a la base de datos para eliminar la cuenta.
+        DeleteUserData();
+        dataUsers();
         notExito({textoNot: "¡Usuario Elminado exitosamente!"});
-        console.log(idUser)
     }
 
     return (

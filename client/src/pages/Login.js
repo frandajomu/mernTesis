@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import styled from 'styled-components';
@@ -10,9 +10,6 @@ import { ReactComponent as CruzCierre } from './../images/CruzCierre.svg';
 import { BotonMoradoModal } from '../elements/Botones';
 import useModal from '../hooks/useModal';
 import routes from '../helpers/Routes';
-import { notExito } from '../elements/notifyToasty';
-
-const userCredentials = {};
 
 const Login = () => {
     const { login } = useAuth();
@@ -20,7 +17,6 @@ const Login = () => {
 
     const { register, handleSubmit, formState, reset } = useForm();
     const { errors } = formState;
-    console.log(errors);
 
     const [recContra, olvide, cancelar] = useModal();
     const handleRedirect = () => navigate(routes.home);
@@ -28,16 +24,16 @@ const Login = () => {
     const onSubmit = (formData) => {
         //formData funcionara para enviar los datos al Backend
         if (!recContra) {
-            console.log(formData)
-            login(userCredentials);
-            reset();
+            login(formData);
         } else {
             console.log(formData)
             navigate('/');
-            notExito({ textoNot: "Revisa tu correo electrónico para continuar con la recuperación." });
         }
     }
 
+    useEffect(() => {
+        reset();
+    }, [reset])
 
     return (
         <Contenedor className="text-center">
@@ -70,7 +66,7 @@ const Login = () => {
 
                     {!recContra &&
                         <Checkbox Checkbox className="checkbox my-2">
-                            <label><input type="checkbox" value="remember-me" {...register("checkbox")} /> Mantener la sesión iniciada</label>
+                            <label><input type="checkbox" value="remember-me" /> Mantener la sesión iniciada</label>
                         </Checkbox>
                     }
 

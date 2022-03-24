@@ -5,27 +5,37 @@ import { BotonFormulario, BotonMorado } from '../elements/Botones';
 import Fondo from '../elements/Fondo';
 import roles from '../helpers/Roles';
 import { Helmet } from "react-helmet";
-import { addDays } from 'date-fns';
+import { addDays, parseISO } from 'date-fns';
 import AgregarUsuarioResolver from '../validations/AgregarUsuarioResolver';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useGetUsuario from '../hooks/useGetUsuario';
-import fromUnixTime from 'date-fns/fromUnixTime'
+import useEditUsuario from '../hooks/useEditUsuario';
+import routes from '../helpers/Routes';
+import PopoverElement from '../elements/PopoverElement';
+import { notError, notExito } from '../elements/notifyToasty';
 
 const EditarUsuarioAdmin = () => {
     const { id } = useParams();
     const [usuario] = useGetUsuario({ id });
+    const [EditUserData] = useEditUsuario();
 
     //Uso del hook useForm para adquirir los datos del Formulario
     const { control, register, handleSubmit, formState, reset } = useForm({ resolver: AgregarUsuarioResolver });
     const { errors } = formState;
 
     //Envio de datos al backend
-    const onSubmit = (formData) => {
-        //formData funcionara para enviar los datos al Backend
-        console.log(formData);
-        reset();
+    const navigate = useNavigate();
+    const onSubmit = async (formData) => {
+        const res = await EditUserData(formData, { id })
+        if (res.message){
+            notExito({textoNot: res.message})
+            navigate(routes.listaUsuarios)
+            reset();
+        }else{
+            notError({textoNot: res.error})
+        }
     }
 
     useEffect(() => {
@@ -37,7 +47,7 @@ const EditarUsuarioAdmin = () => {
                     lastnameB: usuario.lastnameB,
                     personalIDtype: usuario.personalIDtype,
                     personalID: usuario.personalID,
-                    datebirth: fromUnixTime(usuario.datebirth),
+                    datebirth: parseISO(usuario.datebirth),
                     genero: usuario.genero,
                     bloodType: usuario.bloodType,
                     blood: usuario.blood,
@@ -48,7 +58,6 @@ const EditarUsuarioAdmin = () => {
                     ciudad: usuario.ciudad,
                     departamento: usuario.departamento,
                     email: usuario.email,
-                    password: usuario.password,
                     passwordConfirmation: usuario.passwordConfirmation,
                     role: usuario.role
                 }
@@ -111,8 +120,8 @@ const EditarUsuarioAdmin = () => {
                                         <div className="mb-3 d-md-flex">
                                             <SelectorA className="flex-md-fill col-12 me-md-3" style={{ "width": "180px" }} {...register("personalIDtype")}>
                                                 <option defaultValue>C.C.</option>
-                                                <option value="1">T.I.</option>
-                                                <option value="2">NIT</option>
+                                                <option value="T.I.">T.I.</option>
+                                                <option value="NIT">NIT</option>
                                             </SelectorA>
                                             <InputCont type="text" className="flex-md-fill col-12 mt-2 mt-md-0" {...register("personalID")} />
                                         </div>
@@ -141,13 +150,13 @@ const EditarUsuarioAdmin = () => {
                                         <div className="mb-3 d-md-flex">
                                             <SelectorA className="flex-md-fill col-12 me-md-3" {...register("ciudad")}>
                                                 <option defaultValue>Pitalito</option>
-                                                <option value="1">Neiva</option>
-                                                <option value="2">La plata</option>
+                                                <option value="Neiva">Neiva</option>
+                                                <option value="La plata">La plata</option>
                                             </SelectorA>
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("departamento")}>
                                                 <option defaultValue>Huila</option>
-                                                <option value="1">Caqueta</option>
-                                                <option value="2">Cauca</option>
+                                                <option value="Caqueta">Caqueta</option>
+                                                <option value="Cauca">Cauca</option>
                                             </SelectorA>
                                         </div>
                                         <div className="d-flex justify-content-between mt-4 pt-2">
@@ -183,7 +192,7 @@ const EditarUsuarioAdmin = () => {
                                         <div className="mb-3">
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("genero")}>
                                                 <option defaultValue>Masculino</option>
-                                                <option value="1">Femenino</option>
+                                                <option value="Femenino">Femenino</option>
                                             </SelectorA>
                                         </div>
                                         <div className="mb-3">
@@ -196,7 +205,7 @@ const EditarUsuarioAdmin = () => {
                                             <InputCont type="text" className="flex-md-fill col-12 me-md-3" placeholder="A, B, AB, ..." {...register("bloodType")} />
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("blood")}>
                                                 <option defaultValue>+</option>
-                                                <option value="1">-</option>
+                                                <option value="-">-</option>
                                             </SelectorA>
                                         </div>
                                         {errors?.bloodType && (<div className="mt-2 alert alert-danger" role="alert">{errors.bloodType.message}</div>)}
@@ -214,12 +223,13 @@ const EditarUsuarioAdmin = () => {
                                             {errors?.email && (<div className="mt-2 alert alert-danger" role="alert">{errors.email.message}</div>)}
                                         </div>
                                         <div className="mb-3">
-                                            <label className="form-label mb-1">Contraseña</label>
+                                            <label className="form-label mb-1 me-1">Contraseña</label>
+                                            <PopoverElement textos ={'Este campo no es editable, debes ingresar una nueva contraseña.'} />
                                             <InputCont type="password" className="col-12" {...register("password")} />
                                             {errors?.password && (<div className="mt-2 alert alert-danger" role="alert">{errors.password.message}</div>)}
                                         </div>
                                         <div className="mb-3">
-                                            <label className="form-label mb-1">Confirmar Contraseña</label>
+                                            <label className="form-label mb-1 me-1">Confirmar Contraseña</label>
                                             <InputCont type="password" className="col-12" {...register("passwordConfirmation")} />
                                             {errors?.passwordConfirmation && (<div className="mt-2 alert alert-danger" role="alert">{errors.passwordConfirmation.message}</div>)}
                                         </div>
@@ -227,9 +237,9 @@ const EditarUsuarioAdmin = () => {
                                         <div className="mb-3">
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("role")}>
                                                 <option defaultValue>{roles.admin}</option>
-                                                <option value="1">{roles.medico}</option>
-                                                <option value="2">{roles.laboratorio}</option>
-                                                <option value="3">{roles.paciente}</option>
+                                                <option value={roles.medico}>{roles.medico}</option>
+                                                <option value={roles.laboratorio}>{roles.laboratorio}</option>
+                                                <option value={roles.paciente}>{roles.paciente}</option>
                                             </SelectorA>
                                             {errors?.role && (<div className="mt-2 alert alert-danger" role="alert">{errors.role.message}</div>)}
                                         </div>

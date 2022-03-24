@@ -1,27 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BotonMoradoModal } from '../elements/Botones';
 import theme from '../theme';
 import { Modal } from 'bootstrap';
 import * as bootstrap from 'bootstrap';
-import useGetUsers from '../hooks/useGetUsers';
 import { useNavigate } from 'react-router-dom';
 import routes from '../helpers/Routes';
+import useGetUsuario from '../hooks/useGetUsuario';
 
 const MostrarDatosUser = ({ isOpen, cerrado, idUser }) => {
-
-    /******** INICIO PROVICIONAL, CAMBIARÁ CON EL BACKEND ********/
-    //Obtenemos Lista de Usuarios de la DB
-    const [listaUser] = useGetUsers();
-
-    //Comprobando el usuario segun el id
-    const [UserList, setUserList] = useState();
-    useEffect(() => {
-        const Usuario = (lista) => {
-            return lista.id === idUser;
-        }
-        setUserList(listaUser.find(Usuario))
-    }, [listaUser, idUser])
-    /******** FIN PROVICIONAL, CAMBIARÁ CON EL BACKEND ********/
+    //Obtenemos datos de usuario por ID
+    const [UserList] = useGetUsuario({ id: idUser })
 
     //Configuración del modal
     const modalRef = useRef()
@@ -65,26 +53,26 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser }) => {
                         </div>
                         <div className="modal-body d-flex justify-content-center" style={{ "color": theme.moradoOscuro }}>
                             <div className="col-12">
-                                    <p className="card-text text-center">{UserList?.role}</p>
-                                    <div className="card-header text-center"><b>Datos Personales</b></div>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item">Nombre: {UserList?.name}</li>
-                                        <li className="list-group-item">Apellidos: {UserList?.lastnameA + ' ' + UserList?.lastnameB}</li>
-                                        <li className="list-group-item">Identificación: {UserList?.personalIDtype + ' ' + UserList?.personalID}</li>
-                                        <li className="list-group-item">Correo: {UserList?.email}</li>
-                                        <li className="list-group-item">Fecha de nacimiento: {UserList?.datebirth}</li>
-                                        <li className="list-group-item">Genero: {UserList?.genero}</li>
-                                        <li className="list-group-item">Grupo Sanguineo: {UserList?.bloodType + ' ' + UserList?.blood}</li>
-                                        <li className="list-group-item">EPS: {UserList?.EPS}</li>
-                                    </ul>
-                                    <div className="card-header text-center"><b>Datos de Contacto</b></div>
-                                    <ul className="list-group list-group-flush">
-                                        <li className="list-group-item">Celular: {UserList?.celular}</li>
-                                        <li className="list-group-item">Celular B: {UserList?.celular2}</li>
-                                        <li className="list-group-item">Dirección: {UserList?.direccion}</li>
-                                        <li className="list-group-item">Ciudad: {UserList?.ciudad}</li>
-                                        <li className="list-group-item">Departamento: {UserList?.departamento}</li>
-                                    </ul>
+                                <p className="card-text text-center">{UserList?.role}</p>
+                                <div className="card-header text-center"><b>Datos Personales</b></div>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item">Nombre: {UserList?.name}</li>
+                                    <li className="list-group-item">Apellidos: {UserList?.lastnameA + ' ' + UserList?.lastnameB}</li>
+                                    <li className="list-group-item">Identificación: {UserList?.personalIDtype + ' ' + UserList?.personalID}</li>
+                                    <li className="list-group-item">Correo: {UserList?.email}</li>
+                                    <li className="list-group-item">Fecha de nacimiento: {UserList?.datebirth}</li>
+                                    <li className="list-group-item">Genero: {UserList?.genero}</li>
+                                    <li className="list-group-item">Grupo Sanguineo: {UserList?.bloodType + ' ' + UserList?.blood}</li>
+                                    <li className="list-group-item">EPS: {UserList?.EPS}</li>
+                                </ul>
+                                <div className="card-header text-center"><b>Datos de Contacto</b></div>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item">Celular: {UserList?.celular}</li>
+                                    <li className="list-group-item">Celular B: {UserList?.celular2}</li>
+                                    <li className="list-group-item">Dirección: {UserList?.direccion}</li>
+                                    <li className="list-group-item">Ciudad: {UserList?.ciudad}</li>
+                                    <li className="list-group-item">Departamento: {UserList?.departamento}</li>
+                                </ul>
                             </div>
                         </div>
                         <div className="modal-footer">

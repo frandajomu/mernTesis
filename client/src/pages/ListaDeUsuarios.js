@@ -15,10 +15,10 @@ import MostrarDatosUser from '../components/MostrarDatosUser';
 import useModal from '../hooks/useModal';
 
 const ListaDeUsuarios = () => {
-    //Obtenemos Lista de Usuarios de la DB
-    const [listaUser] = useGetUsers();
+    //Obtenemos Lista de Usuarios de la DB y el actualizador de lista para DeleteUser
+    const [listaUser, dataUsers] = useGetUsers();
 
-    //ID al dar click en eliminar un usuario para DeleteUsuario
+    //ID al dar click en eliminar un usuario para DeleteUsuario y Mostrar Datos
     const [idUser, setIDUser] = useState();
 
     //Logica Renderización de Formulario
@@ -75,13 +75,13 @@ const ListaDeUsuarios = () => {
                                     {listaUser.map((lista) => {
                                         if (lista.role === option) {
                                             return (
-                                                <tr key={lista.id} >
+                                                <tr key={lista._id} >
                                                     <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
                                                     <td>{lista.role}</td>
                                                     <td className="d-none d-lg-block">{lista.personalID}</td>
-                                                    <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista.id)}><IconoEditar /></BotonIconoListaUsers></td>
+                                                    <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
                                                     <td className="px-1 mx-0">
-                                                        <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista.id)}>
+                                                        <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
                                                             <IconoBorrar />
                                                         </BotonIconoListaUsers>
                                                     </td>
@@ -89,13 +89,13 @@ const ListaDeUsuarios = () => {
                                             );
                                         } else if (option === "Todos") {
                                             return (
-                                                <tr key={lista.id} >
+                                                <tr key={lista._id} >
                                                     <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
                                                     <td>{lista.role}</td>
                                                     <td className="d-none d-lg-block">{lista.personalID}</td>
-                                                    <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista.id)}><IconoEditar /></BotonIconoListaUsers></td>
+                                                    <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
                                                     <td className="px-1 mx-0">
-                                                        <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista.id)}>
+                                                        <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
                                                             <IconoBorrar />
                                                         </BotonIconoListaUsers>
                                                     </td>
@@ -129,7 +129,9 @@ const ListaDeUsuarios = () => {
                     </div>
                 </div>
             </div>
-            <DeleteUsuario idUser={idUser} />
+            <DeleteUsuario 
+                idUser={idUser}
+                dataUsers={dataUsers} />
             <MostrarDatosUser
                 idUser={idUser}
                 isOpen={isDatosEdit}

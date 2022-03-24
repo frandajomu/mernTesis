@@ -9,21 +9,31 @@ import { addDays } from 'date-fns';
 import AgregarUsuarioResolver from '../validations/AgregarUsuarioResolver';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-//import { notError } from '../elements/notifyToasty';
-import getUnixTime from 'date-fns/getUnixTime';
+import useAddUsuario from '../hooks/useAddUsuario';
+import routes from '../helpers/Routes';
+import { useNavigate } from 'react-router-dom';
+import { notError, notExito } from '../elements/notifyToasty';
 
 const AgregarUsuarioAdmin = () => {
 
     //Uso del hook useForm para adquirir los datos del Formulario
-    const { control, register, handleSubmit, formState, reset } = useForm({ resolver: AgregarUsuarioResolver });
+    const { control, register, handleSubmit, formState, reset } = useForm({ resolver: AgregarUsuarioResolver});
     const { errors } = formState;
+    
+    //Hook para crear usuario o editar
+    const [UploadUserData] = useAddUsuario();
 
     //Envio de datos al backend
-    const onSubmit = (formData) => {
-        const a = getUnixTime(formData.datebirth)
-        //formData funcionara para enviar los datos al Backend
-        console.log(a);
-        reset();
+    const navigate = useNavigate();
+    const onSubmit = async (formData) => {
+        const res = await UploadUserData(formData)
+        if (res.message){
+            notExito({textoNot: res.message})
+            navigate(routes.listaUsuarios)
+            reset();
+        }else{
+            notError({textoNot: res.error})
+        }
     }
 
     //Logica Renderización de Formulario
@@ -81,8 +91,8 @@ const AgregarUsuarioAdmin = () => {
                                         <div className="mb-3 d-md-flex">
                                             <SelectorA className="flex-md-fill col-12 me-md-3" style={{ "width": "180px" }} {...register("personalIDtype")}>
                                                 <option defaultValue>C.C.</option>
-                                                <option value="1">T.I.</option>
-                                                <option value="2">NIT</option>
+                                                <option value="T.I.">T.I.</option>
+                                                <option value="NIT">NIT</option>
                                             </SelectorA>
                                             <InputCont type="text" className="flex-md-fill col-12 mt-2 mt-md-0" {...register("personalID")} />
                                         </div>
@@ -111,13 +121,13 @@ const AgregarUsuarioAdmin = () => {
                                         <div className="mb-3 d-md-flex">
                                             <SelectorA className="flex-md-fill col-12 me-md-3" {...register("ciudad")}>
                                                 <option defaultValue>Pitalito</option>
-                                                <option value="1">Neiva</option>
-                                                <option value="2">La plata</option>
+                                                <option value="Neiva">Neiva</option>
+                                                <option value="La plata">La plata</option>
                                             </SelectorA>
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("departamento")}>
                                                 <option defaultValue>Huila</option>
-                                                <option value="1">Caqueta</option>
-                                                <option value="2">Cauca</option>
+                                                <option value="Caqueta">Caqueta</option>
+                                                <option value="Cauca">Cauca</option>
                                             </SelectorA>
                                         </div>
                                         <div className="d-flex justify-content-between mt-4 pt-2">
@@ -153,7 +163,7 @@ const AgregarUsuarioAdmin = () => {
                                         <div className="mb-3">
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("genero")}>
                                                 <option defaultValue>Masculino</option>
-                                                <option value="1">Femenino</option>
+                                                <option value="Femenino">Femenino</option>
                                             </SelectorA>
                                         </div>
                                         <div className="mb-3">
@@ -166,7 +176,7 @@ const AgregarUsuarioAdmin = () => {
                                             <InputCont type="text" className="flex-md-fill col-12 me-md-3" placeholder="A, B, AB, ..." {...register("bloodType")} />
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("blood")}>
                                                 <option defaultValue>+</option>
-                                                <option value="1">-</option>
+                                                <option value="-">-</option>
                                             </SelectorA>
                                         </div>
                                         {errors?.bloodType && (<div className="mt-2 alert alert-danger" role="alert">{errors.bloodType.message}</div>)}
@@ -197,9 +207,9 @@ const AgregarUsuarioAdmin = () => {
                                         <div className="mb-3">
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("role")}>
                                                 <option defaultValue>{roles.admin}</option>
-                                                <option value="1">{roles.medico}</option>
-                                                <option value="2">{roles.laboratorio}</option>
-                                                <option value="3">{roles.paciente}</option>
+                                                <option value={roles.medico}>{roles.medico}</option>
+                                                <option value={roles.laboratorio}>{roles.laboratorio}</option>
+                                                <option value={roles.paciente}>{roles.paciente}</option>
                                             </SelectorA>
                                             {errors?.role && (<div className="mt-2 alert alert-danger" role="alert">{errors.role.message}</div>)}
                                         </div>

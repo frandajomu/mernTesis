@@ -50,7 +50,7 @@ const ContPopover = styled.div`
 `;
 
 const AlertaModificada = styled(AlertaRedonda)`
-    width: 1.5%;
+    width: 3%;
     fill: ${theme.moradoClaro};
 
     &:hover {

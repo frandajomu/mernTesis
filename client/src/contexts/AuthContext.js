@@ -1,6 +1,7 @@
+import axios from 'axios';
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import roles from '../helpers/Roles';
+import { notError, notExito } from '../elements/notifyToasty';
 
 //Creamos el contexto, para trabajar globalmente.
 const AuthContext = React.createContext();
@@ -11,60 +12,33 @@ const useAuth = () => {
 }
 
 const AuthProvider = ({ children }) => {
-    const [usuario, cambiarUsuario] = useState(
-        {
-            id: 1,
-            name: "Francisco",
-            lastnameA: "Joven",
-            lastnameB: "Munar",
-            personalIDtype: "C.C.",
-            personalID: "1007194112",
-            datebirth: "26-08-1998",
-            genero: "Masculino",
-            bloodType: "A",
-            blood: "+",
-            EPS: "Sanitas",
-            celular: "3152661756",
-            celular2: "3152661756",
-            direccion: "Carrera 9A # 14-102 Sur",
-            ciudad: "Pitalito",
-            departamento: "Huila",
-            email: "u20162151390@usco.edu.co",
-            password: "1ui12122132jabdyabsd",
-            role: roles.admin
-        }
-    );
+    const [usuario, cambiarUsuario] = useState(null);
 
     const navigate = useNavigate();
 
-    const login = (userCredentials) => {
-        cambiarUsuario(
-            {
-                id: 1,
-                name: "Francisco",
-                lastnameA: "Joven",
-                lastnameB: "Munar",
-                personalIDtype: "C.C.",
-                personalID: "1007194112",
-                datebirth: "26-08-1998",
-                genero: "Masculino",
-                bloodType: "A",
-                blood: "+",
-                EPS: "Sanitas",
-                celular: "3152661756",
-                celular2: "3152661756",
-                direccion: "Carrera 9A # 14-102 Sur",
-                ciudad: "Pitalito",
-                departamento: "Huila",
-                email: "u20162151390@usco.edu.co",
-                password: "1ui12122132jabdyabsd",
-                role: roles.admin
+    const login = async (userCredentials) => {
+        try {
+            const res = await axios.post('/api/login', userCredentials);
+            if (res.data.isAuthenticated) {
+                notExito({ textoNot: 'Ingreso exitoso' })
+                cambiarUsuario(res.data.user)
+                return null;
+            } else {
+                notError({ textoNot: 'El email o contraseña es incorrecto'});
+                return null;
             }
-        );
+        } catch (e) {
+            notError({ textoNot: e});
+        }
+
     }
-    const logout = () => {
+    const logout = async () => {
+        const res = await axios.get('/api/login');
         cambiarUsuario(null);
         navigate('/')
+        if (res.data.message) {
+            notExito({ textoNot: res.data.message });
+        }
     }
     //Función para saber si alguien esta logged
     const islogged = () => !!usuario;
