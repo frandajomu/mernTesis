@@ -25,19 +25,6 @@ const EditarUsuarioAdmin = () => {
     const { control, register, handleSubmit, formState, reset } = useForm({ resolver: AgregarUsuarioResolver });
     const { errors } = formState;
 
-    //Envio de datos al backend
-    const navigate = useNavigate();
-    const onSubmit = async (formData) => {
-        const res = await EditUserData(formData, { id })
-        if (res.message){
-            notExito({textoNot: res.message})
-            navigate(routes.listaUsuarios)
-            reset();
-        }else{
-            notError({textoNot: res.error})
-        }
-    }
-
     useEffect(() => {
         if (usuario) {
             reset(
@@ -58,12 +45,24 @@ const EditarUsuarioAdmin = () => {
                     ciudad: usuario.ciudad,
                     departamento: usuario.departamento,
                     email: usuario.email,
-                    passwordConfirmation: usuario.passwordConfirmation,
                     role: usuario.role
                 }
             )
         }
     }, [reset, usuario]);
+
+    //Envio de datos al backend
+    const navigate = useNavigate();
+    const onSubmit = async (formData) => {
+        const res = await EditUserData(formData, { id })
+        if (res.message) {
+            notExito({ textoNot: res.message })
+            navigate(routes.listaUsuarios)
+            reset();
+        } else {
+            notError({ textoNot: res.error })
+        }
+    }
 
     //Logica Renderización de Formulario
     const [Next, setSiguiente] = useState(0);
@@ -224,7 +223,7 @@ const EditarUsuarioAdmin = () => {
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label mb-1 me-1">Contraseña</label>
-                                            <PopoverElement textos ={'Este campo no es editable, debes ingresar una nueva contraseña.'} />
+                                            <PopoverElement textos={'Este campo no es editable, debes ingresar una nueva contraseña.'} />
                                             <InputCont type="password" className="col-12" {...register("password")} />
                                             {errors?.password && (<div className="mt-2 alert alert-danger" role="alert">{errors.password.message}</div>)}
                                         </div>

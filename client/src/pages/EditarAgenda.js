@@ -5,7 +5,7 @@ import { BotonFormulario, BotonMorado } from '../elements/Botones';
 import Fondo from '../elements/Fondo';
 import roles from '../helpers/Roles';
 import { Helmet } from "react-helmet";
-import { addDays, fromUnixTime } from 'date-fns';
+import { addDays, parseISO } from 'date-fns';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 //import { notError } from '../elements/notifyToasty';
@@ -32,7 +32,7 @@ const EditarAgenda = () => {
                     lastnameB: usuario?.lastnameB,
                     personalIDtype: usuario?.personalIDtype,
                     personalID: usuario?.personalID,
-                    datebirth: fromUnixTime(usuario?.datebirth),
+                    datebirth: parseISO(usuario?.datebirth),
                     genero: usuario?.genero,
                     bloodType: usuario?.bloodType,
                     blood: usuario?.blood,

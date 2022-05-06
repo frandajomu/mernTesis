@@ -1,0 +1,13 @@
+.orangeDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+  border: 2px solid rgba(219, 145, 60, 0.7) !important;
+}
+
+.Calendar {
+  font-size: 0.67rem;
+}
+
+@media (min-width: 768px) {
+  .responsive-calendar {
+    font-size: 0.6rem !important;
+  }
+}

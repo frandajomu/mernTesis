@@ -14,8 +14,17 @@ import useCreateCita from "../hooks/citas/useCreateCita";
 import { notError, notExito } from "../elements/notifyToasty";
 import useGetTurno from "../hooks/citas/useGetTurno";
 import { parseISO } from "date-fns";
+import { useNavigate, useParams } from "react-router-dom";
+import routes from "../helpers/Routes";
+import useGetUsuario from "../hooks/useGetUsuario";
+import useGetOneCita from "../hooks/citas/useGetOneCita";
 
-const Estadisticas = () => {
+const EditarCita = () => {
+
+  //Recibiendo Cedula del usuario
+  const { id } = useParams();
+  const [usuario] = useGetUsuario({ id });
+  const [citaUser] = useGetOneCita({ id });
 
   //Variables meses en String
   const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -23,7 +32,6 @@ const Estadisticas = () => {
   //Dia actual
   const dateNow = utils().getToday();
 
-  //Dia seleccionados
   const defaultValue = { year: dateNow.year, month: dateNow.month, day: dateNow.day };
   const [selectedDay, setSelectedDay] = useState(defaultValue);
   const [gotTurn, setgotTurn] = useState(1);
@@ -42,7 +50,7 @@ const Estadisticas = () => {
 
   //Obtención de fechas no habiles para selección
   const [turnoInfo, turnoDeseable] = useGetTurno()
-  
+
   const FechasNoHabiles = async () => {
     const res = await turnoDeseable()
     if (res.length !== 0) {
@@ -75,20 +83,40 @@ const Estadisticas = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
   //Obtención de turno según fecha escogida
   const TurnoHandle = async (e) => {
     setSelectedDay(e)
-    const dataCita = {
-      citadate: new Date(e.year, e.month - 1, e.day)
-    }
-    const res = await turnoInfo(dataCita)
-    if (res.length !== 0) {
-      setgotTurn(res.length + 1)
+    console.log(fechaCalendarDB.day + ' vs ' + e.day)
+    if (e.day === fechaCalendarDB.day) {
+      setgotTurn(citaUser.turno)
     } else {
-      setgotTurn(1)
+      const dataCita = {
+        citadate: new Date(e.year, e.month - 1, e.day)
+      }
+      const res = await turnoInfo(dataCita)
+      if (res.length !== 0) {
+        setgotTurn(res.length + 1)
+      } else {
+        setgotTurn(1)
+      }
     }
   }
+
+  //Dia de la cita seleccionada segun DB
+  const [fechaCalendarDB, setfechaCalendarDB] = useState(defaultValue)
+  useEffect(() => {
+    if (citaUser.citadate !== undefined && (citaUser.citadate).length !== 0) {
+      const citaSelectAct = parseISO(citaUser.citadate)
+      const citaUserCalendario = { year: citaSelectAct.getFullYear(), month: citaSelectAct.getMonth() + 1, day: citaSelectAct.getDate() }
+      setfechaCalendarDB(citaUserCalendario)
+      setTimeout(() => {
+        setSelectedDay(citaUserCalendario)
+        setfechaCalendarDB(citaUserCalendario)
+        TurnoHandle(citaUserCalendario)
+      }, 5000)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [citaUser.citadate])
 
   //Conexión base de datosEditCerrado
   const [CreateCita] = useCreateCita();
@@ -96,10 +124,13 @@ const Estadisticas = () => {
     citadate: new Date(selectedDay.year, selectedDay.month - 1, selectedDay.day),
     turno: gotTurn
   }
+
+  const navigate = useNavigate();
   const handleSubmit = async () => {
     const res = await CreateCita(datedb)
     if (res.message) {
       notExito({ textoNot: res.message })
+      navigate(routes.agendado)
     } else {
       notError({ textoNot: res.error })
     }
@@ -107,11 +138,11 @@ const Estadisticas = () => {
 
   return (
     <>
-      <Helmet><title>Agendar Prueba</title></Helmet>
+      <Helmet><title>Editar Cita</title></Helmet>
       <div className="container py-4">
         <div className="row align-items-center">
           <div className="col-11 col-md-9 mx-auto my-auto">
-            <h1 className="h2 mb-4 text-center text-primary" style={{ "fontWeight": "700" }}>Agendar Prueba</h1>
+            <h1 className="h2 mb-4 text-center text-primary" style={{ "fontWeight": "700" }}>Editar Cita</h1>
 
             {/* Versión Pantalla Móvil */}
             <div className="col-12 d-block d-md-none">
@@ -123,8 +154,8 @@ const Estadisticas = () => {
                 </div>
                 <div className="col-6 pe-3 me-3 text-end d-flex align-items-end flex-column">
                   <h2 className="mb-auto" style={{ "fontSize": "1rem", "fontWeight": "200" }}>Turno: {gotTurn}</h2>
-                  <h2 className="mb-0" style={{ "fontSize": "1rem", "fontWeight": "200" }}>C.C. 1008141564</h2>
-                  <h2 className="mb-0" style={{ "fontSize": "1rem", "fontWeight": "200" }}>Jessica Joven Munar</h2>
+                  <h2 className="mb-0" style={{ "fontSize": "1rem", "fontWeight": "200" }}>{usuario?.personalIDtype + ' ' + usuario?.personalID}</h2>
+                  <h2 className="mb-0" style={{ "fontSize": "1rem", "fontWeight": "200" }}>{usuario?.name + ' ' + usuario?.lastnameA + ' ' + usuario?.lastnameB}</h2>
                 </div>
               </CalendarTop>
               <CalendarBase className='d-flex justify-content-center'>
@@ -155,8 +186,8 @@ const Estadisticas = () => {
                   <h2 className="" style={{ "fontSize": "1rem", "fontWeight": "200" }}>Turno: {gotTurn}</h2>
                 </div>
                 <div className="mt-auto text-center" style={{ "borderTop": "2px solid", "width": "100%" }}>
-                  <h2 className="mb-0 mt-4" style={{ "fontSize": "1rem", "fontWeight": "200" }}>Jessica Joven Munar</h2>
-                  <h2 className="mb-4" style={{ "fontSize": "1rem", "fontWeight": "200" }}>C.C. 1008141564</h2>
+                  <h2 className="mb-0 mt-4" style={{ "fontSize": "1rem", "fontWeight": "200" }}>{usuario?.name + ' ' + usuario?.lastnameA + ' ' + usuario?.lastnameB}</h2>
+                  <h2 className="mb-4" style={{ "fontSize": "1rem", "fontWeight": "200" }}>{usuario?.personalIDtype + ' ' + usuario?.personalID}</h2>
                 </div>
               </CalendarTopB>
               <Calendar
@@ -187,7 +218,7 @@ const Estadisticas = () => {
   );
 }
 
-export default Estadisticas;
+export default EditarCita;
 
 const CalendarBase = styled.div`
         border - radius: 20px;

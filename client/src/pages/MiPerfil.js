@@ -2,15 +2,16 @@ import React from 'react';
 import ChangePasswordModal from '../components/ChangePasswordModal';
 import DeleteModal from '../components/DeleteModal';
 import EditModal from '../components/EditModal';
-import { useAuth } from '../contexts/AuthContext';
 import { BotonEditar, BotonEliminar } from '../elements/Botones';
 import Fondo from '../elements/Fondo';
+import formatearFecha from '../helpers/horaFormat';
 import useModal from '../hooks/useModal';
 import theme from '../theme';
 import { ReactComponent as Profile } from './../images/Profile.svg';
+import useGetMyPerfil from '../hooks/editPerfil/userGetMyPerfil';
 
 const MiPerfil = () => {
-    const { usuario } = useAuth();
+    const [usuario, MyPerfil] = useGetMyPerfil();
 
     const [cambiarContraseña, abiertoContraseña, cerradoContraseña] = useModal();
     const [cambiarDatos, abiertoDatos, cerradoDatos] = useModal();
@@ -32,7 +33,7 @@ const MiPerfil = () => {
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item">Identificación: {usuario?.personalID}</li>
                                     <li className="list-group-item">Correo: {usuario?.email}</li>
-                                    <li className="list-group-item">Fecha de nacimiento: {usuario?.datebirth}</li>
+                                    <li className="list-group-item">Fecha de Nacimiento: {usuario?.datebirth && formatearFecha(usuario?.datebirth)}</li>
                                     <li className="list-group-item">Genero: {usuario?.genero}</li>
                                     <li className="list-group-item">Grupo Sanguineo: {usuario?.bloodType + ' ' + usuario?.blood}</li>
                                     <li className="list-group-item">EPS: {usuario?.EPS}</li>
@@ -63,6 +64,7 @@ const MiPerfil = () => {
             <EditModal
                 isOpen={cambiarDatos}
                 cerrado={cerradoDatos}
+                MyPerfil = {MyPerfil}
             />
         </>
     );

@@ -1,15 +1,25 @@
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { BotonNaranjaModal } from '../elements/Botones';
+import { notError, notExito } from '../elements/notifyToasty';
+import userDeleteMyPerfil from '../hooks/editPerfil/userDeleteMyPerfil';
 import theme from '../theme';
 import { ReactComponent as AlertaLogo } from './../images/AlertaLogo.svg';
 
 const DeleteModal = () => {
     
     const {logout} = useAuth();
-    const handleDelete = () => {
-        //En esta parte se realiza una petición a la base de datos para eliminar la cuenta.
-        logout();
+    const [DeleteMyPerfil] = userDeleteMyPerfil();
+
+    //Petición a la base de datos para eliminar la cuenta.
+    const handleDelete = async () => {
+        const res = await DeleteMyPerfil();
+        if (res.message) {
+            notExito({ textoNot: res.message })
+            logout();
+        } else {
+            notError({ textoNot: res.error })
+        }
     }
 
     return (

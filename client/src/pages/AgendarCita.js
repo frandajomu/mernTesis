@@ -14,8 +14,15 @@ import useCreateCita from "../hooks/citas/useCreateCita";
 import { notError, notExito } from "../elements/notifyToasty";
 import useGetTurno from "../hooks/citas/useGetTurno";
 import { parseISO } from "date-fns";
+import { useNavigate, useParams } from "react-router-dom";
+import useGetUsuarioByCedula from "../hooks/useGetUserByCedula";
+import routes from "../helpers/Routes";
 
-const Estadisticas = () => {
+const AgendarCita = () => {
+
+  //Recibiendo Cedula del usuario
+  const { id } = useParams();
+  const [usuario] = useGetUsuarioByCedula({ id });
 
   //Variables meses en String
   const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -42,7 +49,7 @@ const Estadisticas = () => {
 
   //Obtención de fechas no habiles para selección
   const [turnoInfo, turnoDeseable] = useGetTurno()
-  
+
   const FechasNoHabiles = async () => {
     const res = await turnoDeseable()
     if (res.length !== 0) {
@@ -75,7 +82,6 @@ const Estadisticas = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
   //Obtención de turno según fecha escogida
   const TurnoHandle = async (e) => {
     setSelectedDay(e)
@@ -94,12 +100,16 @@ const Estadisticas = () => {
   const [CreateCita] = useCreateCita();
   const datedb = {
     citadate: new Date(selectedDay.year, selectedDay.month - 1, selectedDay.day),
-    turno: gotTurn
+    turno: gotTurn,
+    idUser: usuario?._id
   }
+
+  const navigate = useNavigate();
   const handleSubmit = async () => {
     const res = await CreateCita(datedb)
     if (res.message) {
       notExito({ textoNot: res.message })
+      navigate(routes.agendado)
     } else {
       notError({ textoNot: res.error })
     }
@@ -123,8 +133,8 @@ const Estadisticas = () => {
                 </div>
                 <div className="col-6 pe-3 me-3 text-end d-flex align-items-end flex-column">
                   <h2 className="mb-auto" style={{ "fontSize": "1rem", "fontWeight": "200" }}>Turno: {gotTurn}</h2>
-                  <h2 className="mb-0" style={{ "fontSize": "1rem", "fontWeight": "200" }}>C.C. 1008141564</h2>
-                  <h2 className="mb-0" style={{ "fontSize": "1rem", "fontWeight": "200" }}>Jessica Joven Munar</h2>
+                  <h2 className="mb-0" style={{ "fontSize": "1rem", "fontWeight": "200" }}>{usuario?.personalIDtype + ' ' + usuario?.personalID}</h2>
+                  <h2 className="mb-0" style={{ "fontSize": "1rem", "fontWeight": "200" }}>{usuario?.name + ' ' + usuario?.lastnameA + ' ' + usuario?.lastnameB}</h2>
                 </div>
               </CalendarTop>
               <CalendarBase className='d-flex justify-content-center'>
@@ -155,8 +165,8 @@ const Estadisticas = () => {
                   <h2 className="" style={{ "fontSize": "1rem", "fontWeight": "200" }}>Turno: {gotTurn}</h2>
                 </div>
                 <div className="mt-auto text-center" style={{ "borderTop": "2px solid", "width": "100%" }}>
-                  <h2 className="mb-0 mt-4" style={{ "fontSize": "1rem", "fontWeight": "200" }}>Jessica Joven Munar</h2>
-                  <h2 className="mb-4" style={{ "fontSize": "1rem", "fontWeight": "200" }}>C.C. 1008141564</h2>
+                  <h2 className="mb-0 mt-4" style={{ "fontSize": "1rem", "fontWeight": "200" }}>{usuario?.name + ' ' + usuario?.lastnameA + ' ' + usuario?.lastnameB}</h2>
+                  <h2 className="mb-4" style={{ "fontSize": "1rem", "fontWeight": "200" }}>{usuario?.personalIDtype + ' ' + usuario?.personalID}</h2>
                 </div>
               </CalendarTopB>
               <Calendar
@@ -177,7 +187,7 @@ const Estadisticas = () => {
               />
             </div>
             <div className="mt-4 d-flex justify-content-center">
-              <BotonMorado type="button" onClick={handleSubmit}>Editar</BotonMorado>
+              <BotonMorado type="button" onClick={handleSubmit}>Agendar</BotonMorado>
             </div>
           </div>
         </div>
@@ -187,7 +197,7 @@ const Estadisticas = () => {
   );
 }
 
-export default Estadisticas;
+export default AgendarCita;
 
 const CalendarBase = styled.div`
         border - radius: 20px;

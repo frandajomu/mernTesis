@@ -15,13 +15,18 @@ import routes from '../helpers/Routes';
 import SearchBar from './../components/SearchBar'
 import useGetPacientes from '../hooks/useGetPaciente';
 import { useAuth } from '../contexts/AuthContext';
+import MostrarDatosUser from '../components/MostrarDatosUser';
+import useModal from '../hooks/useModal';
 
 const Examenes = () => {
     //Miramos usuario logeado
     const { usuario } = useAuth();
 
     //Obtenemos Lista de Usuarios de la DB
-    const [listaPacientes] = useGetPacientes();
+    const dataEstado = { 'estado': 'Agendado' }
+    const dataEstado2 = { 'estado': 'Realizado' }
+    const [listaAgendado, dataUsers] = useGetPacientes(dataEstado);
+    const [listaRealizado] = useGetPacientes(dataEstado2);
 
     //ID al dar click en eliminar un usuario para DeleteUsuario y EditModal
     const [idUser, setIDUser] = useState();
@@ -31,6 +36,13 @@ const Examenes = () => {
 
     //Logica Renderización de Formulario
     const [Next, setSiguiente] = useState(0);
+
+    //Usamos hook modal para mostrar datos del usuario
+    const [isDatosEdit, datosEditAbierto, datosEditCerrado] = useModal();
+    const handleClick = (id) => {
+        setIDUser(id);
+        datosEditAbierto();
+    }
 
     return (
         <>
@@ -86,70 +98,72 @@ const Examenes = () => {
                                 </thead>
                                 <tbody>
                                     {Next === 0 ?
-                                        listaPacientes.map((lista) => {
-                                            if (lista.estado === 'Agendado') {
-                                                return (
-                                                    <tr key={lista.id} >
-                                                        <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
-                                                        <td>{lista.embarazo}</td>
-                                                        <td className="d-none d-lg-block">{lista.personalID}</td>
-                                                        {usuario.role === roles.medico &&
-                                                            <>
-                                                                <td className="px-0 mx-0"><BotonIconoListaUsers><IconoEditar /></BotonIconoListaUsers></td>
-                                                                <td className="px-1 mx-0">
-                                                                    <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista.id)}>
-                                                                        <IconoBorrar />
-                                                                    </BotonIconoListaUsers>
-                                                                </td>
-                                                            </>
-                                                        }
-                                                        {usuario.role === roles.laboratorio &&
-                                                            <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista.id)}><IconoCargar /></BotonIconoListaUsers></td>
-                                                        }
-                                                        {usuario.role === roles.admin &&
-                                                            <>
-                                                                <td className="px-0 mx-0"><BotonIconoListaUsers><IconoEditar /></BotonIconoListaUsers></td>
-                                                                <td className="px-1 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista.id)}><IconoCargar /></BotonIconoListaUsers></td>
-                                                                <td className="px-1 mx-0">
-                                                                    <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista.id)}>
-                                                                        <IconoBorrar />
-                                                                    </BotonIconoListaUsers>
-                                                                </td>
-                                                            </>
-                                                        }
-                                                    </tr>
-                                                );
-                                            } else {
-                                                return null;
-                                            }
+                                        listaAgendado.map((lista) => {
+                                            return (
+                                                <tr key={lista._id} >
+                                                    <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
+                                                    <td>{lista.embarazo}</td>
+                                                    <td className="d-none d-lg-block">{lista.personalID}</td>
+                                                    {usuario.role === roles.medico &&
+                                                        <>
+                                                            <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
+                                                            <td className="px-1 mx-0">
+                                                                <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
+                                                                    <IconoBorrar />
+                                                                </BotonIconoListaUsers>
+                                                            </td>
+                                                        </>
+                                                    }
+                                                    {usuario.role === roles.laboratorio &&
+                                                        <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
+                                                    }
+                                                    {usuario.role === roles.admin &&
+                                                        <>
+                                                            <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
+                                                            <td className="px-1 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
+                                                            <td className="px-1 mx-0">
+                                                                <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
+                                                                    <IconoBorrar />
+                                                                </BotonIconoListaUsers>
+                                                            </td>
+                                                        </>
+                                                    }
+                                                </tr>
+                                            );
                                         })
                                         :
-                                        listaPacientes.map((lista) => {
-                                            if (lista.estado === 'Realizado') {
-                                                return (
-                                                    <tr key={lista.id} >
-                                                        <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
-                                                        <td>{lista.embarazo}</td>
-                                                        <td className="d-none d-lg-block">{lista.personalID}</td>
-                                                        {usuario.role === roles.medico &&
-                                                            <>
-                                                                <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.resultado(lista.id)}><IconoVerMas /></BotonIconoListaUsers></td>
-                                                            </>
-                                                        }
-                                                        {usuario.role === roles.laboratorio &&
-                                                            <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.editarResultado(lista.id)}><IconoEditar /></BotonIconoListaUsers></td>
-                                                        }
-                                                        {usuario.role === roles.admin &&
-                                                            <>
-                                                                <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.resultado(lista.id)}><IconoVerMas /></BotonIconoListaUsers></td>
-                                                                <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.editarResultado(lista.id)}><IconoEditar /></BotonIconoListaUsers></td>
-                                                            </>
-                                                        }
-                                                    </tr>
-                                                );
-                                            } else {
-                                                return null;
-                                            }
+                                        listaRealizado.map((lista) => {
+                                            return (
+                                                <tr key={lista._id} >
+                                                    <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
+                                                    <td>{lista.embarazo}</td>
+                                                    <td className="d-none d-lg-block">{lista.personalID}</td>
+                                                    {usuario.role === roles.medico &&
+                                                        <>
+                                                            <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
+                                                            <td className="px-1 mx-0">
+                                                                <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
+                                                                    <IconoBorrar />
+                                                                </BotonIconoListaUsers>
+                                                            </td>
+                                                        </>
+                                                    }
+                                                    {usuario.role === roles.laboratorio &&
+                                                        <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
+                                                    }
+                                                    {usuario.role === roles.admin &&
+                                                        <>
+                                                            <td className="px-0 mx-0"><BotonIconoListaUsers><IconoEditar /></BotonIconoListaUsers></td>
+                                                            <td className="px-1 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
+                                                            <td className="px-1 mx-0">
+                                                                <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
+                                                                    <IconoBorrar />
+                                                                </BotonIconoListaUsers>
+                                                            </td>
+                                                        </>
+                                                    }
+                                                </tr>
+                                            );
                                         })
                                     }
                                 </tbody>
@@ -159,17 +173,32 @@ const Examenes = () => {
                                 <BotonEditar>Cargar Más</BotonEditar>
                             </div>
                             */}
-                            {listaPacientes.length === 0 &&
+
+                            {Next === 0 ?
+                                listaAgendado.length === 0 &&
                                 <div className="mx-auto col-md-8 text-center" style={{ "color": theme.grisClaro2 }}>
                                     <h3>No hay usuarios agregados</h3>
-                                    <BotonEditar as={Link} to={routes.agregarUsuarios}> Agregar Usuario</BotonEditar>
+                                    <BotonEditar as={Link} to={routes.agregarUsuarios}>Agendar Prueba</BotonEditar>
+                                </div>
+                                :
+                                listaRealizado.length === 0 &&
+                                <div className="mx-auto col-md-8 text-center" style={{ "color": theme.grisClaro2 }}>
+                                    <h3>No hay pruebas realizadas</h3>
                                 </div>
                             }
                         </ContenedorMayor>
                     </div>
                 </div>
             </div>
-            <DeleteUsuario idUser={idUser} />
+            <DeleteUsuario
+                idUser={idUser}
+                role={'Paciente'}
+                dataUsers={dataUsers} />
+            <MostrarDatosUser
+                idUser={idUser}
+                isOpen={isDatosEdit}
+                cerrado={datosEditCerrado}
+                role={'Paciente'} />
             <Fondo />
         </>
     );

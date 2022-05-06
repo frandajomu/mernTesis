@@ -1,8 +1,19 @@
 const loginCtrl = {};
 const passport = require('passport');
+const UserModel = require('../models/User');
+const JWT = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+//Creando el token de usuario
+const signToken = (userID) => {
+    return JWT.sign({
+        iss: process.env.SECRET_TOKEN,
+        sub: userID
+    }, process.env.SECRET_TOKEN, { expiresIn: '18h' })
+}
 
 //Passport JWT autenticación para autorizar al usuario a realizar peticiones a la DB
-loginCtrl.JWTpassportAuth = passport.authenticate('jwt', {session: false});
+loginCtrl.JWTpassportAuth = passport.authenticate('jwt', { session: false });
 
 //Petición Login
 loginCtrl.Ingresar = passport.authenticate('local', {
@@ -10,10 +21,93 @@ loginCtrl.Ingresar = passport.authenticate('local', {
     failureRedirect: '/api/login/failurejson'
 });
 
+//Autentificación inicio exitosa
+loginCtrl.SuccessAuth = (req, res) => {
+    if (req.isAuthenticated()) {
+        const { _id, role } = req.user;
+        const token = signToken(_id)
+        res.cookie('access_token', token, { httpOnly: true, sameSite: true });
+
+        return res.status(200).json({ isAuthenticated: true, user: { role } });
+    } else {
+        return res.json({ isAuthenticated: false })
+    }
+}
+
 //Petición para Logout
 loginCtrl.Logout = async (req, res) => {
     res.clearCookie('access_token')
     res.json({ message: 'Logout Exitoso' });
+}
+
+//Get Información de Usuario Logueado
+loginCtrl.InfoUser = async (req, res) => {
+    try {
+        const { name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, role } = await UserModel.findById({ _id: req.user.id })
+        res.json({ user: { name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, role } });
+    } catch (e) {
+        res.json({ error: 'Ha ocurrido un error' + e })
+    }
+}
+
+//Put actualización información perfil de Usuario Logueado
+loginCtrl.UpdateInfoUser = async (req, res) => {
+    const { name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email } = req.body;
+
+    const emailUser = await UserModel.findOne({ email: email });
+    const numberIDUser = await UserModel.findOne({ personalID: personalID });
+    const ActualData = req.user;
+    if (email !== ActualData.email) {
+        if (emailUser) {
+            return res.json({ error: 'El correo ya existe en la base de datos' })
+        } else {
+            return null
+        }
+    } else if (personalID !== ActualData.personalID) {
+        if (numberIDUser) {
+            return res.json({ error: 'El número de identificación ya existe en la base de datos' })
+        } else {
+            return null
+        }
+    } else {
+        await UserModel.findByIdAndUpdate(req.user.id, { name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email })
+        return res.json({ message: 'Usuario actualizado con exito' });
+    }
+}
+
+loginCtrl.UpdatePassword = async (req, res) => {
+    const { oldPassword, password, passwordConfirmation } = req.body;
+    const user = await UserModel.findById({ _id: req.user.id }).clone();
+    const passwordUser = await user.matchPassword(oldPassword);
+    if (passwordUser) {
+        if (password !== passwordConfirmation) {
+            return res.json({ error: 'Las contraseñas no coinciden' })
+        } else if (password.length < 6) {
+            return res.json({ error: 'La contraseña debe tener más de 6 caracteres' })
+        } else {
+            await UserModel.findById(req.user.id, async (err, doc) => {
+                if (err) return false;
+
+                const salt = await bcrypt.genSalt(10);
+                doc.password = await bcrypt.hash(password, salt);
+                doc.save();
+            }).clone();
+            return res.json({ message: 'Contraseña cambiada correctamente' });
+        }
+    } else {
+        return res.json({ message: 'La contraseña actual no es correcta' });
+    }
+
+}
+
+//Petición borrar usuario
+loginCtrl.deleteAccountUser = async (req, res) => {
+    try {
+        await UserModel.findByIdAndDelete(req.user.id)
+        return res.json({ message: 'Cuenta eliminada con exito' });
+    } catch (err) {
+        return res.json({ error: 'Hubo un error, cuenta no eliminada' });
+    }
 }
 
 module.exports = loginCtrl;

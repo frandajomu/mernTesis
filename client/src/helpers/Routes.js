@@ -1,4 +1,3 @@
-
 const routes ={
     home: "/",
     agendado: "/pruebas",
@@ -6,6 +5,8 @@ const routes ={
     perfil: "/perfil",
     agendar: "/agendarPruebas",
     editarAgenda: (editarId) => (editarId ? `/editarAgenda/${editarId}` : "/editarAgenda/:id"),
+    agendarCita: (agendarCita) => (agendarCita ? `/agendarCita/${agendarCita}` : "/agendarCita/:id"),
+    editarCita: (editarCita) => (editarCita ? `/editarCita/${editarCita}` : "/editarCita/:id"),
     editarUsuario: (UsuarioId) => (UsuarioId ? `/editarUsuario/${UsuarioId}` : "/editarUsuario/:id"),
     manual: {
         admin: "/manual/admin",

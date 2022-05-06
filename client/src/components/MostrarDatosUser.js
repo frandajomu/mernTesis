@@ -6,10 +6,13 @@ import * as bootstrap from 'bootstrap';
 import { useNavigate } from 'react-router-dom';
 import routes from '../helpers/Routes';
 import useGetUsuario from '../hooks/useGetUsuario';
+import formatearFecha from '../helpers/horaFormat';
+import useGetOneCita from '../hooks/citas/useGetOneCita';
 
-const MostrarDatosUser = ({ isOpen, cerrado, idUser }) => {
+const MostrarDatosUser = ({ isOpen, cerrado, idUser, role }) => {
     //Obtenemos datos de usuario por ID
     const [UserList] = useGetUsuario({ id: idUser })
+    const [cita] = useGetOneCita({ id: idUser });
 
     //Configuración del modal
     const modalRef = useRef()
@@ -34,7 +37,17 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser }) => {
     //Redirigimos a pagina de editarUsuario
     const navigate = useNavigate();
     const editar = () => {
-        navigate(routes.editarUsuario(idUser))
+        if (role === 'Paciente') {
+            navigate(routes.editarAgenda(idUser))
+        } else {
+            navigate(routes.editarUsuario(idUser))
+        }
+        hideModal();
+        cerrado();
+    }
+
+    const editarCita = () => {
+        navigate(routes.editarCita(idUser))
         hideModal();
         cerrado();
     }
@@ -60,7 +73,7 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser }) => {
                                     <li className="list-group-item">Apellidos: {UserList?.lastnameA + ' ' + UserList?.lastnameB}</li>
                                     <li className="list-group-item">Identificación: {UserList?.personalIDtype + ' ' + UserList?.personalID}</li>
                                     <li className="list-group-item">Correo: {UserList?.email}</li>
-                                    <li className="list-group-item">Fecha de nacimiento: {UserList?.datebirth}</li>
+                                    <li className="list-group-item">Fecha de nacimiento: {UserList?.datebirth && formatearFecha(UserList?.datebirth)}</li>
                                     <li className="list-group-item">Genero: {UserList?.genero}</li>
                                     <li className="list-group-item">Grupo Sanguineo: {UserList?.bloodType + ' ' + UserList?.blood}</li>
                                     <li className="list-group-item">EPS: {UserList?.EPS}</li>
@@ -73,11 +86,24 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser }) => {
                                     <li className="list-group-item">Ciudad: {UserList?.ciudad}</li>
                                     <li className="list-group-item">Departamento: {UserList?.departamento}</li>
                                 </ul>
+                                {role === 'Paciente' &&
+                                    <>
+                                        <div className="card-header text-center"><b>Datos Importantes</b></div>
+                                        <ul className="list-group list-group-flush">
+                                            <li className="list-group-item">Fecha de la Cita: {cita?.citadate && formatearFecha(cita?.citadate)}</li>
+                                            <li className="list-group-item">Turno: {cita?.turno}</li>
+                                            <li className="list-group-item">Semanas de embarazo: {UserList?.embarazo}</li>
+                                            <li className="list-group-item">Recomendación: {UserList?.recomendacion}</li>
+                                        </ul>
+                                    </>
+                                }
                             </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-outline-secondary" onClick={hideModal}>Cancelar</button>
-                            <BotonMoradoModal type="submit" className="btn" onClick={editar}>Editar</BotonMoradoModal>
+                            {role === 'Paciente' &&
+                                <BotonMoradoModal type="submit" className="btn" onClick={editarCita}>Editar Cita</BotonMoradoModal>}
+                            <BotonMoradoModal type="submit" className="btn" onClick={editar}>Editar Datos</BotonMoradoModal>
                         </div>
                     </div>
                 </div>

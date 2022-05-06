@@ -8,9 +8,13 @@ import { Helmet } from "react-helmet";
 import { addDays } from 'date-fns';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-//import { notError } from '../elements/notifyToasty';
-import getUnixTime from 'date-fns/getUnixTime';
+import { notError, notExito } from '../elements/notifyToasty';
 import AgregarAgendaResolver from '../validations/AgregarAgendaResolver';
+import { useNavigate } from 'react-router-dom';
+import useAddUsuario from '../hooks/useAddUsuario';
+import routes from '../helpers/Routes';
+//{ resolver: AgregarAgendaResolver }
+
 
 const AgendarPrueba = () => {
 
@@ -18,13 +22,19 @@ const AgendarPrueba = () => {
     const { control, register, handleSubmit, formState, reset } = useForm({ resolver: AgregarAgendaResolver });
     const { errors } = formState;
 
+    const [UploadUserData] = useAddUsuario();
+
     //Envio de datos al backend
-    const onSubmit = (formData) => {
-        const a = getUnixTime(formData.datebirth)
-        //formData funcionara para enviar los datos al Backend
-        console.log(a);
-        console.log(formData);
-        reset();
+    const navigate = useNavigate();
+    const onSubmit = async (formData) => {
+        const res = await UploadUserData(formData)
+        if (res.message) {
+            notExito({ textoNot: res.message })
+            navigate(routes.agendarCita(formData.personalID))
+            reset();
+        } else {
+            notError({ textoNot: res.error })
+        }
     }
 
     //Logica Renderización de Formulario
@@ -44,7 +54,7 @@ const AgendarPrueba = () => {
     useEffect(() => {
         register('genero', { value: 'Femenino' })
         register('role', { value: roles.paciente })
-        register('estado', { value: 'Agendado'})
+        register('estado', { value: 'Agendado' })
     }, [register])
 
     return (

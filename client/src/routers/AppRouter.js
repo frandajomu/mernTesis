@@ -24,6 +24,8 @@ import Resultados from "../pages/Resultados";
 import PrivateRoute from './PrivateRoutes';
 import PublicRoute from './PublicRoute';
 import Examenes from '../pages/Examenes';
+import AgendarCita from '../pages/AgendarCita';
+import EditarCita from '../pages/EditarCita';
 
 const AppRouter = () => {
     return (
@@ -41,6 +43,8 @@ const AppRouter = () => {
             {/* Médico */}
             <Route exact path={routes.agendar} element={<PrivateRoute role={roles.medico}><AgendarPrueba /></PrivateRoute>} />
             <Route exact path={routes.editarAgenda()} element={<PrivateRoute role={roles.medico}><EditarAgenda /></PrivateRoute>} />
+            <Route exact path={routes.agendarCita()} element={<PrivateRoute role={roles.medico}><AgendarCita /></PrivateRoute>} />
+            <Route exact path={routes.editarCita()} element={<PrivateRoute role={roles.medico}><EditarCita /></PrivateRoute>} />
             <Route exact path={routes.manual.medico} element={<PrivateRoute role={roles.medico}><ManualMedico /></PrivateRoute>} />
 
             {/* Paciente */}

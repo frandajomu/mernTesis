@@ -2,17 +2,31 @@ import React from 'react';
 import { BotonNaranjaModal } from '../elements/Botones';
 import theme from '../theme';
 import { ReactComponent as AlertaLogo } from './../images/AlertaLogo.svg';
-import { notExito } from '../elements/notifyToasty';
+import { notError, notExito } from '../elements/notifyToasty';
 import useDeleteUsuario from '../hooks/useDeleteUsuario';
+import useDeleteCita from '../hooks/citas/useDeleteCita';
 
-const DeleteUsuario = ({idUser, dataUsers}) => {
-    const [DeleteUserData] = useDeleteUsuario({id: idUser});
-    
-    const handleDelete = () => {
-        //En esta parte se realiza una petición a la base de datos para eliminar la cuenta.
-        DeleteUserData();
-        dataUsers();
-        notExito({textoNot: "¡Usuario Elminado exitosamente!"});
+const DeleteUsuario = ({ idUser, dataUsers, role }) => {
+    const [DeleteUserData] = useDeleteUsuario({ id: idUser });
+    const [DeleteCitaData] = useDeleteCita({ id: idUser });
+
+    //Petición a la base de datos para eliminar la cuenta.
+    const handleDelete = async () => {
+        const res = await DeleteUserData();
+        if (res.message) {
+            notExito({ textoNot: res.message })
+            dataUsers()
+            if (role === 'Paciente') {
+                const res2 = await DeleteCitaData();
+                if (res2.message) {
+                    notExito({ textoNot: res2.message })
+                } else {
+                    notError({ textoNot: res2.error })
+                }
+            }
+        } else {
+            notError({ textoNot: res.error })
+        }
     }
 
     return (

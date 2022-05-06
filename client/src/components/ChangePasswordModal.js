@@ -6,9 +6,13 @@ import theme from '../theme';
 import { useForm } from 'react-hook-form';
 import ChangePasswordResolver from '../validations/ChangePasswordResolver';
 import { notError, notExito } from '../elements/notifyToasty';
+import userPutPassword from '../hooks/editPerfil/userPutPassword';
+import routes from '../helpers/Routes';
+import { useNavigate } from 'react-router-dom';
 
 const ChangePasswordModal = ({ isOpen, cerrado }) => {
 
+    const [PutPassword] = userPutPassword();
     const { register, handleSubmit, formState, reset } = useForm({ resolver: ChangePasswordResolver });
     const { errors } = formState;
 
@@ -34,11 +38,18 @@ const ChangePasswordModal = ({ isOpen, cerrado }) => {
     }
 
     //Envio de datos del formulario (Backend)
-    const onSubmit = (formData) => {
-        //formData funcionara para enviar los datos al Backend
-        hideModal();
-        notError({textoNot: "Hubo un error al intentar cambiar la contraseña."});
-        notExito({textoNot: "Contraseña cambiada correctamente."});
+    const navigate = useNavigate();
+    const onSubmit = async (formData) => {
+        const res = await PutPassword(formData);
+        if (res.message) {
+            notExito({ textoNot: res.message })
+            navigate(routes.perfil)
+            hideModal();
+            cerrado();
+            reset();
+        } else {
+            notError({ textoNot: res.error })
+        }
     }
 
     return (
@@ -57,7 +68,18 @@ const ChangePasswordModal = ({ isOpen, cerrado }) => {
                             <div className="col-sm-8 col-12">
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-3">
-                                        <label htmlFor="inpPassword1" className="form-label">Nueva Contraseña</label>
+                                        <label className="form-label">Contraseña Actual</label>
+                                        <input type="password" className="form-control" id="inpPassword0" {...register("oldPassword")} />
+                                        {errors?.oldPassword && (
+                                            <div className="form-text">
+                                                <div className="alert alert-danger" role="alert">
+                                                    {errors.oldPassword.message}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Nueva Contraseña</label>
                                         <input type="password" className="form-control" id="inpPassword1" {...register("password")} />
                                         {errors?.password && (
                                             <div className="form-text">
@@ -68,7 +90,7 @@ const ChangePasswordModal = ({ isOpen, cerrado }) => {
                                         )}
                                     </div>
                                     <div className="mb-3">
-                                        <label htmlFor="inpPassword2" className="form-label">Confirmar Contraseña</label>
+                                        <label className="form-label">Confirmar Contraseña</label>
                                         <input type="password" className="form-control" id="inpPassword2" {...register("passwordConfirmation")} />
                                         {errors?.passwordConfirmation && (
                                             <div className="form-text">
