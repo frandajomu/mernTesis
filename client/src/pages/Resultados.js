@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import Fondo from '../elements/Fondo';
 import { ContenedorMayor, MostrarText } from '../elements/Formularios';
 import { useParams } from 'react-router-dom';
-import useGetResultado from '../hooks/useGetResultado';
 import useGetUsuario from '../hooks/useGetUsuario';
 import ResultSelect from '../elements/SelectorResultado';
 import GraficoResultado from '../images/GraficoResultado.png';
@@ -12,13 +11,13 @@ import { ReactComponent as T21Logo } from './../images/T21Logo.svg';
 import { ReactComponent as T18Logo } from './../images/T18Logo.svg';
 import { ReactComponent as T13Logo } from './../images/T13Logo.svg';
 import theme from '../theme';
+import useGetResultado from '../hooks/resultados/useGetResultado';
 
 
 const Resultados = () => {
-    const { idResult } = useParams();
-    const [resultado] = useGetResultado({ idResult });
-    const id = { id: resultado?.idUsuario }
-    const [usuario] = useGetUsuario(id);
+    const { id } = useParams();
+    const [resultado] = useGetResultado({ id });
+    const [usuario] = useGetUsuario({ id });
 
     return (
         <>

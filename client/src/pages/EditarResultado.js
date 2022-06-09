@@ -3,17 +3,19 @@ import { Helmet } from 'react-helmet';
 import Fondo from '../elements/Fondo';
 import { ContenedorMayor, InputCont, MostrarText, SelectorA } from '../elements/Formularios';
 import { BotonEditar } from '../elements/Botones';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import CargarResultadoResolver from '../validations/CargarResultadoResolver';
-import useGetResultado from '../hooks/useGetResultado';
 import useGetUsuario from '../hooks/useGetUsuario';
+import useGetResultado from '../hooks/resultados/useGetResultado';
+import useEditResultado from '../hooks/resultados/useEditResultado';
+import routes from '../helpers/Routes';
+import { notError, notExito } from '../elements/notifyToasty';
 
 const EditarResultado = () => {
-    const { idResult } = useParams();
-    const [resultado] = useGetResultado({ idResult });
-    const id = { id: resultado?.idUsuario }
-    const [usuario] = useGetUsuario(id);
+    const { id } = useParams();
+    const [resultado] = useGetResultado({ id });
+    const [usuario] = useGetUsuario({ id });
 
     //Uso del hook useForm para adquirir los datos del Formulario
     const { register, handleSubmit, formState, reset } = useForm({ resolver: CargarResultadoResolver });
@@ -51,9 +53,17 @@ const EditarResultado = () => {
     const [selectedC, setSelectedC] = useState();
 
     //Envio de datos al backend
-    const onSubmit = (formData) => {
-        console.log(formData);
-        reset();
+    const [EditResultadoData] = useEditResultado();
+    const navigate = useNavigate();
+    const onSubmit = async (formData) => {
+        const res = await EditResultadoData(formData, { id })
+        if (res.message) {
+            notExito({ textoNot: res.message })
+            navigate(routes.agendado)
+            reset();
+        } else {
+            notError({ textoNot: res.error })
+        }
     }
 
     
@@ -165,7 +175,7 @@ const EditarResultado = () => {
                                     <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Sexo Fetal</MostrarText>
                                     <SelectorA className="flex-fill" style={{ "fontSize": "0.9rem", "width": "7rem" }} {...register("SexoFetal")}>
                                         <option defaultValue>Femenino</option>
-                                        <option value="1">Masculino</option>
+                                        <option value="Masculino">Masculino</option>
                                     </SelectorA>
                                     <SelectorA
                                         className="flex-fill"

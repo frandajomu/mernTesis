@@ -7,6 +7,7 @@ citasCtrl.getCita = async (req, res) => {
     return res.json(citas);
 }
 
+//Petición para ver cita de un solo usuario
 citasCtrl.getOneCita = async (req, res) => {
     try {
         const cita = await CitasModel.findOne({ idUser: req.params.id }).clone();
@@ -20,7 +21,7 @@ citasCtrl.getOneCita = async (req, res) => {
 citasCtrl.getTurno = async (req, res) => {
     const { citadate } = req.body;
     try {
-        const turnos = await CitasModel.find({ citadate: citadate }).clone();
+        const turnos = await CitasModel.find({ citadate: citadate }).clone().sort({turno : -1}).limit(1);
         return res.json(turnos);
     } catch (e) {
         return res.json({ error: '¡Ocurrio un error al buscar el turno del dia!' });
@@ -45,11 +46,27 @@ citasCtrl.desableDate = async (req, res) => {
 citasCtrl.createCita = async (req, res) => {
     const { citadate, turno, idUser } = req.body;
     try {
-        const newCita = new CitasModel({ citadate, turno, idUser })
-        await newCita.save();
-        return res.json({ message: '¡Cita agendada exitosamente!' });
+        const turnoHabil = await CitasModel.findOne({citadate: citadate, turno: "3"}).clone();
+        if(turnoHabil){
+            return res.json({ error: 'El dia fijado para la cita no tiene turnos disponibles, seleccione otro dia' });
+        }else{
+            const newCita = new CitasModel({ citadate, turno, idUser })
+            await newCita.save();
+            return res.json({ message: '¡Cita agendada exitosamente!' });
+        }
     } catch (e) {
         return res.json({ error: 'Hubo un error, cita no agendada' });
+    }
+}
+
+//Petición editar cita existente
+citasCtrl.updateCita = async (req, res) => {
+    const { citadate, turno } = req.body;
+    try{
+        await CitasModel.findOneAndUpdate({ idUser: req.params.id }, { citadate: citadate, turno: turno });
+        return res.json({ message: 'Cita actualizada' });
+    } catch(e){
+        return res.json({ error: 'Hubo un error, cita no actualizada' });
     }
 }
 

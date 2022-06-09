@@ -18,6 +18,7 @@ export default function useGetPacientes(dataEstado) {
 
     useEffect(() => {
         dataPacientes();
+         // eslint-disable-next-line
     }, [])
 
     return [listaPacientes, dataPacientes];

@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const { getCita, getOneCita, createCita, deleteCita, getTurno, desableDate } = require('./../controllers/citas.controller')
+const { getCita, getOneCita, createCita, updateCita, deleteCita, getTurno, desableDate } = require('./../controllers/citas.controller')
 
 router.route('/')
     .get(getCita)
@@ -13,6 +13,7 @@ router.route('/turno')
     
 router.route('/:id')
     .get(getOneCita)
+    .put(updateCita)
     .delete(deleteCita);
 
 

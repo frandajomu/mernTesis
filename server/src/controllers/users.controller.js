@@ -26,8 +26,8 @@ usersCtrl.usersByRole = async (req, res) => {
 //Petición para ver lista de pacientes segun agendado o realizado
 usersCtrl.usersPaciente = async (req, res) => {
     const { estado } = req.body
-    if (estado === 'Realizado' || estado === 'Agendado' ) {
-        const usuarios = await UserModel.find({ role: 'Paciente' , estado: estado }).clone();
+    if (estado === 'Realizado' || estado === 'Agendado') {
+        const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).clone();
         return res.json(usuarios);
     } else {
         res.json({ error: 'Ha ocurrido un error' });
@@ -102,6 +102,18 @@ usersCtrl.updateUser = async (req, res) => {
             doc.save();
         }).clone();
         return res.json({ message: 'Usuario actualizado con exito' });
+    }
+}
+
+//Petición editar datos de un usuario
+usersCtrl.updatePaciente = async (req, res) => {
+    const { estado } = req.body;
+    const ActualData = await UserModel.findById(req.params.id).clone()
+    if (ActualData.role === 'Paciente') {
+        await UserModel.findOneAndUpdate({ _id: req.params.id }, { estado: estado });
+        return res.json({ message: 'Estado actualizado' });
+    } else {
+        return res.json({ error: 'Error al actualizar el estado del paciente' })
     }
 
 }

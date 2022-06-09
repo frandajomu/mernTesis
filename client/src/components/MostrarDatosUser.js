@@ -8,8 +8,13 @@ import routes from '../helpers/Routes';
 import useGetUsuario from '../hooks/useGetUsuario';
 import formatearFecha from '../helpers/horaFormat';
 import useGetOneCita from '../hooks/citas/useGetOneCita';
+import roles from '../helpers/Roles';
+import { useAuth } from '../contexts/AuthContext';
 
 const MostrarDatosUser = ({ isOpen, cerrado, idUser, role }) => {
+    //Miramos usuario logeado
+    const { usuario } = useAuth();
+
     //Obtenemos datos de usuario por ID
     const [UserList] = useGetUsuario({ id: idUser })
     const [cita] = useGetOneCita({ id: idUser });
@@ -48,6 +53,18 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, role }) => {
 
     const editarCita = () => {
         navigate(routes.editarCita(idUser))
+        hideModal();
+        cerrado();
+    }
+
+    const editarPrueba = () => {
+        navigate(routes.editarResultado(idUser))
+        hideModal();
+        cerrado();
+    }
+
+    const verResult = () => {
+        navigate(routes.resultado(idUser))
         hideModal();
         cerrado();
     }
@@ -101,9 +118,38 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, role }) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-outline-secondary" onClick={hideModal}>Cancelar</button>
-                            {role === 'Paciente' &&
-                                <BotonMoradoModal type="submit" className="btn" onClick={editarCita}>Editar Cita</BotonMoradoModal>}
-                            <BotonMoradoModal type="submit" className="btn" onClick={editar}>Editar Datos</BotonMoradoModal>
+                            {UserList.estado === 'Agendado' ?
+                                usuario.role === roles.admin &&
+                                <>
+                                    <BotonMoradoModal type="submit" className="btn" onClick={editarCita}>Editar Cita</BotonMoradoModal>
+                                    <BotonMoradoModal type="submit" className="btn" onClick={editar}>Editar Datos</BotonMoradoModal>
+                                </>
+                                :
+                                usuario.role === roles.admin &&
+                                <>
+                                    <BotonMoradoModal type="submit" className="btn" onClick={editarPrueba}>Editar Prueba</BotonMoradoModal>
+                                    <BotonMoradoModal type="submit" className="btn" onClick={verResult}>Ver Resultado</BotonMoradoModal>
+                                </>
+                            }
+                            {UserList.estado === 'Agendado' ?
+                                usuario.role === roles.medico &&
+                                <>
+                                    <BotonMoradoModal type="submit" className="btn" onClick={editarCita}>Editar Cita</BotonMoradoModal>
+                                    <BotonMoradoModal type="submit" className="btn" onClick={editar}>Editar Datos</BotonMoradoModal>
+                                </>
+                                :
+                                usuario.role === roles.medico &&
+                                <>
+                                    <BotonMoradoModal type="submit" className="btn" onClick={verResult}>Ver Resultado</BotonMoradoModal>
+                                </>
+                            }
+                            {usuario.role === roles.laboratorio &&
+                                UserList.estado === 'Realizado' &&
+                                <>
+                                    <BotonMoradoModal type="submit" className="btn" onClick={editarPrueba}>Editar Prueba</BotonMoradoModal>
+                                    <BotonMoradoModal type="submit" className="btn" onClick={verResult}>Ver Resultado</BotonMoradoModal>
+                                </>
+                            }
                         </div>
                     </div>
                 </div>

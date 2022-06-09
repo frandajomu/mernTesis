@@ -8,11 +8,12 @@ import { Helmet } from "react-helmet";
 import { addDays, parseISO } from 'date-fns';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-//import { notError } from '../elements/notifyToasty';
-import getUnixTime from 'date-fns/getUnixTime';
 import AgregarAgendaResolver from '../validations/AgregarAgendaResolver';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useGetUsuario from '../hooks/useGetUsuario';
+import useEditUsuario from '../hooks/useEditUsuario';
+import { notError, notExito } from '../elements/notifyToasty';
+import routes from '../helpers/Routes';
 
 const EditarAgenda = () => {
 
@@ -23,6 +24,8 @@ const EditarAgenda = () => {
     //Cargando datos iniciales
     const { id } = useParams();
     const [usuario] = useGetUsuario({ id });
+    const [EditUserData] = useEditUsuario();
+
     useEffect(() => {
         if (usuario) {
             reset(
@@ -43,8 +46,6 @@ const EditarAgenda = () => {
                     ciudad: usuario?.ciudad,
                     departamento: usuario?.departamento,
                     email: usuario?.email,
-                    password: usuario?.password,
-                    passwordConfirmation: usuario?.passwordConfirmation,
                     role: usuario?.role,
                     estado: usuario?.estado,
                     embarazo: usuario?.embarazo,
@@ -55,12 +56,16 @@ const EditarAgenda = () => {
     }, [reset, usuario]);
 
     //Envio de datos al backend
-    const onSubmit = (formData) => {
-        const a = getUnixTime(formData.datebirth)
-        //formData funcionara para enviar los datos al Backend
-        console.log(a);
-        console.log(formData);
-        reset();
+    const navigate = useNavigate();
+    const onSubmit = async (formData) => {
+        const res = await EditUserData(formData, { id })
+        if (res.message) {
+            notExito({ textoNot: res.message })
+            navigate(routes.agendado)
+            reset();
+        } else {
+            notError({ textoNot: res.error })
+        }
     }
 
     //Logica Renderización de Formulario

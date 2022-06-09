@@ -119,9 +119,9 @@ const Examenes = () => {
                                                     }
                                                     {usuario.role === roles.admin &&
                                                         <>
-                                                            <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
+                                                            <td className="pe-1 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
                                                             <td className="px-1 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
-                                                            <td className="px-1 mx-0">
+                                                            <td className="ps-1 mx-0">
                                                                 <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
                                                                     <IconoBorrar />
                                                                 </BotonIconoListaUsers>
@@ -153,8 +153,7 @@ const Examenes = () => {
                                                     }
                                                     {usuario.role === roles.admin &&
                                                         <>
-                                                            <td className="px-0 mx-0"><BotonIconoListaUsers><IconoEditar /></BotonIconoListaUsers></td>
-                                                            <td className="px-1 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
+                                                            <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoVerMas /></BotonIconoListaUsers></td>
                                                             <td className="px-1 mx-0">
                                                                 <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
                                                                     <IconoBorrar />

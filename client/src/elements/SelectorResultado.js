@@ -16,9 +16,9 @@ const ResultSelect = ({value}) => {
         case '4':
             return <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Menor a 50/100 (50%)</MostrarText>;
         case '5':
-            return <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Menor a 90/100 (90%)</MostrarText>;
+            return <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Mayor a 90/100 (90%)</MostrarText>;
         case '6':
-            return <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Menor a 99/100 (99%)</MostrarText>;
+            return <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Mayor a 99/100 (99%)</MostrarText>;
         default:
             break;
     }

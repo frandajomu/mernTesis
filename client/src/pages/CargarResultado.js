@@ -3,14 +3,18 @@ import { Helmet } from 'react-helmet';
 import Fondo from '../elements/Fondo';
 import { ContenedorMayor, InputCont, MostrarText, SelectorA } from '../elements/Formularios';
 import { BotonEditar } from '../elements/Botones';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useGetUsuario from '../hooks/useGetUsuario';
 import { useForm } from 'react-hook-form';
 import CargarResultadoResolver from '../validations/CargarResultadoResolver';
+import routes from '../helpers/Routes';
+import { notError, notExito } from '../elements/notifyToasty';
+import useUploadResultados from '../hooks/resultados/useUploadResultados';
 
 const CargarResultado = () => {
     const { id } = useParams();
     const [usuario] = useGetUsuario({ id });
+    const [UploadResultados, EditPacienteData] = useUploadResultados();
 
     //Uso del hook useForm para adquirir los datos del Formulario
     const { register, handleSubmit, formState, reset } = useForm({ resolver: CargarResultadoResolver });
@@ -21,9 +25,22 @@ const CargarResultado = () => {
     const [selectedC, setSelectedC] = useState(0);
 
     //Envio de datos al backend
-    const onSubmit = (formData) => {
-        console.log(formData);
-        reset();
+    const navigate = useNavigate();
+    const onSubmit = async (formData) => {
+        const res = await UploadResultados(formData)
+        const formData2 = { estado: 'Realizado' }
+        const res2 = await EditPacienteData(formData2, { id })
+        if (res.message) {
+            if(res2.message){
+                notExito({ textoNot: res.message })
+                navigate(routes.resultado)
+                reset()
+            }else{
+                notError({ textoNot: 'No se ha podido actualizar el estado del paciente' })
+            }
+        } else{
+            notError({ textoNot: res.error })
+        }
     }
 
     //Guardamos el id del usuario conjunto con los resultados Cargados
@@ -50,7 +67,7 @@ const CargarResultado = () => {
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <div className="col-12 mb-3 d-flex" >
                                     <label className="mb-1 my-auto me-3" style={{ "fontWeight": "500" }}>Porcentaje de ADN libre fetal:</label>
-                                    <InputCont placeholder="0 - 100%" style={{ "fontSize": "0.9rem", "width": "6rem" }} {...register("porcentajeADN")}/>
+                                    <InputCont placeholder="0 - 100%" style={{ "fontSize": "0.9rem", "width": "6rem" }} {...register("porcentajeADN")} />
                                 </div>
                                 {errors?.porcentajeADN && (<div className="mt-2 alert alert-danger" role="alert">{errors.porcentajeADN.message}</div>)}
                                 <table className="table text-primary d-none d-lg-table">
@@ -139,7 +156,7 @@ const CargarResultado = () => {
                                     <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Sexo Fetal</MostrarText>
                                     <SelectorA className="flex-fill" style={{ "fontSize": "0.9rem", "width": "7rem" }} {...register("SexoFetal")}>
                                         <option defaultValue>Femenino</option>
-                                        <option value="1">Masculino</option>
+                                        <option value="Masculino">Masculino</option>
                                     </SelectorA>
                                     <SelectorA
                                         className="flex-fill"

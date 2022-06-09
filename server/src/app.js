@@ -32,5 +32,6 @@ app.use(passport.session());
 app.use('/api/login', require('./routes/login'));
 app.use('/api/usuarios', require('./routes/users'));
 app.use('/api/citas', require('./routes/citas'));
+app.use('/api/resultados', require('./routes/resultados'));
 
 module.exports = app;

@@ -10,7 +10,6 @@ import '../css/Calendar.css';
 import { Helmet } from "react-helmet";
 import Fondo from "../elements/Fondo";
 import { BotonMorado } from "../elements/Botones";
-import useCreateCita from "../hooks/citas/useCreateCita";
 import { notError, notExito } from "../elements/notifyToasty";
 import useGetTurno from "../hooks/citas/useGetTurno";
 import { parseISO } from "date-fns";
@@ -18,6 +17,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import routes from "../helpers/Routes";
 import useGetUsuario from "../hooks/useGetUsuario";
 import useGetOneCita from "../hooks/citas/useGetOneCita";
+import useEditCita from "../hooks/citas/useEditCita";
+import useCreateCita from "../hooks/citas/useCreateCita";
 
 const EditarCita = () => {
 
@@ -25,6 +26,8 @@ const EditarCita = () => {
   const { id } = useParams();
   const [usuario] = useGetUsuario({ id });
   const [citaUser] = useGetOneCita({ id });
+  const [EditCitaData] = useEditCita();
+  const [CreateCita] = useCreateCita();
 
   //Variables meses en String
   const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -86,8 +89,7 @@ const EditarCita = () => {
   //Obtención de turno según fecha escogida
   const TurnoHandle = async (e) => {
     setSelectedDay(e)
-    console.log(fechaCalendarDB.day + ' vs ' + e.day)
-    if (e.day === fechaCalendarDB.day) {
+    if (e.day === fechaCalendarDB.day && e.month === fechaCalendarDB.month) {
       setgotTurn(citaUser.turno)
     } else {
       const dataCita = {
@@ -95,7 +97,7 @@ const EditarCita = () => {
       }
       const res = await turnoInfo(dataCita)
       if (res.length !== 0) {
-        setgotTurn(res.length + 1)
+        setgotTurn(parseInt(res[0].turno) + 1)
       } else {
         setgotTurn(1)
       }
@@ -105,35 +107,45 @@ const EditarCita = () => {
   //Dia de la cita seleccionada segun DB
   const [fechaCalendarDB, setfechaCalendarDB] = useState(defaultValue)
   useEffect(() => {
-    if (citaUser.citadate !== undefined && (citaUser.citadate).length !== 0) {
-      const citaSelectAct = parseISO(citaUser.citadate)
-      const citaUserCalendario = { year: citaSelectAct.getFullYear(), month: citaSelectAct.getMonth() + 1, day: citaSelectAct.getDate() }
-      setfechaCalendarDB(citaUserCalendario)
-      setTimeout(() => {
+    if (citaUser) {
+      if (citaUser.citadate !== undefined && (citaUser.citadate).length !== 0) {
+        const citaSelectAct = parseISO(citaUser.citadate)
+        const citaUserCalendario = { year: citaSelectAct.getFullYear(), month: citaSelectAct.getMonth() + 1, day: citaSelectAct.getDate() }
         setSelectedDay(citaUserCalendario)
         setfechaCalendarDB(citaUserCalendario)
-        TurnoHandle(citaUserCalendario)
-      }, 5000)
+        setgotTurn(citaUser.turno)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [citaUser.citadate])
+  }, [citaUser])
 
   //Conexión base de datosEditCerrado
-  const [CreateCita] = useCreateCita();
   const datedb = {
     citadate: new Date(selectedDay.year, selectedDay.month - 1, selectedDay.day),
-    turno: gotTurn
+    turno: gotTurn,
+    idUser: usuario?._id
   }
 
   const navigate = useNavigate();
   const handleSubmit = async () => {
-    const res = await CreateCita(datedb)
-    if (res.message) {
-      notExito({ textoNot: res.message })
-      navigate(routes.agendado)
+    if (citaUser) {
+      const res = await EditCitaData(datedb, { id })
+      if (res.message) {
+        notExito({ textoNot: res.message })
+        navigate(routes.agendado)
+      } else {
+        notError({ textoNot: res.error })
+      }
     } else {
-      notError({ textoNot: res.error })
+      const res = await CreateCita(datedb)
+      if (res.message) {
+        notExito({ textoNot: res.message })
+        navigate(routes.agendado)
+      } else {
+        notError({ textoNot: res.error })
+      }
     }
+
   }
 
   return (

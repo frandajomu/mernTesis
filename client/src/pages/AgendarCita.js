@@ -79,6 +79,7 @@ const AgendarCita = () => {
 
   useEffect(() => {
     FechasNoHabiles()
+    TurnoHandle(defaultValue)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -90,7 +91,7 @@ const AgendarCita = () => {
     }
     const res = await turnoInfo(dataCita)
     if (res.length !== 0) {
-      setgotTurn(res.length + 1)
+      setgotTurn(parseInt(res[0].turno) + 1)
     } else {
       setgotTurn(1)
     }
