@@ -131,7 +131,8 @@ const ListaDeUsuarios = () => {
             </div>
             <DeleteUsuario 
                 idUser={idUser}
-                dataUsers={dataUsers} />
+                dataUsers={dataUsers} 
+                estado = {'Nulo'}/>
             <MostrarDatosUser
                 idUser={idUser}
                 isOpen={isDatosEdit}

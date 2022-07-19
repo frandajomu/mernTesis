@@ -6,6 +6,6 @@ import routes from '../helpers/Routes';
 const PublicRoute = ({children}) => {
     const { usuario } = useAuth();
     
-    return !usuario ? children: <Navigate to={routes.agendado} />;
+    return !usuario ? children: <Navigate to={routes.home} />;
 }
 export default PublicRoute;

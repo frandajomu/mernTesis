@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import Fondo from '../elements/Fondo';
 import { ContenedorMayor, MostrarText } from '../elements/Formularios';
 import { useParams } from 'react-router-dom';
-import useGetUsuario from '../hooks/useGetUsuario';
 import ResultSelect from '../elements/SelectorResultado';
 import GraficoResultado from '../images/GraficoResultado.png';
 import styled from 'styled-components';
@@ -12,12 +11,14 @@ import { ReactComponent as T18Logo } from './../images/T18Logo.svg';
 import { ReactComponent as T13Logo } from './../images/T13Logo.svg';
 import theme from '../theme';
 import useGetResultado from '../hooks/resultados/useGetResultado';
+import useGetOneCita from '../hooks/citas/useGetOneCita';
 
 
 const Resultados = () => {
     const { id } = useParams();
     const [resultado] = useGetResultado({ id });
-    const [usuario] = useGetUsuario({ id });
+    const [cita] = useGetOneCita({ id });
+    const usuario = cita.idUser;
 
     return (
         <>

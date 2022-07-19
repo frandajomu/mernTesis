@@ -26,6 +26,13 @@ import PublicRoute from './PublicRoute';
 import Examenes from '../pages/Examenes';
 import AgendarCita from '../pages/AgendarCita';
 import EditarCita from '../pages/EditarCita';
+import CreateAdminInicial from './CreateAdminInicial';
+import ConfigTurnos from '../pages/admin/ConfigTurnos';
+import PruebasOrdenadas from '../pages/Examenes/PruebasOrdenadas';
+import PruebasAgendadas from '../pages/Examenes/PruebasAgendadas';
+import PruebasRealizadas from '../pages/Examenes/PruebasRealizadas';
+import PruebasResultados from '../pages/Examenes/PruebasResultados';
+import PruebasCanceladas from '../pages/Examenes/PruebasCanceladas';
 
 const AppRouter = () => {
     return (
@@ -37,13 +44,14 @@ const AppRouter = () => {
 
             {/* Médico y Laboratorio */}
             <Route exact path={routes.agendado} element={<PrivateRoute><Examenes /></PrivateRoute>} />
+            <Route exact path={routes.pruebasOrdenadas} element={<PrivateRoute><PruebasOrdenadas /></PrivateRoute>} />
+            <Route exact path={routes.resultados} element={<PrivateRoute><PruebasResultados /></PrivateRoute>} />
             <Route exact path={routes.estadisticas} element={<PrivateRoute><Estadisticas /></PrivateRoute>} />
             <Route exact path={routes.perfil} element={<PrivateRoute><MiPerfil /></PrivateRoute>} />
 
             {/* Médico */}
             <Route exact path={routes.agendar} element={<PrivateRoute role={roles.medico}><AgendarPrueba /></PrivateRoute>} />
             <Route exact path={routes.editarAgenda()} element={<PrivateRoute role={roles.medico}><EditarAgenda /></PrivateRoute>} />
-            <Route exact path={routes.agendarCita()} element={<PrivateRoute role={roles.medico}><AgendarCita /></PrivateRoute>} />
             <Route exact path={routes.editarCita()} element={<PrivateRoute role={roles.medico}><EditarCita /></PrivateRoute>} />
             <Route exact path={routes.manual.medico} element={<PrivateRoute role={roles.medico}><ManualMedico /></PrivateRoute>} />
 
@@ -55,9 +63,14 @@ const AppRouter = () => {
             <Route exact path={routes.cargarResultado()} element={<PrivateRoute role={roles.laboratorio}><CargarResultado /></PrivateRoute>} />
             <Route exact path={routes.editarResultado()} element={<PrivateRoute role={roles.laboratorio}><EditarResultado /></PrivateRoute>} />
             <Route exact path={routes.manual.laboratorio} element={<PrivateRoute role={roles.laboratorio}><ManualLaboratorio /></PrivateRoute>} />
-
+            <Route exact path={routes.agendarCita()} element={<PrivateRoute role={roles.laboratorio}><AgendarCita /></PrivateRoute>} />
+            <Route exact path={routes.pruebasAgendadas} element={<PrivateRoute role={roles.laboratorio}><PruebasAgendadas /></PrivateRoute>} />
+            <Route exact path={routes.pruebasRealizadas} element={<PrivateRoute role={roles.laboratorio}><PruebasRealizadas /></PrivateRoute>} />
+            <Route exact path={routes.pruebasCanceladas} element={<PrivateRoute role={roles.laboratorio}><PruebasCanceladas /></PrivateRoute>} />
+            
             {/* Registro Admin */}
-            <Route exact path={routes.registro} element={<RegistroAdmin />} />
+            <Route exact path={routes.registro} element={<CreateAdminInicial><RegistroAdmin /></CreateAdminInicial>} />
+            <Route exact path={routes.configInicial} element={<PrivateRoute role={roles.admin}><ConfigTurnos /></PrivateRoute>} />
             <Route exact path={routes.manual.admin} element={<PrivateRoute role={roles.admin}><ManualAdministrador /></PrivateRoute>} />
             <Route exact path={routes.agregarUsuarios} element={<PrivateRoute role={roles.admin}><AgregarUsuarioAdmin /></PrivateRoute>} />
             <Route exact path={routes.listaUsuarios} element={<PrivateRoute role={roles.admin}><ListaDeUsuarios /></PrivateRoute>} />

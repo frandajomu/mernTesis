@@ -6,16 +6,17 @@ import { BotonEditar } from '../elements/Botones';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import CargarResultadoResolver from '../validations/CargarResultadoResolver';
-import useGetUsuario from '../hooks/useGetUsuario';
 import useGetResultado from '../hooks/resultados/useGetResultado';
 import useEditResultado from '../hooks/resultados/useEditResultado';
 import routes from '../helpers/Routes';
 import { notError, notExito } from '../elements/notifyToasty';
+import useGetOneCita from '../hooks/citas/useGetOneCita';
 
 const EditarResultado = () => {
     const { id } = useParams();
     const [resultado] = useGetResultado({ id });
-    const [usuario] = useGetUsuario({ id });
+    const [cita] = useGetOneCita({ id });
+    const usuario = cita.idUser;
 
     //Uso del hook useForm para adquirir los datos del Formulario
     const { register, handleSubmit, formState, reset } = useForm({ resolver: CargarResultadoResolver });
@@ -59,7 +60,7 @@ const EditarResultado = () => {
         const res = await EditResultadoData(formData, { id })
         if (res.message) {
             notExito({ textoNot: res.message })
-            navigate(routes.agendado)
+            navigate(routes.resultados)
             reset();
         } else {
             notError({ textoNot: res.error })

@@ -15,7 +15,7 @@ const resultSchema = new Schema(
         valorAnalisis: { type: String, required: true },
         valorSexoFetal: { type: String, required: true },
         porcentajeADN: { type: String, required: true }, 
-        idUsuario: { type: String, required: true }
+        idCita: { type: String, required: true }
     },
     {
         timestamps: true

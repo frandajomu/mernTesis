@@ -4,17 +4,18 @@ import Fondo from '../elements/Fondo';
 import { ContenedorMayor, InputCont, MostrarText, SelectorA } from '../elements/Formularios';
 import { BotonEditar } from '../elements/Botones';
 import { useNavigate, useParams } from 'react-router-dom';
-import useGetUsuario from '../hooks/useGetUsuario';
 import { useForm } from 'react-hook-form';
 import CargarResultadoResolver from '../validations/CargarResultadoResolver';
 import routes from '../helpers/Routes';
 import { notError, notExito } from '../elements/notifyToasty';
 import useUploadResultados from '../hooks/resultados/useUploadResultados';
+import useGetOneCita from '../hooks/citas/useGetOneCita';
 
 const CargarResultado = () => {
     const { id } = useParams();
-    const [usuario] = useGetUsuario({ id });
-    const [UploadResultados, EditPacienteData] = useUploadResultados();
+    const [cita] = useGetOneCita({ id });
+    const usuario = cita.idUser;
+    const [UploadResultados, EditPacienteData, EditEstadoCita] = useUploadResultados();
 
     //Uso del hook useForm para adquirir los datos del Formulario
     const { register, handleSubmit, formState, reset } = useForm({ resolver: CargarResultadoResolver });
@@ -27,25 +28,31 @@ const CargarResultado = () => {
     //Envio de datos al backend
     const navigate = useNavigate();
     const onSubmit = async (formData) => {
+        const formData2 = { 'estado': 'Resultado' }
+        const dataID = { 'id': id, 'estado': 'Resultado' }
         const res = await UploadResultados(formData)
-        const formData2 = { estado: 'Realizado' }
-        const res2 = await EditPacienteData(formData2, { id })
         if (res.message) {
-            if(res2.message){
-                notExito({ textoNot: res.message })
-                navigate(routes.resultado)
-                reset()
-            }else{
+            const res2 = await EditPacienteData(formData2, { id: usuario._id  })
+            if (res2.message) {
+                const res3 = await EditEstadoCita(dataID)
+                if (res3.message) {
+                    notExito({ textoNot: res.message })
+                    navigate(routes.resultados)
+                    reset()
+                } else {
+                    notError({ textoNot: 'No se ha podido actualizar el estado de la cita' })
+                }
+            } else {
                 notError({ textoNot: 'No se ha podido actualizar el estado del paciente' })
             }
-        } else{
+        } else {
             notError({ textoNot: res.error })
         }
     }
 
     //Guardamos el id del usuario conjunto con los resultados Cargados
     useEffect(() => {
-        register('idUsuario', { value: id })
+        register('idCita', { value: id })
     }, [register, id])
 
     return (

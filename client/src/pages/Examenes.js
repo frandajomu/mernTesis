@@ -106,7 +106,7 @@ const Examenes = () => {
                                                     <td className="d-none d-lg-block">{lista.personalID}</td>
                                                     {usuario.role === roles.medico &&
                                                         <>
-                                                            <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
+                                                            <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
                                                             <td className="px-1 mx-0">
                                                                 <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
                                                                     <IconoBorrar />
@@ -115,11 +115,11 @@ const Examenes = () => {
                                                         </>
                                                     }
                                                     {usuario.role === roles.laboratorio &&
-                                                        <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
+                                                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => handleClick(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
                                                     }
                                                     {usuario.role === roles.admin &&
                                                         <>
-                                                            <td className="pe-1 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
+                                                            <td className="pe-1 mx-0"><BotonIconoListaUsers onClick={() => handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
                                                             <td className="px-1 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
                                                             <td className="ps-1 mx-0">
                                                                 <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
@@ -139,27 +139,14 @@ const Examenes = () => {
                                                     <td>{lista.embarazo}</td>
                                                     <td className="d-none d-lg-block">{lista.personalID}</td>
                                                     {usuario.role === roles.medico &&
-                                                        <>
-                                                            <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
-                                                            <td className="px-1 mx-0">
-                                                                <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
-                                                                    <IconoBorrar />
-                                                                </BotonIconoListaUsers>
-                                                            </td>
-                                                        </>
+                                                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => handleClick(lista._id)}><IconoVerMas /></BotonIconoListaUsers></td>
+
                                                     }
                                                     {usuario.role === roles.laboratorio &&
-                                                        <td className="px-0 mx-0"><BotonIconoListaUsers as={Link} to={routes.cargarResultado(lista._id)}><IconoCargar /></BotonIconoListaUsers></td>
+                                                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => handleClick(lista._id)}><IconoEditar /></BotonIconoListaUsers></td>
                                                     }
                                                     {usuario.role === roles.admin &&
-                                                        <>
-                                                            <td className="px-0 mx-0"><BotonIconoListaUsers onClick={()=>handleClick(lista._id)}><IconoVerMas /></BotonIconoListaUsers></td>
-                                                            <td className="px-1 mx-0">
-                                                                <BotonIconoListaUsers data-bs-toggle="modal" data-bs-target="#deleteUsuario" onClick={() => setIDUser(lista._id)}>
-                                                                    <IconoBorrar />
-                                                                </BotonIconoListaUsers>
-                                                            </td>
-                                                        </>
+                                                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => handleClick(lista._id)}><IconoVerMas /></BotonIconoListaUsers></td>
                                                     }
                                                 </tr>
                                             );

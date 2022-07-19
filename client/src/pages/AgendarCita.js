@@ -15,14 +15,21 @@ import { notError, notExito } from "../elements/notifyToasty";
 import useGetTurno from "../hooks/citas/useGetTurno";
 import { parseISO } from "date-fns";
 import { useNavigate, useParams } from "react-router-dom";
-import useGetUsuarioByCedula from "../hooks/useGetUserByCedula";
 import routes from "../helpers/Routes";
+import useConfigCitas from "../hooks/admin/useConfigCitas";
+import useGetUsuario from "../hooks/useGetUsuario";
+import useChangeState from "../hooks/citas/useChangeState";
+
 
 const AgendarCita = () => {
 
-  //Recibiendo Cedula del usuario
+  //Recibiendo Cedula del usuario 
   const { id } = useParams();
-  const [usuario] = useGetUsuarioByCedula({ id });
+  const [usuario] = useGetUsuario({ id });
+  const [EditEstadoPaciente] = useChangeState();
+
+  //Obteniendo variables globales
+  const [[params]] = useConfigCitas();
 
   //Variables meses en String
   const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -43,9 +50,6 @@ const AgendarCita = () => {
   const handleDisabledSelect = disabledDay => {
     console.log('Estas tratando de seleccionar un dia no hábil', disabledDay);
   };
-
-  //Conversión de fechas en JSON para la db, y devuelta a lo normal
-  //console.log({ year: dateToUnix.getFullYear(), month: dateToUnix.getMonth() + 1, day: dateToUnix.getDate() });
 
   //Obtención de fechas no habiles para selección
   const [turnoInfo, turnoDeseable] = useGetTurno()
@@ -105,12 +109,19 @@ const AgendarCita = () => {
     idUser: usuario?._id
   }
 
+
+  const dataEstado = { 'estado': 'Agendado' }
   const navigate = useNavigate();
   const handleSubmit = async () => {
     const res = await CreateCita(datedb)
     if (res.message) {
-      notExito({ textoNot: res.message })
-      navigate(routes.agendado)
+      const res2 = await EditEstadoPaciente(dataEstado, { id })
+      if (res2.message) {
+        notExito({ textoNot: res.message })
+        navigate(routes.pruebasAgendadas)
+      } else {
+        notError({ textoNot: res2.error })
+      }
     } else {
       notError({ textoNot: res.error })
     }
@@ -146,8 +157,8 @@ const AgendarCita = () => {
                   shouldHighlightWeekends
                   colorPrimary={theme.moradoOscuro}
 
-                  minimumDate={dateNow}
-                  maximumDate={{ year: dateNow.year, month: dateNow.month, day: dateNow.day + 30 }}
+                  minimumDate={{ year: dateNow.year, month: dateNow.month, day: dateNow.day }}
+                  maximumDate={{ year: dateNow.year, month: dateNow.month, day: `${params?.dateMax ? dateNow.day + params?.dateMax : dateNow.day + 30}`}}
 
                   customDaysClassName={desableDate}
                   disabledDays={desableDate2} // here we pass them
@@ -177,8 +188,8 @@ const AgendarCita = () => {
                 shouldHighlightWeekends
                 colorPrimary={theme.moradoOscuro}
 
-                minimumDate={dateNow}
-                maximumDate={{ year: dateNow.year, month: dateNow.month, day: dateNow.day + 30 }}
+                minimumDate={{ year: dateNow.year, month: dateNow.month, day: dateNow.day }}
+                maximumDate={{ year: dateNow.year, month: dateNow.month, day: `${params?.dateMax ? dateNow.day + params?.dateMax : dateNow.day + 30}`}}
 
                 customDaysClassName={desableDate}
                 disabledDays={desableDate2} // here we pass them

@@ -1,6 +1,7 @@
 const resultadosCtrl = {};
 const ResultadosModel = require('./../models/Resultado');
 const UserModel = require('../models/User');
+const CitasModel = require('./../models/Cita');
 
 //Petición que devulve la lista de resultados
 resultadosCtrl.getResultados = async (req, res) => {
@@ -11,7 +12,7 @@ resultadosCtrl.getResultados = async (req, res) => {
 //Petición para ver resultadp de un solo usuario
 resultadosCtrl.getOneResultado = async (req, res) => {
     try {
-        const resultado = await ResultadosModel.findOne({ idUsuario: req.params.id });
+        const resultado = await ResultadosModel.findOne({ idCita: req.params.id });
         return res.json(resultado);
     } catch (e) {
         return res.json({ error: '¡Ocurrio un error al buscar el resultado!' });
@@ -20,9 +21,9 @@ resultadosCtrl.getOneResultado = async (req, res) => {
 
 //Petición cargar un nuevo resultado
 resultadosCtrl.uploadResultado = async (req, res) => {
-    const { Analisis, SexoFetal, T13, T18, T21, recoAnalisis, recoSexoFetal, recoT13, recoT18, recoT21, valorAnalisis, valorSexoFetal, porcentajeADN, idUsuario } = req.body;
+    const { Analisis, SexoFetal, T13, T18, T21, recoAnalisis, recoSexoFetal, recoT13, recoT18, recoT21, valorAnalisis, valorSexoFetal, porcentajeADN, idCita } = req.body;
     try {
-        const newResult = new ResultadosModel({ Analisis, SexoFetal, T13, T18, T21, recoAnalisis, recoSexoFetal, recoT13, recoT18, recoT21, valorAnalisis, valorSexoFetal, porcentajeADN, idUsuario })
+        const newResult = new ResultadosModel({ Analisis, SexoFetal, T13, T18, T21, recoAnalisis, recoSexoFetal, recoT13, recoT18, recoT21, valorAnalisis, valorSexoFetal, porcentajeADN, idCita })
         await newResult.save();
         return res.json({ message: '¡Resultados cargados exitosamente!' });
     } catch (e) {
@@ -30,11 +31,11 @@ resultadosCtrl.uploadResultado = async (req, res) => {
     }
 }
 
-//Petición editar cita existente
+//Petición editar resultado existente
 resultadosCtrl.updateResultado = async (req, res) => {
     const { Analisis, SexoFetal, T13, T18, T21, recoAnalisis, recoSexoFetal, recoT13, recoT18, recoT21, valorAnalisis, valorSexoFetal, porcentajeADN } = req.body;
     try {
-        await ResultadosModel.findOneAndUpdate({ idUsuario: req.params.id }, { Analisis: Analisis, SexoFetal: SexoFetal, T13: T13, T18: T18, T21: T21, recoAnalisis: recoAnalisis, recoSexoFetal: recoSexoFetal, recoT13: recoT13, recoT18: recoT18, recoT21: recoT21, valorAnalisis: valorAnalisis, valorSexoFetal: valorSexoFetal, porcentajeADN: porcentajeADN }).clone();
+        await ResultadosModel.findOneAndUpdate({ idCita: req.params.id }, { Analisis: Analisis, SexoFetal: SexoFetal, T13: T13, T18: T18, T21: T21, recoAnalisis: recoAnalisis, recoSexoFetal: recoSexoFetal, recoT13: recoT13, recoT18: recoT18, recoT21: recoT21, valorAnalisis: valorAnalisis, valorSexoFetal: valorSexoFetal, porcentajeADN: porcentajeADN }).clone();
         return res.json({ message: 'Resultados actualizados' });
     } catch (e) {
         return res.json({ error: 'Hubo un error, resultados no actualizados' });
@@ -107,7 +108,9 @@ resultadosCtrl.getEstadisticaSegunda = async (req, res) => {
     try {
         if (Trisomia === "T21") {
             const resT21 = await ResultadosModel.find({ T21: { $gte: 3, $lte: 6 } }).clone();
-            const ids = resT21.map(dataUser => { return dataUser.idUsuario });
+            const ids2 = resT21.map(dataUser => { return dataUser.idCita });
+            const citasData = await CitasModel.find({ '_id': { $in: ids2 } }).clone();
+            const ids = citasData.map(dataUser => { return dataUser.idUser });
             const userData = await UserModel.find({ '_id': { $in: ids } }).clone();
             const birth = userData.map(dataBirth => {
                 return EdadActual(dataBirth)
@@ -118,7 +121,9 @@ resultadosCtrl.getEstadisticaSegunda = async (req, res) => {
 
         } else if (Trisomia === "T18") {
             const resT18 = await ResultadosModel.find({ T18: { $gte: 3, $lte: 6 } }).clone();
-            const ids = resT18.map(dataUser => { return dataUser.idUsuario });
+            const ids2 = resT18.map(dataUser => { return dataUser.idCita });
+            const citasData = await CitasModel.find({ '_id': { $in: ids2 } }).clone();
+            const ids = citasData.map(dataUser => { return dataUser.idUser });
             const userData = await UserModel.find({ '_id': { $in: ids } }).clone();
             const birth = userData.map(dataBirth => {
                 return EdadActual(dataBirth)
@@ -128,7 +133,9 @@ resultadosCtrl.getEstadisticaSegunda = async (req, res) => {
             return res.json(resultRiesgo);
         } else {
             const resT13 = await ResultadosModel.find({ T13: { $gte: 3, $lte: 6 } }).clone();
-            const ids = resT13.map(dataUser => { return dataUser.idUsuario });
+            const ids2 = resT13.map(dataUser => { return dataUser.idCita });
+            const citasData = await CitasModel.find({ '_id': { $in: ids2 } }).clone();
+            const ids = citasData.map(dataUser => { return dataUser.idUser });
             const userData = await UserModel.find({ '_id': { $in: ids } }).clone();
             const birth = userData.map(dataBirth => {
                 return EdadActual(dataBirth)

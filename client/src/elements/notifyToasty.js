@@ -4,7 +4,7 @@ import './ReactToastify.css';
 
 const notExito = ({textoNot}) => {toast.success( textoNot, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -15,7 +15,7 @@ const notExito = ({textoNot}) => {toast.success( textoNot, {
 
 const notError = ({textoNot}) => {toast.error( textoNot, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -26,7 +26,7 @@ const notError = ({textoNot}) => {toast.error( textoNot, {
  
 const notInfo = ({textoNot}) => {toast.info( textoNot, {
     position: "top-center",
-    autoClose: 5000,
+    autoClose: 4000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,

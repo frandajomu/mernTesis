@@ -1,5 +1,3 @@
-import React from 'react'
-
 const myCustomLocale = {
     // months list by order
     months: [
@@ -10,7 +8,7 @@ const myCustomLocale = {
     'Mayo',
     'Junio',
     'Julio',
-    'Augosto',
+    'Agosto',
     'Septiembre',
     'Octubre',
     'Noviembre',

@@ -4,7 +4,8 @@ const citaSchema = new Schema(
     {
         citadate: { type: Date, required: true, default: Date.now },
         turno: { type: String, required: true },
-        idUser: { type: String, required: true}
+        idUser: { type: Schema.Types.ObjectId, ref: 'User' },
+        estado: { type: String, default: 'Nulo' },
     },
     {
         timestamps: true

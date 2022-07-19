@@ -10,5 +10,11 @@ export default function useUploadResultados() {
         const res = await axios.put(`/api/usuarios/pacientes/${id}`, formData);
         return res.data
     }
-    return [UploadResultados, EditPacienteData];
+
+    const EditEstadoCita = async (dataID) => {
+        const res = await axios.post('/api/citas/cancelar', dataID);
+        return res.data
+    }
+
+    return [UploadResultados, EditPacienteData, EditEstadoCita];
 }

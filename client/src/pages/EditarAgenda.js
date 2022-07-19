@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Checkbox, ContenedorMayor, InputCont, InputContB, InputText, LineaBotones, SelectorA } from '../elements/Formularios';
+import { ContenedorMayor, InputCont, InputContB, InputText, LineaBotones, SelectorA } from '../elements/Formularios';
 import { BotonFormulario, BotonMorado } from '../elements/Botones';
 import Fondo from '../elements/Fondo';
 import roles from '../helpers/Roles';
@@ -9,11 +9,10 @@ import { addDays, parseISO } from 'date-fns';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import AgregarAgendaResolver from '../validations/AgregarAgendaResolver';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import useGetUsuario from '../hooks/useGetUsuario';
 import useEditUsuario from '../hooks/useEditUsuario';
 import { notError, notExito } from '../elements/notifyToasty';
-import routes from '../helpers/Routes';
 
 const EditarAgenda = () => {
 
@@ -57,11 +56,13 @@ const EditarAgenda = () => {
 
     //Envio de datos al backend
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from || "/";
     const onSubmit = async (formData) => {
         const res = await EditUserData(formData, { id })
         if (res.message) {
             notExito({ textoNot: res.message })
-            navigate(routes.agendado)
+            navigate(from.pathname)
             reset();
         } else {
             notError({ textoNot: res.error })
@@ -72,9 +73,6 @@ const EditarAgenda = () => {
     const [Next, setSiguiente] = useState(0);
     const siguiente = () => setSiguiente(Next + 1);
     const atras = () => setSiguiente(Next - 1);
-
-    //Logica renderización Paciente con Cuenta
-    const [isCheckbox, setCheckbox] = useState(false);
 
     //Cambio a español para el DayPicker
     const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',];
@@ -90,11 +88,11 @@ const EditarAgenda = () => {
 
     return (
         <>
-            <Helmet><title>Editar Agendado</title></Helmet>
+            <Helmet><title>Editar Datos del Paciente</title></Helmet>
             <div className="container py-4">
                 <div className="row">
                     <div className="col-11 col-md-7 mx-auto my-auto">
-                        <h1 className="h2 mb-4 text-center text-primary" style={{ "fontWeight": "700" }}>Editar Agendado</h1>
+                        <h1 className="h2 mb-4 text-center text-primary" style={{ "fontWeight": "700" }}>Editar datos Paciente</h1>
                         <div className="row">
                             <div className="col-12 justify-content-between mb-3 d-none d-lg-flex">
                                 <LineaBotones></LineaBotones>
@@ -250,13 +248,9 @@ const EditarAgenda = () => {
                                             {errors?.passwordConfirmation && (<div className="mt-2 alert alert-danger" role="alert">{errors.passwordConfirmation.message}</div>)}
                                         </div>
 
-                                        <Checkbox className="checkbox text-center">
-                                            <label><input type="checkbox" onClick={() => setCheckbox(!isCheckbox)} {...register("checkbox")} /> La paciente ya tiene cuenta</label>
-                                        </Checkbox>
-
                                         <div className="d-flex justify-content-between mt-4 pt-2">
                                             <BotonMorado type="button" onClick={atras}>Atrás</BotonMorado>
-                                            <BotonMorado type="button" onClick={handleSubmit(onSubmit)}>Crear</BotonMorado>
+                                            <BotonMorado type="button" onClick={handleSubmit(onSubmit)}>Editar</BotonMorado>
                                         </div>
                                     </>
                                 }

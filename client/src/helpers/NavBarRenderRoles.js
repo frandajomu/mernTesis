@@ -15,8 +15,9 @@ const NavBarRenderRoles = () => {
                 <li>
                     <a href="#Exam" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Exámenes</a>
                     <ul className="collapse list-unstyled" id="Exam">
-                        <li><Link to={routes.agendar}>Agendar Prueba</Link></li>
-                        <li><Link to={routes.agendado}>Ver Pruebas</Link></li>
+                        <li><Link to={routes.agendar}>Ordenar Prueba</Link></li>
+                        <li><Link to={routes.pruebasOrdenadas}>Pruebas Ordenadas</Link></li>
+                        <li><Link to={routes.resultados}>Resultados</Link></li>
                     </ul>
                 </li>
                 <li><Link to={routes.estadisticas}>Estadísticas</Link></li>
@@ -32,7 +33,11 @@ const NavBarRenderRoles = () => {
                 <li>
                     <a href="#Exam" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Exámenes</a>
                     <ul className="collapse list-unstyled" id="Exam">
-                        <li><Link to={routes.agendado}>Ver Pruebas</Link></li>
+                        <li><Link to={routes.pruebasOrdenadas}>Pruebas Ordenadas</Link></li>
+                        <li><Link to={routes.pruebasAgendadas}>Pruebas Agendadas</Link></li>
+                        <li><Link to={routes.pruebasRealizadas}>Pruebas Realizadas</Link></li>
+                        <li><Link to={routes.resultados}>Resultados</Link></li>
+                        <li><Link to={routes.pruebasCanceladas}>Pruebas Canceladas</Link></li>
                     </ul>
                 </li>
                 <li><Link to={routes.estadisticas}>Estadísticas</Link></li>
@@ -58,15 +63,19 @@ const NavBarRenderRoles = () => {
                 <li>
                     <a href="#Exam" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Exámenes</a>
                     <ul className="collapse list-unstyled" id="Exam">
-                        <li><Link to={routes.agendar}>Agendar Prueba</Link></li>
-                        <li><Link to={routes.agendado}>Ver Pruebas</Link></li>
+                        <li><Link to={routes.pruebasOrdenadas}>Pruebas Ordenadas</Link></li>
+                        <li><Link to={routes.pruebasAgendadas}>Pruebas Agendadas</Link></li>
+                        <li><Link to={routes.pruebasRealizadas}>Pruebas Realizadas</Link></li>
+                        <li><Link to={routes.resultados}>Resultados</Link></li>
+                        <li><Link to={routes.pruebasCanceladas}>Pruebas Canceladas</Link></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#Admin" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Usuarios</a>
+                    <a href="#Admin" data-bs-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Admin</a>
                     <ul className="collapse list-unstyled" id="Admin">
                         <li><Link to={routes.agregarUsuarios}>Agregar Usuario</Link></li>
                         <li><Link to={routes.listaUsuarios}>Lista de Usuarios</Link></li>
+                        <li><Link to={routes.configInicial}>Configuración</Link></li>
                     </ul>
                 </li>
                 <li><Link to={routes.estadisticas}>Estadísticas</Link></li>

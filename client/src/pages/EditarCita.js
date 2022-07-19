@@ -19,6 +19,7 @@ import useGetUsuario from "../hooks/useGetUsuario";
 import useGetOneCita from "../hooks/citas/useGetOneCita";
 import useEditCita from "../hooks/citas/useEditCita";
 import useCreateCita from "../hooks/citas/useCreateCita";
+import useConfigCitas from "../hooks/admin/useConfigCitas";
 
 const EditarCita = () => {
 
@@ -28,6 +29,8 @@ const EditarCita = () => {
   const [citaUser] = useGetOneCita({ id });
   const [EditCitaData] = useEditCita();
   const [CreateCita] = useCreateCita();
+
+  const [[params]] = useConfigCitas();
 
   //Variables meses en String
   const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -179,7 +182,7 @@ const EditarCita = () => {
                   colorPrimary={theme.moradoOscuro}
 
                   minimumDate={dateNow}
-                  maximumDate={{ year: dateNow.year, month: dateNow.month, day: dateNow.day + 30 }}
+                  maximumDate={{ year: dateNow.year, month: dateNow.month, day: dateNow.day + params?.dateMax}}
 
                   customDaysClassName={desableDate}
                   disabledDays={desableDate2} // here we pass them
@@ -210,7 +213,7 @@ const EditarCita = () => {
                 colorPrimary={theme.moradoOscuro}
 
                 minimumDate={dateNow}
-                maximumDate={{ year: dateNow.year, month: dateNow.month, day: dateNow.day + 30 }}
+                maximumDate={{ year: dateNow.year, month: dateNow.month, day: dateNow.day + params?.dateMax }}
 
                 customDaysClassName={desableDate}
                 disabledDays={desableDate2} // here we pass them

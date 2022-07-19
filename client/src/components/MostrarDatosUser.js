@@ -1,23 +1,18 @@
 import React, { useEffect, useRef } from 'react';
-import { BotonMoradoModal } from '../elements/Botones';
 import theme from '../theme';
 import { Modal } from 'bootstrap';
 import * as bootstrap from 'bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import routes from '../helpers/Routes';
 import useGetUsuario from '../hooks/useGetUsuario';
 import formatearFecha from '../helpers/horaFormat';
 import useGetOneCita from '../hooks/citas/useGetOneCita';
-import roles from '../helpers/Roles';
-import { useAuth } from '../contexts/AuthContext';
+import BotonesModalMostrarUsuarios from '../helpers/BotonesModalMostrarUsuarios';
 
-const MostrarDatosUser = ({ isOpen, cerrado, idUser, role }) => {
-    //Miramos usuario logeado
-    const { usuario } = useAuth();
-
+const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita }) => {
     //Obtenemos datos de usuario por ID
     const [UserList] = useGetUsuario({ id: idUser })
-    const [cita] = useGetOneCita({ id: idUser });
+    const [cita] = useGetOneCita({ id: idCita });
 
     //Configuración del modal
     const modalRef = useRef()
@@ -41,9 +36,10 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, role }) => {
 
     //Redirigimos a pagina de editarUsuario
     const navigate = useNavigate();
+    const location = useLocation();
     const editar = () => {
-        if (role === 'Paciente') {
-            navigate(routes.editarAgenda(idUser))
+        if (UserList.role === 'Paciente') {
+            navigate(routes.editarAgenda(idUser), {state: {from: location}})
         } else {
             navigate(routes.editarUsuario(idUser))
         }
@@ -51,20 +47,26 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, role }) => {
         cerrado();
     }
 
-    const editarCita = () => {
-        navigate(routes.editarCita(idUser))
+    const agendarCita = () => {
+        navigate(routes.agendarCita(idUser))
         hideModal();
         cerrado();
     }
 
     const editarPrueba = () => {
-        navigate(routes.editarResultado(idUser))
+        navigate(routes.editarResultado(idCita))
         hideModal();
         cerrado();
     }
 
     const verResult = () => {
-        navigate(routes.resultado(idUser))
+        navigate(routes.resultado(idCita))
+        hideModal();
+        cerrado();
+    }
+
+    const cargarResult = () => {
+        navigate(routes.cargarResultado(idCita))
         hideModal();
         cerrado();
     }
@@ -103,12 +105,16 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, role }) => {
                                     <li className="list-group-item">Ciudad: {UserList?.ciudad}</li>
                                     <li className="list-group-item">Departamento: {UserList?.departamento}</li>
                                 </ul>
-                                {role === 'Paciente' &&
+                                {UserList.role === 'Paciente' &&
                                     <>
                                         <div className="card-header text-center"><b>Datos Importantes</b></div>
                                         <ul className="list-group list-group-flush">
-                                            <li className="list-group-item">Fecha de la Cita: {cita?.citadate && formatearFecha(cita?.citadate)}</li>
-                                            <li className="list-group-item">Turno: {cita?.turno}</li>
+                                            {UserList.estado !== 'Ordenado' &&
+                                                <>
+                                                    <li className="list-group-item">Fecha de la Cita: {cita?.citadate ? formatearFecha(cita?.citadate) : 'No Fijada'}</li>
+                                                    <li className="list-group-item">Turno: {cita?.turno ? cita?.turno : 'No Fijado'}</li>
+                                                </>
+                                            }
                                             <li className="list-group-item">Semanas de embarazo: {UserList?.embarazo}</li>
                                             <li className="list-group-item">Recomendación: {UserList?.recomendacion}</li>
                                         </ul>
@@ -118,38 +124,14 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, role }) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-outline-secondary" onClick={hideModal}>Cancelar</button>
-                            {UserList.estado === 'Agendado' ?
-                                usuario.role === roles.admin &&
-                                <>
-                                    <BotonMoradoModal type="submit" className="btn" onClick={editarCita}>Editar Cita</BotonMoradoModal>
-                                    <BotonMoradoModal type="submit" className="btn" onClick={editar}>Editar Datos</BotonMoradoModal>
-                                </>
-                                :
-                                usuario.role === roles.admin &&
-                                <>
-                                    <BotonMoradoModal type="submit" className="btn" onClick={editarPrueba}>Editar Prueba</BotonMoradoModal>
-                                    <BotonMoradoModal type="submit" className="btn" onClick={verResult}>Ver Resultado</BotonMoradoModal>
-                                </>
-                            }
-                            {UserList.estado === 'Agendado' ?
-                                usuario.role === roles.medico &&
-                                <>
-                                    <BotonMoradoModal type="submit" className="btn" onClick={editarCita}>Editar Cita</BotonMoradoModal>
-                                    <BotonMoradoModal type="submit" className="btn" onClick={editar}>Editar Datos</BotonMoradoModal>
-                                </>
-                                :
-                                usuario.role === roles.medico &&
-                                <>
-                                    <BotonMoradoModal type="submit" className="btn" onClick={verResult}>Ver Resultado</BotonMoradoModal>
-                                </>
-                            }
-                            {usuario.role === roles.laboratorio &&
-                                UserList.estado === 'Realizado' &&
-                                <>
-                                    <BotonMoradoModal type="submit" className="btn" onClick={editarPrueba}>Editar Prueba</BotonMoradoModal>
-                                    <BotonMoradoModal type="submit" className="btn" onClick={verResult}>Ver Resultado</BotonMoradoModal>
-                                </>
-                            }
+                            <BotonesModalMostrarUsuarios
+                                estado={UserList?.estado}
+                                editar={editar}
+                                agendarCita={agendarCita}
+                                cargarResult={cargarResult}
+                                editarPrueba={editarPrueba}
+                                verResult={verResult}
+                            />
                         </div>
                     </div>
                 </div>
