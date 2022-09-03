@@ -47,8 +47,8 @@ const AgendarCita = () => {
 
 
   //Función conocer al hacer clic sobre Dias desabilitados
-  const handleDisabledSelect = disabledDay => {
-    console.log('Estas tratando de seleccionar un dia no hábil', disabledDay);
+  const handleDisabledSelect = () => {
+    notError({ textoNot: 'Estas tratando de seleccionar un dia no hábil' })
   };
 
   //Obtención de fechas no habiles para selección
@@ -108,7 +108,6 @@ const AgendarCita = () => {
     turno: gotTurn,
     idUser: usuario?._id
   }
-
 
   const dataEstado = { 'estado': 'Agendado' }
   const navigate = useNavigate();

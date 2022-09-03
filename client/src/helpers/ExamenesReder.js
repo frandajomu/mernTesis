@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Fondo from '../elements/Fondo';
-import { ContenedorMayor, SelectorA } from '../elements/Formularios';
+import { ContenedorMayor, SelectorA, SelectTabla } from '../elements/Formularios';
 import DeleteUsuario from '../components/DeleteUsuario';
 import theme from '../theme';
 import SearchBar from './../components/SearchBar'
@@ -10,19 +10,25 @@ import useModal from '../hooks/useModal';
 import BotonesExamenesRender from './BotonesExamenesRender';
 import WarningCheckRealizado from '../components/WarningCheckRealizado';
 import WarningCancelAgenda from '../components/WarningCancelAgenda';
+import formatearFecha from './horaFormat';
+import whatGestacion from './whatGestacion';
 
-const ExamenesRender = ({ infoList, dataUsers, estado, recivedFromExamsRender }) => {
+const ExamenesRender = ({ infoList, dataUsers, estado, setOption }) => {
+
+    //Dos estados para filtros busqueda
+    const [usuarios, setUsuarios] = useState([]);
+
+    useEffect(() => {
+        setUsuarios(infoList)
+    },[infoList])
 
     //ID al dar click en eliminar un usuario para DeleteUsuario y EditModal
     const [idUsuario, setIDUser] = useState();
     const [idCita, setIDCita] = useState();
 
-    //Logica Renderización de Formulario
-    const [option, setOption] = useState("Más recientes");
+    //Logica Renderización columna de Formulario
+    const [optionCol, setOptionCol] = useState('Cita');
     //Pasamos info al Parent a través de receivedFromExamsRender
-    useEffect(() => {
-        recivedFromExamsRender(option)
-    }, [recivedFromExamsRender, option])
 
     //Usamos hook modal para mostrar datos del usuario
     const [isDatosEdit, datosEditAbierto, datosEditCerrado] = useModal();
@@ -39,7 +45,7 @@ const ExamenesRender = ({ infoList, dataUsers, estado, recivedFromExamsRender })
                     <div className="col-md-8 mx-auto my-auto">
                         <h1 className="h2 mb-4 text-center text-primary" style={{ "fontWeight": "700" }}>{estado !== 'Resultado' ? 'Exámenes ' + estado + 's' : 'Resultados'}</h1>
                         <div className="col-12 justify-content-between mb-3 d-flex" >
-                            <SearchBar />
+                            <SearchBar setUsuarios={setUsuarios} infoList={infoList} estado={estado} />
                             <div className="d-none d-lg-flex">
                                 <label className="mb-1 my-auto" style={{ "fontWeight": "500" }}>Ordenar: </label>
                                 <SelectorA exam className="ms-3 mt-2 mt-md-0" onChange={(e) => {
@@ -47,7 +53,7 @@ const ExamenesRender = ({ infoList, dataUsers, estado, recivedFromExamsRender })
                                     setOption(selectorOption);
                                 }}>
                                     <option defaultValue>Más recientes</option>
-                                    <option value='Más Antiguos'>Más antiguos</option>
+                                    <option value='Más antiguos'>Más antiguos</option>
                                 </SelectorA>
                             </div>
                         </div>
@@ -60,17 +66,30 @@ const ExamenesRender = ({ infoList, dataUsers, estado, recivedFromExamsRender })
                                 <thead>
                                     <tr>
                                         <th scope="col">Nombre</th>
-                                        <th scope="col">Gestación</th>
+                                        <th scope="col">
+                                            {estado === 'Ordenado' ? 'Gestación'
+                                                :
+                                                <SelectTabla onChange={(e) => {
+                                                    const selectorOptionB = e.target.value;
+                                                    setOptionCol(selectorOptionB);
+                                                }}>
+                                                    <option value="Cita">Cita</option>
+                                                    <option value="Turno">Turno</option>
+                                                    <option value='Gestación'>Gestación</option>
+                                                    <option value="Celular">Celular</option>
+                                                </SelectTabla>
+                                            }
+                                        </th>
                                         <th scope="col" className="d-none d-lg-block">Identificación</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {estado === 'Ordenado' ?
-                                        infoList.map((lista, index) => {
+                                        usuarios.map((lista, index) => {
                                             return (
                                                 <tr key={index} >
                                                     <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
-                                                    <td>{lista.embarazo}</td>
+                                                    <td>{lista?.embarazo && whatGestacion(lista?.embarazo) + ' dias'}</td>
                                                     <td className="d-none d-lg-block">{lista.personalID}</td>
                                                     <BotonesExamenesRender
                                                         lista={lista}
@@ -82,11 +101,15 @@ const ExamenesRender = ({ infoList, dataUsers, estado, recivedFromExamsRender })
                                             );
                                         })
                                         :
-                                        infoList.map((lista, index) => {
+                                        usuarios.map((lista, index) => {
                                             return (
                                                 <tr key={index} >
                                                     <td>{lista.idUser.name + ' ' + lista.idUser.lastnameA + ' ' + lista.idUser.lastnameB}</td>
-                                                    <td>{lista.idUser.embarazo}</td>
+                                                    <td>{optionCol === 'Cita' && lista?.citadate && formatearFecha(lista?.citadate)}
+                                                        {optionCol === 'Turno' && lista?.turno}
+                                                        {optionCol === 'Gestación' && lista?.idUser.embarazo && whatGestacion(lista?.idUser.embarazo) + ' dias'}
+                                                        {optionCol === 'Celular' && lista?.idUser.celular}
+                                                    </td>
                                                     <td className="d-none d-lg-block">{lista.idUser.personalID}</td>
                                                     <BotonesExamenesRender
                                                         lista={lista}

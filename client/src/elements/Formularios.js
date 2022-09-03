@@ -60,6 +60,16 @@ const SelectorA = styled.select`
     text-align: center;
 `;
 
+const SelectTabla = styled.select`
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    outline: none;
+    color: ${theme.moradoOscuro};
+    font-weight: 700;
+    text-align: left;
+`;
+
 const LineaBotones = styled.div`
     position: absolute;
     top: 10rem;
@@ -107,4 +117,4 @@ const Checkbox = styled.div`
     color: ${theme.moradoOscuro};
 `;
 
-export {ContenedorMayor, InputCont, InputText, MostrarText, SelectorA, LineaBotones, InputContB, DataUsuario, Checkbox};
+export { ContenedorMayor, SelectTabla, InputCont, InputText, MostrarText, SelectorA, LineaBotones, InputContB, DataUsuario, Checkbox };

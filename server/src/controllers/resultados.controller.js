@@ -68,7 +68,7 @@ resultadosCtrl.getEstadisticaPrimera = async (req, res) => {
 //Grafica de Lineas
 //Numero casos confirmados por edad
 //Total casos por edad
-const EdadActual = (dataBirth) =>{
+const EdadActual = (dataBirth) => {
     var hoy = new Date();
     var cumpleanos = new Date(dataBirth.datebirth);
     var edad = hoy.getFullYear() - cumpleanos.getFullYear();
@@ -80,7 +80,7 @@ const EdadActual = (dataBirth) =>{
     return edad;
 }
 
-const VectorAgesMum = (birth) =>{
+const VectorAgesMum = (birth) => {
     var menos35 = 0;
     var de35a39 = 0;
     var de40a44 = 0;
@@ -103,7 +103,7 @@ const VectorAgesMum = (birth) =>{
 resultadosCtrl.getEstadisticaSegunda = async (req, res) => {
     const { Trisomia } = req.body
     const paciente = await UserModel.find({ role: 'Paciente', estado: 'Realizado' }).clone();
-    const edadPacientes = paciente.map(dataBirth => {  return EdadActual(dataBirth) });
+    const edadPacientes = paciente.map(dataBirth => { return EdadActual(dataBirth) });
     const agesPacientes = VectorAgesMum(edadPacientes);
     try {
         if (Trisomia === "T21") {
@@ -116,7 +116,7 @@ resultadosCtrl.getEstadisticaSegunda = async (req, res) => {
                 return EdadActual(dataBirth)
             });
             const agesMum = VectorAgesMum(birth);
-            var resultRiesgo = agesMum.map(function(n, i) { return n / (agesPacientes[i] === 0 ? 1 : agesPacientes[i] ); });
+            var resultRiesgo = agesMum.map(function (n, i) { return n / (agesPacientes[i] === 0 ? 1 : agesPacientes[i]); });
             return res.json(resultRiesgo);
 
         } else if (Trisomia === "T18") {
@@ -129,7 +129,7 @@ resultadosCtrl.getEstadisticaSegunda = async (req, res) => {
                 return EdadActual(dataBirth)
             });
             const agesMum = VectorAgesMum(birth);
-            var resultRiesgo = agesMum.map(function(n, i) { return n / (agesPacientes[i] === 0 ? 1 : agesPacientes[i] ); });
+            var resultRiesgo = agesMum.map(function (n, i) { return n / (agesPacientes[i] === 0 ? 1 : agesPacientes[i]); });
             return res.json(resultRiesgo);
         } else {
             const resT13 = await ResultadosModel.find({ T13: { $gte: 3, $lte: 6 } }).clone();
@@ -141,9 +141,31 @@ resultadosCtrl.getEstadisticaSegunda = async (req, res) => {
                 return EdadActual(dataBirth)
             });
             const agesMum = VectorAgesMum(birth);
-            var resultRiesgo = agesMum.map(function(n, i) { return n / (agesPacientes[i] === 0 ? 1 : agesPacientes[i] ); });
+            var resultRiesgo = agesMum.map(function (n, i) { return n / (agesPacientes[i] === 0 ? 1 : agesPacientes[i]); });
             return res.json(resultRiesgo);
         }
+    } catch (e) {
+        return res.json({ error: '¡Ocurrio un error al buscar el resultado!' });
+    }
+}
+
+
+//Grafica de Barras
+resultadosCtrl.getEstadisticaPie = async (req, res) => {
+    
+    try {
+        const r1 = await ResultadosModel.find({ T21: { $gte: 3, $lte: 6 } });
+            const r2 = await ResultadosModel.find({ T18: { $gte: 3, $lte: 6 } });
+            const r3 = await ResultadosModel.find({ T13: { $gte: 3, $lte: 6 } });
+            const ids1 = r1.map(data => { return data.idCita });
+            const ids2 = r2.map(data => { return data.idCita });
+            const ids3 = r3.map(data => { return data.idCita });
+            let r4 = ids1.concat(ids2, ids3);
+            r4 = [...new Set([...ids1, ...ids2, ...ids3])]
+            const rtot = await ResultadosModel.find();
+            const sanos = rtot.length - r4.length;
+            const final = [sanos, r1.length, r2.length, r3.length];
+            return res.json(final);
     } catch (e) {
         return res.json({ error: '¡Ocurrio un error al buscar el resultado!' });
     }

@@ -75,7 +75,7 @@ const ConfigTurnos = () => {
                                     {errors?.dateMax && (<div className="mt-2 alert alert-danger" role="alert">{errors.dateMax.message}</div>)}
                                 </div>
                                 <div>
-                                    <p style={{ "fontSize": "0.8rem", "fontWeight": "300" }}><b>Nota: </b>Como administrador tienes el poder de configurar el numero máximo de turnos que pueden ser agendados en un día que por defecto será de 10 días, así como también, la capacidad de fijar el número de días máximos que se visualizan en el calendario cuando se agenda una cita, este dato permitirá o prohibirá alcanzar un límite máximo que por defecto se fija en 30 días.</p>
+                                    <p style={{ "fontSize": "0.8rem", "fontWeight": "300" }}><b>Nota: </b>Como administrador tienes el poder de configurar el numero máximo de turnos que pueden ser agendados en un día que por defecto será de 10 turnos, así como también, la capacidad de fijar el número de días máximos que se visualizan en el calendario cuando se agenda una cita, este dato permitirá o prohibirá alcanzar un límite máximo que por defecto se fija en 30 días.</p>
                                 </div>
 
                                 <div className="d-flex justify-content-center mt-3 pt-2">

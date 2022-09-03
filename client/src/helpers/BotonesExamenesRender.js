@@ -78,6 +78,9 @@ const BotonesExamenesRender = ({ lista, estado, handleClick, setIDUser, setIDCit
         case 'Resultado':
             return (
                 <>
+                    {usuario.role === roles.paciente &&
+                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => { handleClick(lista.idUser._id); setIDCita(lista._id) }}><IconoVerMas /></BotonIconoListaUsers></td>
+                    }
                     {usuario.role === roles.medico &&
                         <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => { handleClick(lista.idUser._id); setIDCita(lista._id) }}><IconoVerMas /></BotonIconoListaUsers></td>
                     }

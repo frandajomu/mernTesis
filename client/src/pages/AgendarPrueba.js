@@ -120,8 +120,8 @@ const AgendarPrueba = () => {
                                         <div className="mb-3 d-md-flex">
                                             <SelectorA className="flex-md-fill col-12 me-md-3" style={{ "width": "180px" }} {...register("personalIDtype")}>
                                                 <option defaultValue>C.C.</option>
-                                                <option value="1">T.I.</option>
-                                                <option value="2">NIT</option>
+                                                <option value="T.I.">T.I.</option>
+                                                <option value="NIT">NIT</option>
                                             </SelectorA>
                                             <InputCont type="text" className="flex-md-fill col-12 mt-2 mt-md-0" {...register("personalID")} />
                                         </div>
@@ -150,13 +150,13 @@ const AgendarPrueba = () => {
                                         <div className="mb-3 d-md-flex">
                                             <SelectorA className="flex-md-fill col-12 me-md-3" {...register("ciudad")}>
                                                 <option defaultValue>Pitalito</option>
-                                                <option value="1">Neiva</option>
-                                                <option value="2">La plata</option>
+                                                <option value="Neiva">Neiva</option>
+                                                <option value="La plata">La plata</option>
                                             </SelectorA>
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("departamento")}>
                                                 <option defaultValue>Huila</option>
-                                                <option value="1">Caqueta</option>
-                                                <option value="2">Cauca</option>
+                                                <option value="Caqueta">Caqueta</option>
+                                                <option value="Cauca">Cauca</option>
                                             </SelectorA>
                                         </div>
                                         <div className="d-flex justify-content-between mt-4 pt-2">
@@ -189,8 +189,24 @@ const AgendarPrueba = () => {
                                             {errors?.datebirth && (<div className="mt-2 alert alert-danger" role="alert">{errors.datebirth.message}</div>)}
                                         </div>
                                         <div className="mb-3">
-                                            <label className="form-label mb-1">Semanas de Embarazo</label>
-                                            <InputCont type="text" className="col-12" placeholder="10, 11, 12 ... 42 " {...register("embarazo")} />
+                                            <label className="form-label mb-1">Inicio del Embarazo</label>
+                                            <Controller control={control} name='embarazo'
+                                                render={({ field }) => (
+                                                    <InputContB>
+                                                        <DatePicker
+                                                            locale={locale}
+                                                            selected={field.value}
+                                                            onChange={(date) => field.onChange(date)}
+                                                            dateFormat="dd 'de' MMMM 'del' yyyy"
+                                                            peekNextMonth
+                                                            showMonthDropdown
+                                                            showYearDropdown
+                                                            dropdownMode="select"
+                                                            maxDate={addDays(new Date(), 0)}
+                                                        />
+                                                    </InputContB>
+                                                )}
+                                            />
                                             {errors?.embarazo && (<div className="mt-2 alert alert-danger" role="alert">{errors.embarazo.message}</div>)}
                                         </div>
                                         <div className="mb-3">
@@ -203,7 +219,7 @@ const AgendarPrueba = () => {
                                             <InputCont type="text" className="flex-md-fill col-12 me-md-3" placeholder="A, B, AB, ..." {...register("bloodType")} />
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("blood")}>
                                                 <option defaultValue>+</option>
-                                                <option value="1">-</option>
+                                                <option value="-">-</option>
                                             </SelectorA>
                                         </div>
                                         {errors?.bloodType && (<div className="mt-2 alert alert-danger" role="alert">{errors.bloodType.message}</div>)}
@@ -226,8 +242,8 @@ const AgendarPrueba = () => {
                                         <div className="mb-3 d-md-flex">
                                             <SelectorA className="flex-md-fill col-12 me-md-3" style={{ "width": "180px" }}>
                                                 <option defaultValue>C.C.</option>
-                                                <option value="1">T.I.</option>
-                                                <option value="2">NIT</option>
+                                                <option value="T.I.">T.I.</option>
+                                                <option value="NIT">NIT</option>
                                             </SelectorA>
                                             <InputCont type="text" className="flex-md-fill col-12 mt-2 mt-md-0" onChange={(e) => setCedula(e.target.value)} />
                                         </div>

@@ -21,9 +21,9 @@ const userSchema = new Schema(
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         role: { type: String, required: true },
-        
-        estado: { type: String, default: 'Nulo'},
-        embarazo: { type: String, default: 'Nulo' },
+
+        estado: { type: String, default: 'Nulo' },
+        embarazo: { type: Date, default: Date.now },
         recomendacion: { type: String, default: 'Nulo' }
     },
     {

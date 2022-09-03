@@ -13,7 +13,6 @@ import theme from '../theme';
 import useGetResultado from '../hooks/resultados/useGetResultado';
 import useGetOneCita from '../hooks/citas/useGetOneCita';
 
-
 const Resultados = () => {
     const { id } = useParams();
     const [resultado] = useGetResultado({ id });

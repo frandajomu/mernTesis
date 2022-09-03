@@ -8,6 +8,7 @@ import useGetUsuario from '../hooks/useGetUsuario';
 import formatearFecha from '../helpers/horaFormat';
 import useGetOneCita from '../hooks/citas/useGetOneCita';
 import BotonesModalMostrarUsuarios from '../helpers/BotonesModalMostrarUsuarios';
+import whatGestacion from '../helpers/whatGestacion';
 
 const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita }) => {
     //Obtenemos datos de usuario por ID
@@ -115,7 +116,7 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita }) => {
                                                     <li className="list-group-item">Turno: {cita?.turno ? cita?.turno : 'No Fijado'}</li>
                                                 </>
                                             }
-                                            <li className="list-group-item">Semanas de embarazo: {UserList?.embarazo}</li>
+                                            <li className="list-group-item">Tiempo de Gestación: {UserList?.embarazo && whatGestacion(UserList?.embarazo) + ' dias ( ' + (whatGestacion(UserList?.embarazo)/7).toFixed(1) +' semanas )' }</li>
                                             <li className="list-group-item">Recomendación: {UserList?.recomendacion}</li>
                                         </ul>
                                     </>

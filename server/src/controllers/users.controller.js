@@ -96,31 +96,70 @@ usersCtrl.getOneUserByCedula = async (req, res) => {
     return res.json(usuario);
 }
 
-//Petición para ver lista de pacientes segun agendado o realizado
+//Petición para ver lista de pacientes
 usersCtrl.usersPaciente = async (req, res) => {
-    const { estado } = req.body
+    const { estado, sorted } = req.body
     const today = new Date();
-    if (estado === 'Ordenado') {
-        const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).clone();
-        return res.json(usuarios);
-    } else if (estado === 'Agendado') {
-        const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').clone();
-        //const ids = dates.map(dataUser => { return dataUser.idUser });
-        //const usuarios = await UserModel.find({ '_id': { $in: ids }, estado: estado, role: 'Paciente' }).clone();
-        return res.json(usuarios);
-    } else if (estado === 'Realizado') {
-        const usuarios = await CitasModel.find({ estado: 'Realizado' }).populate('idUser').clone();
-        return res.json(usuarios);
-    } else if (estado === 'Resultado') {
-        const usuarios = await CitasModel.find({ estado: 'Resultado' }).populate('idUser').clone();
-        return res.json(usuarios);
-    } else if (estado === 'Cancelado') {
-        const usuarios1 = await CitasModel.find({ citadate: { $lt: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').clone();
-        const usuarios2 = await CitasModel.find({ estado: 'Cancelado' }).populate('idUser').clone();
-        const totalUsers = usuarios1.concat(usuarios2);
-        return res.json(totalUsers);
-    } else {
-        res.json({ error: 'Ha ocurrido un error' });
+    if(sorted === 'Más antiguos'){
+        if (estado === 'Ordenado') {
+            const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).sort({createdAt:1});
+            return res.json(usuarios);
+        } else if (estado === 'Agendado') {
+            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({citadate:-1});
+            //const ids = dates.map(dataUser => { return dataUser.idUser });
+            //const usuarios = await UserModel.find({ '_id': { $in: ids }, estado: estado, role: 'Paciente' }).clone();
+            return res.json(usuarios);
+        } else if (estado === 'Realizado') {
+            const usuarios = await CitasModel.find({ estado: 'Realizado' }).populate('idUser').sort({citadate:-1});
+            return res.json(usuarios);
+        } else if (estado === 'Resultado') {
+            const actualUser = req.user;
+            if(actualUser.role === 'Paciente'){
+                const usuarios = await CitasModel.find({ estado: 'Resultado', idUser: actualUser._id }).populate('idUser').sort({citadate:-1});
+                return res.json(usuarios);
+            }else{
+                const usuarios = await CitasModel.find({ estado: 'Resultado' }).populate('idUser').sort({citadate:-1});
+                return res.json(usuarios);
+            }
+    
+        } else if (estado === 'Cancelado') {
+            const usuarios1 = await CitasModel.find({ citadate: { $lt: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({citadate:-1});
+            const usuarios2 = await CitasModel.find({ estado: 'Cancelado' }).populate('idUser').sort({citadate:-1});
+            const totalUsers = usuarios1.concat(usuarios2);
+            return res.json(totalUsers);
+        } else {
+            res.json({ error: 'Ha ocurrido un error' });
+        }
+    }else{
+        if (estado === 'Ordenado') {
+            const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).sort({createdAt:-1});
+            return res.json(usuarios);
+        } else if (estado === 'Agendado') {
+            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({citadate:1});
+            //const ids = dates.map(dataUser => { return dataUser.idUser });
+            //const usuarios = await UserModel.find({ '_id': { $in: ids }, estado: estado, role: 'Paciente' }).clone();
+            return res.json(usuarios);
+        } else if (estado === 'Realizado') {
+            const usuarios = await CitasModel.find({ estado: 'Realizado' }).populate('idUser').sort({citadate:1});
+            return res.json(usuarios);
+        } else if (estado === 'Resultado') {
+            const actualUser = req.user;
+            if(actualUser.role === 'Paciente'){
+                const usuarios = await CitasModel.find({ estado: 'Resultado', idUser: actualUser._id }).populate('idUser').sort({citadate:1});
+                return res.json(usuarios);
+            }else{
+                const usuarios = await CitasModel.find({ estado: 'Resultado' }).populate('idUser').sort({citadate:1});
+                return res.json(usuarios);
+            }
+    
+        } else if (estado === 'Cancelado') {
+            const usuarios1 = await CitasModel.find({ citadate: { $lt: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({citadate:1});
+            const usuarios2 = await CitasModel.find({ estado: 'Cancelado' }).populate('idUser').sort({citadate:1});
+            const totalUsers = usuarios1.concat(usuarios2);
+            return res.json(totalUsers);
+        } else {
+            res.json({ error: 'Ha ocurrido un error' });
+        }
     }
 }
 

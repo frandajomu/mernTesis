@@ -32,7 +32,7 @@ const schema = yup.object().shape({
     role: yup
         .string()
         .required("Debes seleccionar un rol de usuario")
-        .oneOf([roles.admin, roles.medico, roles.laboratorio, roles.paciente], "El rol no es valido"),
+        .oneOf([roles.admin, roles.medico, roles.laboratorio], "El rol no es valido"),
 })
 
 export default yupResolver(schema);

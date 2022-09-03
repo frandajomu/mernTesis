@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const { getResultados, getOneResultado, uploadResultado, updateResultado, getEstadisticaPrimera, getEstadisticaSegunda } = require('./../controllers/resultados.controller')
+const { getResultados, getOneResultado, uploadResultado, updateResultado, getEstadisticaPrimera, getEstadisticaSegunda, getEstadisticaPie } = require('./../controllers/resultados.controller')
 
 router.route('/')
     .get(getResultados)
@@ -9,6 +9,7 @@ router.route('/')
 
 router.post('/estaBar', getEstadisticaPrimera);
 router.post('/estaLin', getEstadisticaSegunda);
+router.get('/estaPie', getEstadisticaPie);
 
 router.route('/:id')
     .get(getOneResultado)

@@ -13,6 +13,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import useGetUsuario from '../hooks/useGetUsuario';
 import useEditUsuario from '../hooks/useEditUsuario';
 import { notError, notExito } from '../elements/notifyToasty';
+import PopoverElement from '../elements/PopoverElement';
 
 const EditarAgenda = () => {
 
@@ -47,7 +48,7 @@ const EditarAgenda = () => {
                     email: usuario?.email,
                     role: usuario?.role,
                     estado: usuario?.estado,
-                    embarazo: usuario?.embarazo,
+                    embarazo: parseISO(usuario?.embarazo),
                     recomendacion: usuario?.recomendacion
                 }
             )
@@ -83,7 +84,6 @@ const EditarAgenda = () => {
     useEffect(() => {
         register('genero', { value: 'Femenino' })
         register('role', { value: roles.paciente })
-        register('estado', { value: 'Agendado'})
     }, [register])
 
     return (
@@ -131,8 +131,8 @@ const EditarAgenda = () => {
                                         <div className="mb-3 d-md-flex">
                                             <SelectorA className="flex-md-fill col-12 me-md-3" style={{ "width": "180px" }} {...register("personalIDtype")}>
                                                 <option defaultValue>C.C.</option>
-                                                <option value="1">T.I.</option>
-                                                <option value="2">NIT</option>
+                                                <option value="T.I.">T.I.</option>
+                                                <option value="NIT">NIT</option>
                                             </SelectorA>
                                             <InputCont type="text" className="flex-md-fill col-12 mt-2 mt-md-0" {...register("personalID")} />
                                         </div>
@@ -161,13 +161,13 @@ const EditarAgenda = () => {
                                         <div className="mb-3 d-md-flex">
                                             <SelectorA className="flex-md-fill col-12 me-md-3" {...register("ciudad")}>
                                                 <option defaultValue>Pitalito</option>
-                                                <option value="1">Neiva</option>
-                                                <option value="2">La plata</option>
+                                                <option value="Neiva">Neiva</option>
+                                                <option value="La plata">La plata</option>
                                             </SelectorA>
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("departamento")}>
                                                 <option defaultValue>Huila</option>
-                                                <option value="1">Caqueta</option>
-                                                <option value="2">Cauca</option>
+                                                <option value="Caqueta">Caqueta</option>
+                                                <option value="Cauca">Cauca</option>
                                             </SelectorA>
                                         </div>
                                         <div className="d-flex justify-content-between mt-4 pt-2">
@@ -200,8 +200,24 @@ const EditarAgenda = () => {
                                             {errors?.datebirth && (<div className="mt-2 alert alert-danger" role="alert">{errors.datebirth.message}</div>)}
                                         </div>
                                         <div className="mb-3">
-                                            <label className="form-label mb-1">Semanas de Embarazo</label>
-                                            <InputCont type="text" className="col-12" placeholder="10, 11, 12 ... 42 " {...register("embarazo")} />
+                                            <label className="form-label mb-1">Inicio del Embarazo</label>
+                                            <Controller control={control} name='embarazo'
+                                                render={({ field }) => (
+                                                    <InputContB>
+                                                        <DatePicker
+                                                            locale={locale}
+                                                            selected={field.value}
+                                                            onChange={(date) => field.onChange(date)}
+                                                            dateFormat="dd 'de' MMMM 'del' yyyy"
+                                                            peekNextMonth
+                                                            showMonthDropdown
+                                                            showYearDropdown
+                                                            dropdownMode="select"
+                                                            maxDate={addDays(new Date(), 0)}
+                                                        />
+                                                    </InputContB>
+                                                )}
+                                            />
                                             {errors?.embarazo && (<div className="mt-2 alert alert-danger" role="alert">{errors.embarazo.message}</div>)}
                                         </div>
                                         <div className="mb-3">
@@ -214,7 +230,7 @@ const EditarAgenda = () => {
                                             <InputCont type="text" className="flex-md-fill col-12 me-md-3" placeholder="A, B, AB, ..." {...register("bloodType")} />
                                             <SelectorA className="flex-md-fill col-12 mt-2 mt-md-0" {...register("blood")}>
                                                 <option defaultValue>+</option>
-                                                <option value="1">-</option>
+                                                <option value="-">-</option>
                                             </SelectorA>
                                         </div>
                                         {errors?.bloodType && (<div className="mt-2 alert alert-danger" role="alert">{errors.bloodType.message}</div>)}
@@ -238,7 +254,8 @@ const EditarAgenda = () => {
                                             {errors?.email && (<div className="mt-2 alert alert-danger" role="alert">{errors.email.message}</div>)}
                                         </div>
                                         <div className="mb-3">
-                                            <label className="form-label mb-1">Contraseña</label>
+                                            <label className="form-label mb-1 me-1">Contraseña</label>
+                                            <PopoverElement textos={'Este campo no es editable, debes ingresar una nueva contraseña.'} />
                                             <InputCont type="password" className="col-12" {...register("password")} />
                                             {errors?.password && (<div className="mt-2 alert alert-danger" role="alert">{errors.password.message}</div>)}
                                         </div>

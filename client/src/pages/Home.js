@@ -2,9 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../theme';
 import Img1 from '../images/ImagesHome/Img1.jpg';
-import { ReactComponent as UsuarioLogo } from './../images/UsuarioLogo.svg';
-import { ReactComponent as SobreEmail } from './../images/ImagesHome/SobreEmail.svg';
-import { ReactComponent as MensajePencil } from './../images/ImagesHome/MensajePencil.svg';
+import { ReactComponent as UscoLogo } from './../images/UscoLogo.svg';
+import { ReactComponent as GetiLogo } from './../images/GetiLogo.svg';
 import { ReactComponent as CardsA } from './../images/ImagesHome/CardsA.svg';
 import { ReactComponent as CardsB } from './../images/ImagesHome/CardsB.svg';
 import { ReactComponent as CardsC } from './../images/ImagesHome/CardsC.svg';
@@ -32,7 +31,7 @@ const Home = () => {
                                 <CardsStyle className="card py-3">
                                     <CardsA className="mx-auto" width="60%" alt="CardsA" />
                                     <div className="card-body">
-                                        <h3>Preciso</h3>
+                                        <h4>Preciso</h4>
                                         <p className="card-text">Alta tasa de detección.</p>
                                     </div>
                                 </CardsStyle>
@@ -41,7 +40,7 @@ const Home = () => {
                                 <CardsStyle className="card py-3">
                                     <CardsB className="mx-auto" width="60%" alt="CardsB" />
                                     <div className="card-body">
-                                        <h3>No Invasivo</h3>
+                                        <h4>No Invasivo</h4>
                                         <p className="card-text">Simple extracción de sangre.</p>
                                     </div>
                                 </CardsStyle>
@@ -50,7 +49,7 @@ const Home = () => {
                                 <CardsStyle className="card py-3">
                                     <CardsC className="mx-auto" width="50%" alt="CardsC" />
                                     <div className="card-body">
-                                        <h3>Pertinente</h3>
+                                        <h4>Pertinente</h4>
                                         <p className="card-text">Desde la decima semana de gestación.</p>
                                     </div>
                                 </CardsStyle>
@@ -59,7 +58,7 @@ const Home = () => {
                                 <CardsStyle className="card py-3">
                                     <CardsD className="mx-auto" width="60%" alt="CardsD" />
                                     <div className="card-body">
-                                        <h3>Rápido</h3>
+                                        <h4>Rápido</h4>
                                         <p className="card-text">Resultados listos en menos de 14 dias.</p>
                                     </div>
                                 </CardsStyle>
@@ -164,43 +163,25 @@ const Home = () => {
                     </div>
                 </section>
 
-                {/* Contacto */}
-                <section id="Contact" className=" mt-3 py-3 bg-light">
-                    <div className="container">
-                        <div className="row d-flex h-100">
-                            <div className="col-md-7 px-md-4 text-center">
-                                <form className="py-4">
-                                    <div className="input-group mb-3">
-                                        <UsuarioLogo className="input-group-text" width="45px" style={{ "fill": theme.moradoOscuro }} />
-                                        <input type="name" className="form-control" placeholder="Nombre" />
-                                    </div>
-                                    <div className="input-group mb-3">
-                                        <SobreEmail className="input-group-text" width="45px" style={{ "fill": theme.moradoOscuro }} />
-                                        <input type="email" className="form-control" id="exampleFormControlInput1"
-                                            placeholder="email@ejemplo.com" />
-                                    </div>
-                                    <div className="input-group mb-3">
-                                        <MensajePencil className="input-group-text" width="45px" style={{ "fill": theme.moradoOscuro }} />
-                                        <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"
-                                            placeholder="Mensaje"></textarea>
-                                    </div>
-                                    <div className="d-grid gap-2">
-                                        <button type="submit" className="btn btn-primary">Contactar</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div className="col-md-5 my-auto">
-                                <LogoADNB className="img-fluid mx-auto d-none d-md-block" alt="LogoFin" style={{ "width": "72%" }} />
-                            </div>
+                <footer className="mt-3 bg-light">
+                    <div className="row d-flex h-100">
+                        <div className="col-md-5 my-auto">
+                            <LogoADNB className="img-fluid mx-auto d-none d-md-block" alt="LogoFin" style={{ "width": "60%" }} />
                         </div>
-                    </div>
-                </section>
-
-                <footer className="py-3 bg-primary">
-                    <div className="container">
-                        <div className="row d-flex text-center text-white">
-                            <h6>Todos los derechos reservados &copy;</h6>
-                        </div>
+                        <TextosFooter className="col-md-4 py-4 ps-md-5 bg-primary text-light">
+                            <h3>Conoce más</h3>
+                            <p><a target="_blank" href="https://www.huila.gov.co/salud/" rel="noopener noreferrer">Secretaria de salud del huila</a></p>
+                            <p><a target="_blank" href="https://www.huila.gov.co/" rel="noopener noreferrer">Gobernación del Huila</a></p>
+                            <p><a target="_blank" href="https://www.minsalud.gov.co" rel="noopener noreferrer">Ministerio de salud</a></p>
+                            <GetiLogo className="img-fluid pt-3 d-none d-md-block" alt="GetiLogo" style={{ "width": "73%" }} />
+                        </TextosFooter>
+                        <TextosFooter className="col-md-3 py-4 bg-primary text-light">
+                            <h3>Contacto</h3>
+                            <p>adnfetalmaterno@gmail.com</p>
+                            <p>+57 315 255 79 85</p>
+                            <p>+57 321 587 60 30</p>
+                            <UscoLogo className="img-fluid pt-3 d-none d-md-block" alt="LogoUSCO" style={{ "width": "75%" }} />
+                        </TextosFooter>
                     </div>
                 </footer>
             </div >
@@ -234,5 +215,24 @@ const CardsStyle = styled.div`
         -ms-transform: scale(1.05) !important;
         transform: scale(1.05) !important;
         z-index: 1 !important;
+    }
+`;
+
+const TextosFooter = styled.div`
+    a {
+        color: white;
+        text-decoration: none;
+    }
+    a:hover {
+        color: ${theme.grisClaro};
+        text-decoration: underline;
+    }
+    p {
+        font-size:16px;
+        font-weight: 300;
+    }
+
+    @media (max-width: 50rem) { /* 80px */
+        text-align: center;
     }
 `;

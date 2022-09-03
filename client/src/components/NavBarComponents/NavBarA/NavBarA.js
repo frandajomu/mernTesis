@@ -7,6 +7,7 @@ import routes from '../../../helpers/Routes';
 import NavBarRenderRoles from '../../../helpers/NavBarRenderRoles';
 import { BotonBarra, BotonMenu } from '../../../helpers/NavBarLogin';
 import './NavBarA.css';
+import { useAuth } from '../../../contexts/AuthContext';
 
 const NavA = ({hijoA}) => {
     const [estaActivo, setActivo] = useState(false);
@@ -25,8 +26,7 @@ const NavA = ({hijoA}) => {
                                     <Link to={routes.home} className="nav-link me-3" aria-current="page">Inicio</Link>
                                 </li>
                             </ul>
-                            <BotonBarra />
-                            <Bars type="button" id="sidebarCollapse" alt="" width="25" onClick={SiderbarClick} />
+                            <BotonBarra siderbarClick={SiderbarClick} />
                         </div>
                     </nav>
                     {hijoA}
@@ -51,7 +51,7 @@ const NavA = ({hijoA}) => {
                     </ul>
 
                     <ul className="list-unstyled CTAs">
-                        <BotonMenu />
+                        <BotonMenu siderbarClick={SiderbarClick}/>
                     </ul>
                 </nav>
             </div>

@@ -46,6 +46,9 @@ const BotonesModalMostrarUsuarios = ({ estado, editar, agendarCita, cargarResult
                     {usuario.role === roles.medico &&
                         <BotonMoradoModal type="submit" className="btn" onClick={verResult}>Ver Resultado</BotonMoradoModal>
                     }
+                    {usuario.role === roles.paciente &&
+                        <BotonMoradoModal type="submit" className="btn" onClick={verResult}>Ver Resultado</BotonMoradoModal>
+                    }
                     {usuario.role === roles.laboratorio &&
                         <>
                             <BotonMoradoModal type="submit" className="btn" onClick={editarPrueba}>Editar Resultado</BotonMoradoModal>

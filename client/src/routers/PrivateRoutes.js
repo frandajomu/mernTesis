@@ -1,20 +1,18 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import roles from '../helpers/Roles';
 import routes from '../helpers/Routes';
 
-const PrivateRoute = ({ role, children }) => {
+const PrivateRoute = ({ role, role2, children }) => {
     const { usuario } = useAuth();
-    
     if (usuario) {
         if (role && usuario?.role !== role) {
-            if (usuario?.role !== roles.admin) {
+            if (usuario?.role !== role2) {
                 return <Navigate to={routes.home} />;
-            }else{
+            } else {
                 return children
             }
-        }else{
+        } else {
             return children;
         }
     } else {

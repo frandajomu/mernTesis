@@ -20,12 +20,7 @@ const schema = yup.object().shape({
       /^(\+\d{1,2}\s)?\d{7,10}$/,
       "Número de celular no valido, por favor ingresar sin puntos, ni comas"
     ),
-    embarazo: yup.string()
-    .required("Debes ingresar las semanas de embarazo")
-    .matches(
-      /^([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-2])$/,
-      "Número no valido, por favor ingresar sin puntos, ni comas, y no superar semana 42"
-    ),
+    embarazo: yup.date().required("Debes ingresar la fecha de inicio del embarazo"),
     email: yup.string().required("Debes ingresar un correo"),
     password: yup
         .string("La contraseña debe ser un texto")

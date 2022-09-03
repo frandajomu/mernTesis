@@ -238,7 +238,6 @@ const EditarUsuarioAdmin = () => {
                                                 <option defaultValue>{roles.admin}</option>
                                                 <option value={roles.medico}>{roles.medico}</option>
                                                 <option value={roles.laboratorio}>{roles.laboratorio}</option>
-                                                <option value={roles.paciente}>{roles.paciente}</option>
                                             </SelectorA>
                                             {errors?.role && (<div className="mt-2 alert alert-danger" role="alert">{errors.role.message}</div>)}
                                         </div>

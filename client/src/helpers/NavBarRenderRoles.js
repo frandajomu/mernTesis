@@ -50,7 +50,7 @@ const NavBarRenderRoles = () => {
             <>
                 <p>{usuario?.role}</p>
                 <li className="d-block d-md-none"><Link to={routes.home}>Inicio</Link></li>
-                <li><Link to={routes.resultado()}>Mis Resultados</Link></li>
+                <li><Link to={routes.resultados}>Mis Resultados</Link></li>
                 <li><Link to={routes.manual.paciente}>Manual del paciente</Link></li>
                 <li><Link to={routes.perfil}>Perfil</Link></li>
             </>

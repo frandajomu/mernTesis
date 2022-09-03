@@ -2,24 +2,47 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '../theme';
 import { ReactComponent as BuscarIcon } from './../images/BuscarIcon.svg';
-import { ReactComponent as DropdownIcono } from './../images/DropdownIcono.svg';
 
-const SearchBar = () => {
-    const [option, setOption] = useState("nombre");
+const SearchBar = ({ setUsuarios, infoList, estado }) => {
+
+    const [wordSearched, setwordSearched] = useState('');
+    const filtrar = (wordSearched) => {
+        var resultadosBusqueda = infoList.filter((element) => {
+            if (estado === 'Ordenado') {
+                if (element.name.toString().toLowerCase().includes(wordSearched.toLowerCase()) ||
+                    element.personalID.toString().toLowerCase().includes(wordSearched.toLowerCase())) {
+                    return element
+                } else {
+                    return null
+                }
+            } else {
+                if (element.idUser.name.toString().toLowerCase().includes(wordSearched.toLowerCase()) ||
+                    element.idUser.personalID.toString().toLowerCase().includes(wordSearched.toLowerCase())) {
+                    return element
+                } else {
+                    return null
+                }
+            }
+        })
+        setUsuarios(resultadosBusqueda);
+    }
+
+    const handleChange = async (e) => {
+        setwordSearched(e.target.value);
+        filtrar(e.target.value);
+    }
 
     return (
         <>
             <Caja className="focus">
-                <form name="search">
-                    <SearchIn type="text" name="txt" placeholder={`Buscar por ${option}`}
-                        onmouseout="document.search.txt.value = ''" />
-                </form>
+                <SearchIn
+                    type="text"
+                    name="Browser"
+                    placeholder={'Buscar'}
+                    value={wordSearched}
+                    onChange={handleChange}
+                />
                 <Icon />
-                <IconDropdown type="button" data-bs-toggle="dropdown" aria-expanded="false" />
-                <ul className="dropdown-menu dropdown-menu-end">
-                    <li><span className="dropdown-item" onClick={() => setOption('nombre')}>Por nombre</span></li>
-                    <li><span className="dropdown-item"  onClick={() => setOption('c.c.')}>Por c.c.</span></li>
-                </ul>
             </Caja>
         </>
     );
@@ -37,15 +60,6 @@ const Icon = styled(BuscarIcon)`
     transition: .2s;
 `;
 
-const IconDropdown = styled(DropdownIcono)`
-    position: absolute;
-    top: 50%;
-    right: 16px;
-    transform: translate(0,-50%);
-    width: 15px;
-    fill: ${theme.moradoOscuro};
-    transition: .2s;
-`;
 
 const SearchIn = styled.input`
     padding: 10px;

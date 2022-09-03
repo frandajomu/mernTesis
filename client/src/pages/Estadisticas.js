@@ -3,12 +3,13 @@ import { Helmet } from 'react-helmet';
 import Fondo from '../elements/Fondo';
 import { ContenedorMayor, SelectorA } from '../elements/Formularios';
 
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, BarElement, LineElement, Title, Tooltip, Legend, Filler, } from "chart.js";
-import { Bar, Line } from "react-chartjs-2";
+import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, BarElement, LineElement, Title, Tooltip, Legend, Filler, } from "chart.js";
+import { Bar, Line, Pie } from "react-chartjs-2";
 import useGetBars from '../hooks/estadisticas/useGetBars';
 import useGetLine from '../hooks/estadisticas/useGetLine';
+import useGetPie from '../hooks/estadisticas/useGetPie';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, BarElement, LineElement, Title, Tooltip, Legend, Filler);
+ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, BarElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const options = {
   type: 'bar',
@@ -23,6 +24,11 @@ const options = {
 }
 const options2 = {
   type: 'line',
+  responsive: true,
+
+}
+const options3 = {
+  type: 'pie',
   responsive: true,
 
 }
@@ -45,10 +51,14 @@ const Estadisticas = () => {
   const lineT18 = useGetLine({ 'Trisomia': 'T18' });
   const lineT13 = useGetLine({ 'Trisomia': 'T13' });
   const edad = ['Menores de 35', 'Entre 35 y 39', 'Entre 40 y 45', 'Mayores de 45'];
-  const scores = lineT21[0].map(function (x) { return x * 100; });;
-  const scores2 = lineT18[0].map(function (x) { return x * 100; });;
-  const scores3 = lineT13[0].map(function (x) { return x * 100; });;
+  const scores = lineT21[0].map(function (x) { return x * 100; });
+  const scores2 = lineT18[0].map(function (x) { return x * 100; });
+  const scores3 = lineT13[0].map(function (x) { return x * 100; });
 
+  //Grafica de Pastel (Pie)
+  const trisomiaPie = ['Sin trisomias', 'Trisomía 21', 'Trisomía 18', 'Trisomía 13'];
+  const pie = useGetPie();
+  
   //Logica Renderización de Formulario
   const [option, setOption] = useState("Trisomías vs Casos Confirmados");
 
@@ -101,6 +111,29 @@ const Estadisticas = () => {
     ]
   };
 
+  const dataPie = {
+    labels: trisomiaPie,
+    datasets: [
+      {
+        label: '# of Votes',
+        data: pie[0],
+        backgroundColor: [
+          'rgba(255, 158, 0, 0.7)',
+          'rgba(36, 26, 68, 0.7)',
+          'rgba(237, 109, 26, 0.7)',
+          'rgba(0, 138, 154, 0.7)',
+        ],
+        borderColor: [
+          'rgba(255, 158, 0, 0.7)',
+          'rgba(36, 26, 68, 0.7)',
+          'rgba(237, 109, 26, 0.7)',
+          'rgba(0, 138, 154, 0.7)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
 
   return (
     <>
@@ -118,15 +151,14 @@ const Estadisticas = () => {
                 }}>
                   <option defaultValue>Trisomías vs Casos Confirmados</option>
                   <option value='Edad de la madre vs % de Riesgo'>Edad de la madre vs % de Riesgo</option>
+                  <option value='Pie'>Pie</option>
                 </SelectorA>
               </div>
             </div>
             <ContenedorMayor lista>
-              {option === 'Trisomías vs Casos Confirmados' ?
-                <Bar data={dataBars} options={options} />
-                :
-                <Line data={dataLineal} options={options2} />
-              }
+              {option === 'Trisomías vs Casos Confirmados' && <Bar data={dataBars} options={options} />}
+              {option === 'Edad de la madre vs % de Riesgo' && <Line data={dataLineal} options={options2} />}
+              {option === 'Pie' && <Pie data={dataPie} options={options3}/>}
             </ContenedorMayor>
           </div>
         </div>
