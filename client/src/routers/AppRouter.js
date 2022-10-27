@@ -31,6 +31,7 @@ import PruebasRealizadas from '../pages/Examenes/PruebasRealizadas';
 import PruebasResultados from '../pages/Examenes/PruebasResultados';
 import PruebasCanceladas from '../pages/Examenes/PruebasCanceladas';
 import Resultados from '../pages/Resultados';
+import ResetPassword from '../pages/ResetPassword';
 
 const AppRouter = () => {
     return (
@@ -39,6 +40,7 @@ const AppRouter = () => {
             <Route exact path={routes.home} element={<Home />} />
             <Route exact path={routes.conoceMas} element={<ConoceMas />} />
             <Route exact path={routes.login} element={<PublicRoute><Login /></PublicRoute>} />
+            <Route exact path={routes.resetPassword()} element={<PublicRoute><ResetPassword /></PublicRoute>} />
 
             {/* Médico y Laboratorio */}
             <Route exact path={routes.pruebasOrdenadas} element={<PrivateRoute><PruebasOrdenadas /></PrivateRoute>} />

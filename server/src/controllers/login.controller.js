@@ -3,6 +3,7 @@ const passport = require('passport');
 const UserModel = require('../models/User');
 const JWT = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const emailer = require('../config/emailer')
 
 //Creando el token de usuario
 const signToken = (userID) => {
@@ -98,6 +99,59 @@ loginCtrl.UpdatePassword = async (req, res) => {
         return res.json({ message: 'La contraseña actual no es correcta' });
     }
 
+}
+
+const resetToken = process.env.RESET_TOKEN
+loginCtrl.ForgetPassword = async (req, res) => {
+    const { email } = req.body;
+    try{
+        const emailUser = await UserModel.findOne({ email: email });
+        if(emailUser){
+            const secret = resetToken + emailUser.password
+            const userID = String(emailUser._id)
+            const payload = {
+                email: emailUser.email,
+                id: userID
+            }
+            const token = JWT.sign(payload, secret, { expiresIn: '15m' })
+            const link =  `http://localhost:3000/reset-password/${userID}/${token}`
+            emailer.sendMail(email, link)
+            return res.json({ message: 'Revisa tu correo electronico' });
+        }else{
+            return res.json({ error: 'Parece que algo fue mal' });
+        }
+    }catch(err){
+        return res.json({ error: 'Ocurrio un error' });
+    }
+}
+
+loginCtrl.ResetPassword = async (req, res) => {
+    const { password, passwordConfirmation, id, token } = req.body;
+    const user = await UserModel.findById({ _id: id }).clone();
+    if(user){
+        const secret = resetToken + user.password
+        try {
+            JWT.verify(token, secret);
+            if (password !== passwordConfirmation) {
+                return res.json({ error: 'Las contraseñas no coinciden' })
+            } else if (password.length < 6) {
+                return res.json({ error: 'La contraseña debe tener más de 6 caracteres' })
+            } else {
+                await UserModel.findById( id, async (err, doc) => {
+                    if (err) return false;
+    
+                    const salt = await bcrypt.genSalt(10);
+                    doc.password = await bcrypt.hash(password, salt);
+                    doc.save();
+                }).clone();
+                return res.json({ message: 'Contraseña cambiada correctamente' });
+            }
+        } catch (error) {
+            return res.json({ error: '¡Error! El link ya caduco. Envia un nuevo link para cambiar tu contraseña' });
+        }
+    }else{
+        return res.json({ error: 'Parece que no eres un usuario' });
+    }
 }
 
 //Petición borrar usuario

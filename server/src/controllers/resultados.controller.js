@@ -2,11 +2,15 @@ const resultadosCtrl = {};
 const ResultadosModel = require('./../models/Resultado');
 const UserModel = require('../models/User');
 const CitasModel = require('./../models/Cita');
+const passport = require('passport');
+
+//Passport JWT atenticación para comprobar usuario
+resultadosCtrl.JWTpassportAuth = passport.authenticate('jwt', { session: false });
 
 //Petición que devulve la lista de resultados
 resultadosCtrl.getResultados = async (req, res) => {
     const resultados = await ResultadosModel.find().clone();
-    return res.json(resultados);
+    return res.json(resultados.length);
 }
 
 //Petición para ver resultadp de un solo usuario

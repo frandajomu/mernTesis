@@ -6,7 +6,7 @@ import theme from '../../theme';
 import { Link } from 'react-router-dom';
 import routes from '../../helpers/Routes';
 import NavBarRenderRoles from '../../helpers/NavBarRenderRoles';
-import { BotonBarra, BotonMenu } from '../../helpers/NavBarLogin';
+import { BotonMenu } from '../../helpers/NavBarLogin';
 import './BarraSinToggle.css';
 
 const NavB = ({hijoB}) => {
@@ -26,7 +26,6 @@ const NavB = ({hijoB}) => {
                                     <Link to={routes.home} className="nav-link me-3" aria-current="page">Inicio</Link>
                                 </li>
                             </ul>
-                            <BotonBarra />
                             <Bars type="button" id="sidebarCollapse" alt="" width="25" onClick={SiderbarClick} />
                         </div>
                     </nav>

@@ -23,6 +23,7 @@ const routes ={
     registro: "/registroAdmin",
     configInicial: "/configInicial",
     login: "/login",
+    resetPassword: (id, token) => (id ? `/reset-password/${id}/${token}` : "/reset-password/:id/:token"),
     listaUsuarios: "/listaUsuarios",
     agregarUsuarios: "/agregarUsuarios",
     conoceMas: "/conoceMas"

@@ -2,6 +2,10 @@ const citasCtrl = {};
 const CitasModel = require('./../models/Cita');
 const ParamsModel = require('./../models/GlobalParams');
 const ResultadosModel = require('./../models/Resultado');
+const passport = require('passport');
+
+//Passport JWT atenticación para comprobar usuario
+citasCtrl.JWTpassportAuth = passport.authenticate('jwt', { session: false });
 
 //Petición para ver lista de citas
 citasCtrl.getCita = async (req, res) => {

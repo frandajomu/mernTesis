@@ -12,11 +12,13 @@ import WarningCheckRealizado from '../components/WarningCheckRealizado';
 import WarningCancelAgenda from '../components/WarningCancelAgenda';
 import formatearFecha from './horaFormat';
 import whatGestacion from './whatGestacion';
+import { useAuth } from '../contexts/AuthContext';
 
 const ExamenesRender = ({ infoList, dataUsers, estado, setOption }) => {
 
     //Dos estados para filtros busqueda
     const [usuarios, setUsuarios] = useState([]);
+    const { usuario } = useAuth();
 
     useEffect(() => {
         setUsuarios(infoList)
@@ -45,7 +47,10 @@ const ExamenesRender = ({ infoList, dataUsers, estado, setOption }) => {
                     <div className="col-md-8 mx-auto my-auto">
                         <h1 className="h2 mb-4 text-center text-primary" style={{ "fontWeight": "700" }}>{estado !== 'Resultado' ? 'Exámenes ' + estado + 's' : 'Resultados'}</h1>
                         <div className="col-12 justify-content-between mb-3 d-flex" >
-                            <SearchBar setUsuarios={setUsuarios} infoList={infoList} estado={estado} />
+                            {usuario?.role !== 'Paciente' &&
+                                <SearchBar setUsuarios={setUsuarios} infoList={infoList} estado={estado} />
+                            }
+
                             <div className="d-none d-lg-flex">
                                 <label className="mb-1 my-auto" style={{ "fontWeight": "500" }}>Ordenar: </label>
                                 <SelectorA exam className="ms-3 mt-2 mt-md-0" onChange={(e) => {

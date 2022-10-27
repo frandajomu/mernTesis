@@ -1,18 +1,18 @@
 const { Router } = require('express');
 const router = Router();
 
-const { getResultados, getOneResultado, uploadResultado, updateResultado, getEstadisticaPrimera, getEstadisticaSegunda, getEstadisticaPie } = require('./../controllers/resultados.controller')
+const { JWTpassportAuth, getResultados, getOneResultado, uploadResultado, updateResultado, getEstadisticaPrimera, getEstadisticaSegunda, getEstadisticaPie } = require('./../controllers/resultados.controller')
 
 router.route('/')
-    .get(getResultados)
-    .post(uploadResultado);
+    .get(JWTpassportAuth, getResultados)
+    .post(JWTpassportAuth, uploadResultado);
 
-router.post('/estaBar', getEstadisticaPrimera);
-router.post('/estaLin', getEstadisticaSegunda);
-router.get('/estaPie', getEstadisticaPie);
+router.post('/estaBar', JWTpassportAuth, getEstadisticaPrimera);
+router.post('/estaLin', JWTpassportAuth, getEstadisticaSegunda);
+router.get('/estaPie', JWTpassportAuth, getEstadisticaPie);
 
 router.route('/:id')
-    .get(getOneResultado)
-    .put(updateResultado)
+    .get(JWTpassportAuth, getOneResultado)
+    .put(JWTpassportAuth, updateResultado)
 
 module.exports = router;

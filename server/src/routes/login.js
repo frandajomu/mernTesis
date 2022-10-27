@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
-const { Ingresar, Logout, JWTpassportAuth, SuccessAuth, InfoUser, UpdateInfoUser, UpdatePassword, deleteAccountUser} = require('./../controllers/login.controller')
+const { Ingresar, Logout, JWTpassportAuth, SuccessAuth, InfoUser, UpdateInfoUser, UpdatePassword, deleteAccountUser, ForgetPassword, ResetPassword } = require('./../controllers/login.controller')
 
 //Login y logout
 router.route('/')
@@ -22,5 +22,9 @@ router.route('/userInfo')
 
 router.route('/updatePass')
         .put(JWTpassportAuth, UpdatePassword);
-        
+
+router.route('/forgetPass')
+        .post(ForgetPassword)
+        .put(ResetPassword);
+
 module.exports = router;

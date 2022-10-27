@@ -8,6 +8,7 @@ import { Bar, Line, Pie } from "react-chartjs-2";
 import useGetBars from '../hooks/estadisticas/useGetBars';
 import useGetLine from '../hooks/estadisticas/useGetLine';
 import useGetPie from '../hooks/estadisticas/useGetPie';
+import useGetTotalPruebas from '../hooks/estadisticas/useGetTotalPruebas';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, BarElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -60,7 +61,9 @@ const Estadisticas = () => {
   const pie = useGetPie();
   
   //Logica Renderización de Formulario
-  const [option, setOption] = useState("Trisomías vs Casos Confirmados");
+  const [option, setOption] = useState("Trisomías por Sexo Fetal");
+  //Total pruebas analizadas
+  const TotalPruebas = useGetTotalPruebas();
 
 
   const dataBars = {
@@ -149,16 +152,17 @@ const Estadisticas = () => {
                   const selectorOption = e.target.value;
                   setOption(selectorOption);
                 }}>
-                  <option defaultValue>Trisomías vs Casos Confirmados</option>
-                  <option value='Edad de la madre vs % de Riesgo'>Edad de la madre vs % de Riesgo</option>
-                  <option value='Pie'>Pie</option>
+                  <option defaultValue>Trisomías por Sexo Fetal</option>
+                  <option value='Trisomías confirmadas'>Trisomías confirmadas</option>
+                  <option value='% de riesgo según edad de la madre'>% de riesgo según edad de la madre</option>
                 </SelectorA>
               </div>
             </div>
             <ContenedorMayor lista>
-              {option === 'Trisomías vs Casos Confirmados' && <Bar data={dataBars} options={options} />}
-              {option === 'Edad de la madre vs % de Riesgo' && <Line data={dataLineal} options={options2} />}
-              {option === 'Pie' && <Pie data={dataPie} options={options3}/>}
+              {option === 'Trisomías por Sexo Fetal' && <Bar data={dataBars} options={options} />}
+              {option === 'Trisomías confirmadas' && <Pie data={dataPie} options={options3}/>}
+              {option === '% de riesgo según edad de la madre' && <Line data={dataLineal} options={options2} />}
+              <label className="mt-3 d-flex justify-content-end" style={{ "fontWeight": "400", "fontSize": "16px" }}>Total pruebas analizadas: {TotalPruebas}</label>
             </ContenedorMayor>
           </div>
         </div>

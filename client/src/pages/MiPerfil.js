@@ -46,9 +46,13 @@ const MiPerfil = () => {
                                     <li className="list-group-item">Departamento: {usuario?.departamento}</li>
                                 </ul>
                                 <div className="d-grid gap-2 col-9 mx-auto mt-3">
-                                    <BotonEditar type="button" className="btn btn-light" onClick={abiertoDatos}>Editar Cuenta</BotonEditar>
+                                    {usuario?.role !== 'Paciente' &&
+                                        <BotonEditar type="button" className="btn btn-light" onClick={abiertoDatos}>Editar Cuenta</BotonEditar>
+                                    }
                                     <BotonEditar type="button" className="btn btn-light" onClick={abiertoContraseña}>Cambiar Contraseña</BotonEditar>
-                                    <BotonEliminar className="btn mt-4 mb-2" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar Cuenta</BotonEliminar>
+                                    {usuario?.role !== 'Paciente' &&
+                                        <BotonEliminar className="btn mt-4 mb-2" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar Cuenta</BotonEliminar>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -64,7 +68,7 @@ const MiPerfil = () => {
             <EditModal
                 isOpen={cambiarDatos}
                 cerrado={cerradoDatos}
-                MyPerfil = {MyPerfil}
+                MyPerfil={MyPerfil}
             />
         </>
     );

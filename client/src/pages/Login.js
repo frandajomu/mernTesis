@@ -10,24 +10,37 @@ import { ReactComponent as CruzCierre } from './../images/CruzCierre.svg';
 import { BotonMoradoModal } from '../elements/Botones';
 import useModal from '../hooks/useModal';
 import routes from '../helpers/Routes';
+import LoginResolver from '../validations/LoginResolver';
+import { notError, notExito } from '../elements/notifyToasty';
+import userResetPassword from '../hooks/ResetPass/userResetPassword';
 
 const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const { register, handleSubmit, formState, reset } = useForm();
+    const { register, handleSubmit, formState, reset } = useForm({ resolver: LoginResolver});
     const { errors } = formState;
 
     const [recContra, olvide, cancelar] = useModal();
     const handleRedirect = () => navigate(routes.home);
 
-    const onSubmit = (formData) => {
+    //Reset Password
+    const [resetPass] = userResetPassword();
+
+    const onSubmit = async (formData) => {
         //formData funcionara para enviar los datos al Backend
         if (!recContra) {
             login(formData);
         } else {
-            console.log(formData)
-            navigate('/');
+            const emailData = formData.email;
+            const res = await resetPass({email: emailData})
+            if (res.message){
+                notExito({textoNot: res.message})
+                navigate(routes.home)
+                reset();
+            }else{
+                notError({textoNot: res.error})
+            }
         }
     }
 
@@ -49,6 +62,7 @@ const Login = () => {
                     <FlotanteForm className="form-floating my-2">
                         <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com"  {...register("email")} />
                         <label htmlFor="floatingInput">Correo electrónico</label>
+                        {errors?.email && <div className="mt-2 alert alert-danger" role="alert">{errors.email.message}</div>}
                     </FlotanteForm>
 
                     {!recContra &&
@@ -63,12 +77,6 @@ const Login = () => {
                     }
 
                     <BotonMoradoModal className="w-100 btn mt-3" type="submit" onClick={handleSubmit(onSubmit)}>{!recContra ? 'Ingresar' : 'Recuperar Contraseña'}</BotonMoradoModal>
-
-                    {!recContra &&
-                        <Checkbox Checkbox className="checkbox my-2">
-                            <label><input type="checkbox" value="remember-me" /> Mantener la sesión iniciada</label>
-                        </Checkbox>
-                    }
 
                     {recContra &&
                         <ParraForm type="button" onClick={cancelar}>¿Ya tienes tu contaseña y deseas iniciar sesión?</ParraForm>
@@ -100,11 +108,6 @@ const IngresoForm = styled.div`
     margin: auto;
     background: #ffff;
     border-radius: 20px;
-`;
-
-const Checkbox = styled.div`
-    font-weight: 400;
-    color: ${theme.moradoOscuro};
 `;
 
 const FlotanteForm = styled.div`

@@ -1,26 +1,26 @@
 const { Router } = require('express');
 const router = Router();
 
-const { getCita, getOneCita, createCita, updateCita, deleteCita, getTurno, desableDate, valueParams, createParams, updateParams, updateEstado } = require('./../controllers/citas.controller')
+const { JWTpassportAuth, getCita, getOneCita, createCita, updateCita, deleteCita, getTurno, desableDate, valueParams, createParams, updateParams, updateEstado } = require('./../controllers/citas.controller')
 
 router.route('/')
-    .get(getCita)
-    .post(createCita);
+    .get(JWTpassportAuth, getCita)
+    .post(JWTpassportAuth, createCita);
 
 router.route('/turno')
-    .get(desableDate)
-    .post(getTurno);
+    .get(JWTpassportAuth, desableDate)
+    .post(JWTpassportAuth, getTurno);
 
-router.post('/cancelar', updateEstado);
+router.post('/cancelar', JWTpassportAuth, updateEstado);
 
 router.route('/globalParams')
-    .get(valueParams)
-    .post(createParams)
-    .put(updateParams);
+    .get(JWTpassportAuth, valueParams)
+    .post(JWTpassportAuth, createParams)
+    .put(JWTpassportAuth, updateParams);
 
 router.route('/:id')
-    .get(getOneCita)
-    .put(updateCita)
-    .delete(deleteCita);
+    .get(JWTpassportAuth, getOneCita)
+    .put(JWTpassportAuth, updateCita)
+    .delete(JWTpassportAuth, deleteCita);
 
 module.exports = router;
