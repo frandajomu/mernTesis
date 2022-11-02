@@ -49,6 +49,21 @@ usersCtrl.createUser = async (req, res) => {
 }
 
 //Petición editar datos de un usuario
+const saveEditedData = async ({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res,req }) => {
+    try {
+        await UserModel.findById(req.params.id, async (err, doc) => {
+            if (err) return false;
+            doc.name = name; doc.lastnameA = lastnameA; doc.lastnameB = lastnameB; doc.personalIDtype = personalIDtype; doc.personalID = personalID; doc.datebirth = datebirth; doc.genero = genero; doc.bloodType = bloodType; doc.blood = blood; doc.EPS = EPS; doc.celular = celular; doc.celular2 = celular2; doc.direccion = direccion; doc.ciudad = ciudad; doc.departamento = departamento; doc.email = email; doc.role = role; doc.estado = estado; doc.embarazo = embarazo, doc.recomendacion = recomendacion;
+
+            const salt = await bcrypt.genSalt(10);
+            doc.password = await bcrypt.hash(password, salt);
+            doc.save();
+        }).clone();
+        return res.json({ message: 'Usuario actualizado con exito' });
+    } catch (e) {
+        return res.json({ error: 'Usuario no actualizado' });
+    }
+}
 usersCtrl.updateUser = async (req, res) => {
     const { name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, passwordConfirmation, role, estado, embarazo, recomendacion } = req.body;
 
@@ -59,28 +74,20 @@ usersCtrl.updateUser = async (req, res) => {
         if (emailUser) {
             return res.json({ error: 'El correo ya existe en la base de datos' })
         } else {
-            return null
+            saveEditedData({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req})
         }
     } else if (personalID !== ActualData.personalID) {
         if (numberIDUser) {
             return res.json({ error: 'El número de identificación ya existe en la base de datos' })
         } else {
-            return null
+            saveEditedData({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req})
         }
     } else if (password !== passwordConfirmation) {
         return res.json({ error: 'Las contraseñas no coinciden' })
     } else if (password.length < 6) {
         return res.json({ error: 'La contraseña debe tener más de 6 caracteres' })
     } else {
-        await UserModel.findById(req.params.id, async (err, doc) => {
-            if (err) return false;
-            doc.name = name; doc.lastnameA = lastnameA; doc.lastnameB = lastnameB; doc.personalIDtype = personalIDtype; doc.personalID = personalID; doc.datebirth = datebirth; doc.genero = genero; doc.bloodType = bloodType; doc.blood = blood; doc.EPS = EPS; doc.celular = celular; doc.celular2 = celular2; doc.direccion = direccion; doc.ciudad = ciudad; doc.departamento = departamento; doc.email = email; doc.role = role; doc.estado = estado; doc.embarazo = embarazo, doc.recomendacion = recomendacion;
-
-            const salt = await bcrypt.genSalt(10);
-            doc.password = await bcrypt.hash(password, salt);
-            doc.save();
-        }).clone();
-        return res.json({ message: 'Usuario actualizado con exito' });
+        saveEditedData({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req})
     }
 }
 
@@ -100,61 +107,61 @@ usersCtrl.getOneUserByCedula = async (req, res) => {
 usersCtrl.usersPaciente = async (req, res) => {
     const { estado, sorted } = req.body
     const today = new Date();
-    if(sorted === 'Más antiguos'){
+    if (sorted === 'Más antiguos') {
         if (estado === 'Ordenado') {
-            const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).sort({createdAt:1});
+            const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).sort({ createdAt: 1 });
             return res.json(usuarios);
         } else if (estado === 'Agendado') {
-            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({citadate:-1});
+            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({ citadate: -1 });
             //const ids = dates.map(dataUser => { return dataUser.idUser });
             //const usuarios = await UserModel.find({ '_id': { $in: ids }, estado: estado, role: 'Paciente' }).clone();
             return res.json(usuarios);
         } else if (estado === 'Realizado') {
-            const usuarios = await CitasModel.find({ estado: 'Realizado' }).populate('idUser').sort({citadate:-1});
+            const usuarios = await CitasModel.find({ estado: 'Realizado' }).populate('idUser').sort({ citadate: -1 });
             return res.json(usuarios);
         } else if (estado === 'Resultado') {
             const actualUser = req.user;
-            if(actualUser.role === 'Paciente'){
-                const usuarios = await CitasModel.find({ estado: 'Resultado', idUser: actualUser._id }).populate('idUser').sort({citadate:-1});
+            if (actualUser.role === 'Paciente') {
+                const usuarios = await CitasModel.find({ estado: 'Resultado', idUser: actualUser._id }).populate('idUser').sort({ citadate: -1 });
                 return res.json(usuarios);
-            }else{
-                const usuarios = await CitasModel.find({ estado: 'Resultado' }).populate('idUser').sort({citadate:-1});
+            } else {
+                const usuarios = await CitasModel.find({ estado: 'Resultado' }).populate('idUser').sort({ citadate: -1 });
                 return res.json(usuarios);
             }
-    
+
         } else if (estado === 'Cancelado') {
-            const usuarios1 = await CitasModel.find({ citadate: { $lt: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({citadate:-1});
-            const usuarios2 = await CitasModel.find({ estado: 'Cancelado' }).populate('idUser').sort({citadate:-1});
+            const usuarios1 = await CitasModel.find({ citadate: { $lt: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({ citadate: -1 });
+            const usuarios2 = await CitasModel.find({ estado: 'Cancelado' }).populate('idUser').sort({ citadate: -1 });
             const totalUsers = usuarios1.concat(usuarios2);
             return res.json(totalUsers);
         } else {
             res.json({ error: 'Ha ocurrido un error' });
         }
-    }else{
+    } else {
         if (estado === 'Ordenado') {
-            const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).sort({createdAt:-1});
+            const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).sort({ createdAt: -1 });
             return res.json(usuarios);
         } else if (estado === 'Agendado') {
-            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({citadate:1});
+            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({ citadate: 1 });
             //const ids = dates.map(dataUser => { return dataUser.idUser });
             //const usuarios = await UserModel.find({ '_id': { $in: ids }, estado: estado, role: 'Paciente' }).clone();
             return res.json(usuarios);
         } else if (estado === 'Realizado') {
-            const usuarios = await CitasModel.find({ estado: 'Realizado' }).populate('idUser').sort({citadate:1});
+            const usuarios = await CitasModel.find({ estado: 'Realizado' }).populate('idUser').sort({ citadate: 1 });
             return res.json(usuarios);
         } else if (estado === 'Resultado') {
             const actualUser = req.user;
-            if(actualUser.role === 'Paciente'){
-                const usuarios = await CitasModel.find({ estado: 'Resultado', idUser: actualUser._id }).populate('idUser').sort({citadate:1});
+            if (actualUser.role === 'Paciente') {
+                const usuarios = await CitasModel.find({ estado: 'Resultado', idUser: actualUser._id }).populate('idUser').sort({ citadate: 1 });
                 return res.json(usuarios);
-            }else{
-                const usuarios = await CitasModel.find({ estado: 'Resultado' }).populate('idUser').sort({citadate:1});
+            } else {
+                const usuarios = await CitasModel.find({ estado: 'Resultado' }).populate('idUser').sort({ citadate: 1 });
                 return res.json(usuarios);
             }
-    
+
         } else if (estado === 'Cancelado') {
-            const usuarios1 = await CitasModel.find({ citadate: { $lt: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({citadate:1});
-            const usuarios2 = await CitasModel.find({ estado: 'Cancelado' }).populate('idUser').sort({citadate:1});
+            const usuarios1 = await CitasModel.find({ citadate: { $lt: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({ citadate: 1 });
+            const usuarios2 = await CitasModel.find({ estado: 'Cancelado' }).populate('idUser').sort({ citadate: 1 });
             const totalUsers = usuarios1.concat(usuarios2);
             return res.json(totalUsers);
         } else {
@@ -201,7 +208,7 @@ usersCtrl.deleteUser = async (req, res) => {
             //Eliminando datos de resultados
             const dataInfo = await CitasModel.find({ idUser: req.params.id }).clone();
             const ids = dataInfo.map(dataUser => { return dataUser._id });
-            await ResultadosModel.deleteMany({ idCita: { $in: ids }}).clone();
+            await ResultadosModel.deleteMany({ idCita: { $in: ids } }).clone();
             //Eliminando datos de citas
             await CitasModel.deleteMany({ idUser: req.params.id }).clone();
             //Eliminando cuenta del paciente

@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 const createTrans = () => {
     const passGmail = process.env.GMAIL_PASS
@@ -92,7 +93,7 @@ const sendMail = async (email, link) => {
                                         style="padding:0px 30px 0px 30px;font-size:0;background-color:#ffffff;border-bottom:1px solid #f0f0f5;border-color:rgba(201,201,207,.35);">
                                         <div class="col-sml"
                                             style="display:inline-block;width:100%;max-width:145px;text-align:left;font-family:Arial,sans-serif;font-size:14px;color:#363636;">
-                                            <img src="../images/LogoHelmet.png" width="115" alt=""
+                                            <img src="cid:LogoHelmet" width="115" alt=""
                                                 style="width:115px;max-width:80%;margin-bottom:20px;">
                                         </div>
                                         <div class="col-lge"
@@ -111,7 +112,7 @@ const sendMail = async (email, link) => {
                                 </tr>
                                 <tr>
                                     <td
-                                        style="padding:30px;text-align:center;font-size:12px;background-color:#3B3470;color:#cccccc;">
+                                        style="margin-bottom:30px;padding:30px;text-align:center;font-size:12px;background-color:#3B3470;color:#cccccc;">
                                         <p style="margin:0 0 8px 0;"><a href="#" style="text-decoration:none;"><img
                                                     src="cid:getiImage" width="250" alt="f"
                                                     style="display:inline-block;color:#cccccc;"></a> <a href="#"
@@ -128,19 +129,28 @@ const sendMail = async (email, link) => {
         </body>
         
         </html>`,
-        attachment: [{
-            filename: 'adnImage@920x.png',
-            path: __dirname + '../images/adnImage@920x.png',
-            cid: 'adnImage'
-        }, {
-            filename: 'getiImage.png',
-            path: __dirname + '../images/getiImage.png',
-            cid: 'getiImage'
-        },{
-            filename: 'uscoImage.png',
-            path: __dirname + '../images/uscoImage.png',
-            cid: 'uscoImage'
-        },]
+        attachments: [
+            {
+                filename: 'adnImage.png',
+                path: path.join(__dirname, '../images/adnImage.png'),
+                cid: 'adnImage'
+            },
+            {
+                filename: 'LogoHelmet.png',
+                path: path.join(__dirname, '../images/LogoHelmet.png'),
+                cid: 'LogoHelmet'
+            },
+            {
+                filename: 'getiImage.png',
+                path: path.join(__dirname, '../images/getiImage.png'),
+                cid: 'getiImage'
+            },
+            {
+                filename: 'uscoImage.png',
+                path: path.join(__dirname, '../images/uscoImage.png'),
+                cid: 'uscoImage'
+            }
+        ]
     })
     return
 }
