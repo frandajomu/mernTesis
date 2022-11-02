@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { ReactComponent as LogoADN } from './../../../images/LogoADN.svg';
-import { ReactComponent as Bars } from './../../../images/bars.svg';
 import theme from '../../../theme';
 import { Link } from 'react-router-dom';
 import routes from '../../../helpers/Routes';
 import NavBarRenderRoles from '../../../helpers/NavBarRenderRoles';
 import { BotonBarra, BotonMenu } from '../../../helpers/NavBarLogin';
 import './NavBarA.css';
-import { useAuth } from '../../../contexts/AuthContext';
 
 const NavA = ({hijoA}) => {
     const [estaActivo, setActivo] = useState(false);

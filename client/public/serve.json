@@ -1,0 +1,8 @@
+{
+    "redirects": [
+        {
+            "source": "/api",
+            "destination": "https://adn-fetal-materno-backend.herokuapp.com"
+        }
+    ]
+}

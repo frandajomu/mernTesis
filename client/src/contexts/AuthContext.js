@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { routes } from '../../../server/src/app';
 import { notError, notExito } from '../elements/notifyToasty';
 
 //Creamos el contexto, para trabajar globalmente.
@@ -17,8 +18,9 @@ const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
 
     const login = async (userCredentials) => {
+        console.log(userCredentials)
         try {
-            const res = await axios.post('/api/login', userCredentials);
+            const res = await axios.post(`${routes.url}/login`, userCredentials);
             if (res.data.isAuthenticated) {
                 notExito({ textoNot: 'Ingreso exitoso' })
                 cambiarUsuario(res.data.user)
@@ -33,7 +35,7 @@ const AuthProvider = ({ children }) => {
 
     }
     const logout = async () => {
-        const res = await axios.get('/api/login');
+        const res = await axios.get(`${routes.url}/login`);
         cambiarUsuario(null);
         navigate('/')
         if (res.data.message) {

@@ -9,6 +9,9 @@ const cookieParser = require('cookie-parser')
 require('./config/passport');
 
 //Settings
+app.get('/', (req, res) => {
+    res.send('Bienvenido a ADN Fetal en Sangre Materna')
+})
 app.set('port', process.env.PORT || 5000);
 
 //Middleware
