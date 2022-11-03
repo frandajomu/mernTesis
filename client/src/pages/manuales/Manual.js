@@ -106,7 +106,7 @@ const Manual = ({ user }) => {
                         <p>Hola, bienvenido a la plataforma ADN Fetal en Sangre Materna un aplicativo web que te permitirá agendar, generar, realizar y ver los resultados de una prueba de una forma más fácil y práctica.</p>
 
                         <h3 id='GetStart'>Comenzando</h3>
-                        <p> Para ingresar al aplicativo web de ADN Fetal en Sangre Materna, se debe dirigir al siguiente enlace: <a href="!#">www.adnfetaltest.com</a>, se te redirigirá a la página de inicio de la plataforma.</p>
+                        <p> Para ingresar al aplicativo web de ADN Fetal en Sangre Materna, se debe dirigir al siguiente enlace: <a href="https://adnfetaltest.herokuapp.com/">adnfetaltest.herokuapp.com</a>, se te redirigirá a la página de inicio de la plataforma.</p>
                         <Images src={Inicio} alt='Inicio' />
 
                         <h3 id='LogIn'>¿Cómo ingresar?</h3>
@@ -179,7 +179,7 @@ const Manual = ({ user }) => {
                             :
                             <div className="col-12">
                                 <h3 id='AdminInicial'>Registro Administrador Inicial</h3>
-                                <p>Se permite la creación inicial exclusiva de un solo Administrador, ingresando al siguiente enlace <a href="!#">www.adnfetaltest.com/registroAdmin</a>. Una vez se ingrese al enlace, se topará con un formulario inicial, en el cual se deberá ingresar los distintos datos y seguir los distintos pasos hasta culminar con el formulario. Si ha completado correctamente el formulario aparecerá una breve notificación en la parte superior y se le redireccionará al módulo de Login.
+                                <p>Se permite la creación inicial exclusiva de un solo Administrador, ingresando al siguiente enlace <a href="https://adnfetaltest.herokuapp.com/registroAdmin">adnfetaltest.herokuapp.com/registroAdmin</a>. Una vez se ingrese al enlace, se topará con un formulario inicial, en el cual se deberá ingresar los distintos datos y seguir los distintos pasos hasta culminar con el formulario. Si ha completado correctamente el formulario aparecerá una breve notificación en la parte superior y se le redireccionará al módulo de Login.
                                 </p>
                                 <Images src={OrdenarPrueba} alt='OrdPrueba' />
                                 <p>Deberá tener extrema precaución con el correo y contraseña diligenciado como administrador, ya que, una vez creado el primer administrador, se bloqueará el acceso al link, y solo con el administrador inicial se podrá crear un nuevo usuario.</p>

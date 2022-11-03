@@ -26,8 +26,7 @@ const routes ={
     resetPassword: (id, token) => (id ? `/reset-password/${id}/${token}` : "/reset-password/:id/:token"),
     listaUsuarios: "/listaUsuarios",
     agregarUsuarios: "/agregarUsuarios",
-    conoceMas: "/conoceMas",
-    url:  "https://adn-fetal-materno-backend.herokuapp.com/api"
+    conoceMas: "/conoceMas"
 }
 
 export default routes;
