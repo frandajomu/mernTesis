@@ -179,7 +179,7 @@ const Home = () => {
                             <h3>Contacto</h3>
                             <p>adnfetalmaterno@gmail.com</p>
                             <p>+57 315 255 79 85</p>
-                            <p>+57 321 587 60 30</p>
+                            <p><a target="_blank" href="/contactAyuda" rel="noopener noreferrer">PQRS</a></p>
                             <UscoLogo className="img-fluid pt-3 d-none d-md-block" alt="LogoUSCO" style={{ "width": "75%" }} />
                         </TextosFooter>
                     </div>

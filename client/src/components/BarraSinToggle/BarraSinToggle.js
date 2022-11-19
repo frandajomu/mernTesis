@@ -45,7 +45,7 @@ const NavB = ({hijoB}) => {
                         <li>
                             <a href="#Conoce" data-bs-toggle="collapse" aria-expanded="false">Conoce más</a>
                             <ul className="collapse list-unstyled" id="Conoce">
-                                <li><Link to={routes.conoceMas}>Acerca de la Prueba</Link></li>
+                                <li><Link to={routes.conoceMas}>Contacto & Ayuda</Link></li>
                                 <li><a target="_blank" href="https://www.huila.gov.co/salud/" rel="noopener noreferrer">Secretaria de salud del huila</a></li>
                                 <li><a target="_blank" href="https://www.huila.gov.co/" rel="noopener noreferrer">Gobernación del Huila</a></li>
                                 <li><a target="_blank" href="https://www.minsalud.gov.co" rel="noopener noreferrer">Ministerio de salud</a></li>

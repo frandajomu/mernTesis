@@ -155,4 +155,16 @@ const sendMail = async (email, link) => {
     return
 }
 
+const contactMail = async (nameUser, email, optionSelected, mensaje) => {
+    const transporter = createTrans();
+    await transporter.sendMail({
+        from: `${email}`,
+        to: 'adnfetalmaterno@gmail.com',
+        subject: `🔥 ${optionSelected} de ${nameUser} ⚠`,
+        text: `${mensaje} - Puedes contactarme al correro: ${email}`
+    })
+    return
+}
+
 exports.sendMail = (email, link) => sendMail(email, link);
+exports.contactMail = (nameUser, email, optionSelected, mensaje) => contactMail(nameUser, email, optionSelected, mensaje);

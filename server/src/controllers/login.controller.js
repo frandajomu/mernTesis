@@ -3,7 +3,7 @@ const passport = require('passport');
 const UserModel = require('../models/User');
 const JWT = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const emailer = require('../config/emailer')
+const {sendMail, contactMail} = require('../config/emailer');
 
 //Creando el token de usuario
 const signToken = (userID) => {
@@ -115,7 +115,7 @@ loginCtrl.ForgetPassword = async (req, res) => {
             }
             const token = JWT.sign(payload, secret, { expiresIn: '15m' })
             const link =  `http://localhost:3000/reset-password/${userID}/${token}`
-            emailer.sendMail(email, link)
+            sendMail(email, link)
             return res.json({ message: 'Revisa tu correo electronico' });
         }else{
             return res.json({ error: 'Parece que algo fue mal' });
@@ -161,6 +161,17 @@ loginCtrl.deleteAccountUser = async (req, res) => {
         return res.json({ message: 'Cuenta eliminada con exito' });
     } catch (err) {
         return res.json({ error: 'Hubo un error, cuenta no eliminada' });
+    }
+}
+
+//Ayuda y contacto
+loginCtrl.ContactoAyuda = async (req, res) => {
+    const { nameUser, email, optionSelected, mensaje } = req.body;
+    try{
+        contactMail(nameUser, email, optionSelected, mensaje)
+        return res.json({ message: 'Mensaje enviado, te responderemos pronto en tu email.' });
+    }catch(err){
+        return res.json({ error: 'Ocurrio un error' });
     }
 }
 

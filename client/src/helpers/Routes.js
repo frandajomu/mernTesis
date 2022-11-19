@@ -26,7 +26,7 @@ const routes ={
     resetPassword: (id, token) => (id ? `/reset-password/${id}/${token}` : "/reset-password/:id/:token"),
     listaUsuarios: "/listaUsuarios",
     agregarUsuarios: "/agregarUsuarios",
-    conoceMas: "/conoceMas"
+    conoceMas: "/contactAyuda"
 }
 
 export default routes;

@@ -15,7 +15,7 @@ import CargaResult from '../../images/Manuales/CargaResult.png';
 import CanceLab from '../../images/Manuales/CanceLab.png';
 import ResultMedic from '../../images/Manuales/ResultMedic.png';
 import ResultLab from '../../images/Manuales/ResultLab.png';
-//import AdminInicial from '../../images/Manuales/AdminInicial.png';
+import AdminInicial from '../../images/Manuales/AdminInicial.png';
 import UserRegister from '../../images/Manuales/UserRegister.png';
 import UserList from '../../images/Manuales/UserList.png';
 import UserEdit from '../../images/Manuales/UserEdit.png';
@@ -24,6 +24,7 @@ import AdminExam from '../../images/Manuales/AdminExam.png';
 import MisResults from '../../images/Manuales/MisResults.png';
 import ResultPaciente from '../../images/Manuales/ResultPaciente.png';
 import Perfil from '../../images/Manuales/Perfil.png';
+import Ayuda from '../../images/Manuales/Ayuda.png';
 
 const Manual = ({ user }) => {
     return (
@@ -93,7 +94,7 @@ const Manual = ({ user }) => {
                         <div className="collapse" id="account-collapse">
                             <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                 <li><LinksD href="#Perfil" className="link-dark rounded">Perfil</LinksD></li>
-                                <li><LinksD href="#Ayuda" className="link-dark rounded">Ayuda</LinksD></li>
+                                <li><LinksD href="#Ayuda" className="link-dark rounded">Contacto & Ayuda</LinksD></li>
                             </ul>
                         </div>
                     </li>
@@ -181,7 +182,7 @@ const Manual = ({ user }) => {
                                 <h3 id='AdminInicial'>Registro Administrador Inicial</h3>
                                 <p>Se permite la creación inicial exclusiva de un solo Administrador, ingresando al siguiente enlace <a href="https://adnfetaltest.herokuapp.com/registroAdmin">adnfetaltest.herokuapp.com/registroAdmin</a>. Una vez se ingrese al enlace, se topará con un formulario inicial, en el cual se deberá ingresar los distintos datos y seguir los distintos pasos hasta culminar con el formulario. Si ha completado correctamente el formulario aparecerá una breve notificación en la parte superior y se le redireccionará al módulo de Login.
                                 </p>
-                                <Images src={OrdenarPrueba} alt='OrdPrueba' />
+                                <Images src={AdminInicial} alt='AdminInicial' />
                                 <p>Deberá tener extrema precaución con el correo y contraseña diligenciado como administrador, ya que, una vez creado el primer administrador, se bloqueará el acceso al link, y solo con el administrador inicial se podrá crear un nuevo usuario.</p>
 
                                 <h3 id='UserRegister'>Registro de Usuarios</h3>
@@ -240,8 +241,9 @@ const Manual = ({ user }) => {
                             </>
                         }
 
-                        <h3 id='Ayuda'>Ayuda</h3>
-                        <p>Como usuario podra generar una petición, queja o reclamo, que se notificará al correo de la plataforma, allí se le hará seguimiento por parte del Administrador. Para esto dirijase al modulo Conoce más, dentro de este podra ver la pestaña de Ayuda, vera un formulario sencillo. Si realiza la acción correctamente se le notificará que se envio el mensaje correctamente.</p>
+                        <h3 id='Ayuda'>Contacto & Ayuda</h3>
+                        <p>Como usuario podra generar una petición, queja o reclamo, que se notificará al correo de la plataforma, allí se le hará seguimiento por parte del Administrador. Para esto dirijase al modulo Conoce más, dentro de este podra ver la pestaña de Contacto & Ayuda, vera un formulario sencillo. Si realiza la acción correctamente se le notificará que se envio el mensaje correctamente.</p>
+                        <Images src={Ayuda} alt='Ayuda' />
                     </div>
 
                 </div>
