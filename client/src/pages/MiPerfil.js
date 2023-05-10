@@ -1,13 +1,13 @@
 import React from 'react';
 import ChangePasswordModal from '../components/ChangePasswordModal';
-import DeleteModal from '../components/DeleteModal';
 import EditModal from '../components/EditModal';
-import { BotonEditar, BotonEliminar } from '../elements/Botones';
+import { BotonEditar } from '../elements/Botones';
 import Fondo from '../elements/Fondo';
 import formatearFecha from '../helpers/horaFormat';
 import useModal from '../hooks/useModal';
 import theme from '../theme';
 import { ReactComponent as Profile } from './../images/Profile.svg';
+import { ReactComponent as Profile2 } from './../images/Profile2.svg';
 import useGetMyPerfil from '../hooks/editPerfil/userGetMyPerfil';
 
 const MiPerfil = () => {
@@ -25,7 +25,11 @@ const MiPerfil = () => {
                             <div className="card-header text-center" style={{ "backgroundColor": theme.moradoOscuro }}>
                                 <h4 className=" text-white font-weight-bold my-2">Cuenta Personal</h4>
                             </div>
-                            <Profile className="card-img-top img-fluid mx-auto mt-4" style={{ "width": "200" }} />
+                            {usuario?.genero === 'Masculino' ?
+                                <Profile className="card-img-top img-fluid mx-auto mt-4" style={{ "width": "200" }} />
+                                :
+                                <Profile2 className="card-img-top img-fluid mx-auto mt-4" style={{ "width": "200" }} />
+                            }
                             <div className="card-body">
                                 <h5 className="card-title text-center">{usuario?.name + ' ' + usuario?.lastnameA + ' ' + usuario?.lastnameB} </h5>
                                 <p className="card-text text-center">{usuario?.role}</p>
@@ -33,9 +37,9 @@ const MiPerfil = () => {
                                 <ul className="list-group list-group-flush">
                                     <li className="list-group-item">Identificación: {usuario?.personalID}</li>
                                     <li className="list-group-item">Correo: {usuario?.email}</li>
-                                    <li className="list-group-item">Fecha de Nacimiento: {usuario?.datebirth && formatearFecha(usuario?.datebirth)}</li>
+                                    <li className="list-group-item">Fecha de nacimiento: {usuario?.datebirth && formatearFecha(usuario?.datebirth)}</li>
                                     <li className="list-group-item">Genero: {usuario?.genero}</li>
-                                    <li className="list-group-item">Grupo Sanguineo: {usuario?.bloodType + ' ' + usuario?.blood}</li>
+                                    <li className="list-group-item">Grupo sanguíneo: {usuario?.bloodType + ' ' + usuario?.blood}</li>
                                     <li className="list-group-item">EPS: {usuario?.EPS}</li>
                                 </ul>
                                 <div className="card-header text-center"><b>Datos de Contacto</b></div>
@@ -45,14 +49,11 @@ const MiPerfil = () => {
                                     <li className="list-group-item">Ciudad: {usuario?.ciudad}</li>
                                     <li className="list-group-item">Departamento: {usuario?.departamento}</li>
                                 </ul>
-                                <div className="d-grid gap-2 col-9 mx-auto mt-3">
+                                <div className="d-grid gap-2 col-9 mx-auto my-4">
                                     {usuario?.role !== 'Paciente' &&
                                         <BotonEditar type="button" className="btn btn-light" onClick={abiertoDatos}>Editar Cuenta</BotonEditar>
                                     }
                                     <BotonEditar type="button" className="btn btn-light" onClick={abiertoContraseña}>Cambiar Contraseña</BotonEditar>
-                                    {usuario?.role !== 'Paciente' &&
-                                        <BotonEliminar className="btn mt-4 mb-2" data-bs-toggle="modal" data-bs-target="#deleteModal">Eliminar Cuenta</BotonEliminar>
-                                    }
                                 </div>
                             </div>
                         </div>
@@ -60,7 +61,6 @@ const MiPerfil = () => {
                 </div>
             </div>
             <Fondo />
-            <DeleteModal />
             <ChangePasswordModal
                 isOpen={cambiarContraseña}
                 cerrado={cerradoContraseña}

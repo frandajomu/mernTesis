@@ -14,8 +14,9 @@ import { useNavigate } from 'react-router-dom';
 import useAddUsuario from '../hooks/useAddUsuario';
 import routes from '../helpers/Routes';
 import usefindAndUpdateOneStateUser from '../hooks/citas/usefindAndUpdateOneStateUser';
+import useCreateCita from '../hooks/citas/useCreateCita';
+import useGetMyPerfil from '../hooks/editPerfil/userGetMyPerfil';
 //{ resolver: AgregarAgendaResolver }
-
 
 const AgendarPrueba = () => {
 
@@ -26,31 +27,30 @@ const AgendarPrueba = () => {
     const [UploadUserData] = useAddUsuario();
     const [EditEstadoPaciente] = usefindAndUpdateOneStateUser();
 
+    //Citas
+    const [usuario] = useGetMyPerfil();
+    const [CreateCita] = useCreateCita();
+    const nameMedico = usuario?.name + ' ' + usuario?.lastnameA + ' ' + usuario?.lastnameB;
+
     //Envio de datos al backend
     const navigate = useNavigate();
     const onSubmit = async (formData) => {
-        const res = await UploadUserData(formData)
+        const res = await EditEstadoPaciente(formData, { id: formData.personalID })
         if (res.message) {
-            notExito({ textoNot: res.message })
-            navigate(routes.pruebasOrdenadas)
-            reset();
-        } else {
-            notError({ textoNot: res.error })
-        }
-    }
-
-    //Logica renderización Paciente con Cuenta
-    const [isCheckbox, setCheckbox] = useState(false);
-    const [cedula, setCedula] = useState(false);
-
-    //Datos backend para usuario existente
-    const CheckFunction = async () => {
-        const dataEstado = { 'estado': 'Ordenado' }
-        const res = await EditEstadoPaciente(dataEstado, { id: cedula })
-        if (res.message) {
-            notExito({ textoNot: res.message })
-            navigate(routes.pruebasOrdenadas)
-            reset();
+            const datedb = {
+                citadate: new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
+                turno: 1,
+                idUser: res.idUser,
+                OrdenadoPor: String(nameMedico)
+            }
+            const res2 = await CreateCita(datedb)
+            if (res2.message) {
+                notExito({ textoNot: res.message })
+                navigate(routes.pruebasOrdenadas)
+                reset();
+            } else {
+                notError({ textoNot: 'Ha ocurrido un error' })
+            }
         } else {
             notError({ textoNot: res.error })
         }
@@ -80,23 +80,21 @@ const AgendarPrueba = () => {
                 <div className="row">
                     <div className="col-11 col-md-7 mx-auto my-auto">
                         <h1 className="h2 mb-4 text-center text-primary" style={{ "fontWeight": "700" }}>Ordenar Prueba</h1>
-                        {!isCheckbox &&
-                            <div className="row">
-                                <div className="col-12 justify-content-between mb-3 d-none d-lg-flex">
-                                    <LineaBotones></LineaBotones>
-                                    {Next === 0 ? <BotonFormulario active>Personales</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(0)}>Personales</BotonFormulario>}
-                                    {Next === 1 ? <BotonFormulario active>Contacto</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(1)}>Contacto</BotonFormulario>}
-                                    {Next === 2 ? <BotonFormulario active>Registro</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(2)}>Registro</BotonFormulario>}
-                                    {Next === 3 ? <BotonFormulario active>Cuenta</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(3)}>Cuenta</BotonFormulario>}
-                                </div>
-                                <div className="col-12 justify-content-evenly mb-3 d-flex d-lg-none">
-                                    {Next === 0 ? <BotonFormulario active>1</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(0)}>1</BotonFormulario>}
-                                    {Next === 1 ? <BotonFormulario active>2</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(1)}>2</BotonFormulario>}
-                                    {Next === 2 ? <BotonFormulario active>3</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(2)}>3</BotonFormulario>}
-                                    {Next === 3 ? <BotonFormulario active>4</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(3)}>4</BotonFormulario>}
-                                </div>
+                        <div className="row">
+                            <div className="col-12 justify-content-between mb-3 d-none d-lg-flex">
+                                <LineaBotones></LineaBotones>
+                                {Next === 0 ? <BotonFormulario active>Personales</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(0)}>Personales</BotonFormulario>}
+                                {Next === 1 ? <BotonFormulario active>Contacto</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(1)}>Contacto</BotonFormulario>}
+                                {Next === 2 ? <BotonFormulario active>Registro</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(2)}>Registro</BotonFormulario>}
+                                {Next === 3 ? <BotonFormulario active>Cuenta</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(3)}>Cuenta</BotonFormulario>}
                             </div>
-                        }
+                            <div className="col-12 justify-content-evenly mb-3 d-flex d-lg-none">
+                                {Next === 0 ? <BotonFormulario active>1</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(0)}>1</BotonFormulario>}
+                                {Next === 1 ? <BotonFormulario active>2</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(1)}>2</BotonFormulario>}
+                                {Next === 2 ? <BotonFormulario active>3</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(2)}>3</BotonFormulario>}
+                                {Next === 3 ? <BotonFormulario active>4</BotonFormulario> : <BotonFormulario onClick={() => setSiguiente(3)}>4</BotonFormulario>}
+                            </div>
+                        </div>
                         <ContenedorMayor>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 {Next === 0 &&
@@ -236,24 +234,6 @@ const AgendarPrueba = () => {
                                     </>
                                 }
                                 {Next === 3 &&
-                                    isCheckbox &&
-                                    <>
-                                        <label className="form-label mb-1">Documento de Identificación</label>
-                                        <div className="mb-3 d-md-flex">
-                                            <SelectorA className="flex-md-fill col-12 me-md-3" style={{ "width": "180px" }}>
-                                                <option defaultValue>C.C.</option>
-                                                <option value="T.I.">T.I.</option>
-                                                <option value="NIT">NIT</option>
-                                            </SelectorA>
-                                            <InputCont type="text" className="flex-md-fill col-12 mt-2 mt-md-0" onChange={(e) => setCedula(e.target.value)} />
-                                        </div>
-                                        <div>
-                                            <p style={{ "fontSize": "0.8rem", "fontWeight": "300" }}><b>Nota: </b>Al marcar la casilla «La paciente ya tiene cuenta» estas deshabilitando la creación de nuevo paciente, y habilitas la buqueda segun el documento de identidad para ordenar una nueva prueba a una paciente ya existente.</p>
-                                        </div>
-                                    </>
-                                }
-                                {Next === 3 &&
-                                    !isCheckbox &&
                                     <>
                                         <div className="mb-3">
                                             <label className="form-label mb-1">Correo Electrónico</label>
@@ -274,20 +254,10 @@ const AgendarPrueba = () => {
                                 }
                                 {Next === 3 &&
                                     <>
-                                        <Checkbox className="checkbox text-center">
-                                            <label><input type="checkbox" onClick={() => setCheckbox(!isCheckbox)} /> La paciente ya tiene cuenta</label>
-                                        </Checkbox>
-
-                                        {isCheckbox ?
-                                            <div className="d-flex justify-content-center mt-4 pt-2">
-                                                <BotonMorado type="button" onClick={CheckFunction}>Buscar & Ordenar</BotonMorado>
-                                            </div>
-                                            :
-                                            <div className="d-flex justify-content-between mt-4 pt-2">
-                                                <BotonMorado type="button" onClick={atras}>Atrás</BotonMorado>
-                                                <BotonMorado type="button" onClick={handleSubmit(onSubmit)}>Crear</BotonMorado>
-                                            </div>
-                                        }
+                                        <div className="d-flex justify-content-between mt-4 pt-2">
+                                            <BotonMorado type="button" onClick={atras}>Atrás</BotonMorado>
+                                            <BotonMorado type="button" onClick={handleSubmit(onSubmit)}>Crear</BotonMorado>
+                                        </div>
                                     </>
                                 }
                             </form>

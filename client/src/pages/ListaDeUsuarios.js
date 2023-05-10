@@ -75,7 +75,7 @@ const ListaDeUsuarios = () => {
                                     {listaUser.map((lista) => {
                                         if (lista.role === option) {
                                             return (
-                                                <tr key={lista._id} >
+                                                <tr key={lista._id} className='text-dark' >
                                                     <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
                                                     <td>{lista.role}</td>
                                                     <td className="d-none d-lg-block">{lista.personalID}</td>
@@ -89,7 +89,7 @@ const ListaDeUsuarios = () => {
                                             );
                                         } else if (option === "Todos") {
                                             return (
-                                                <tr key={lista._id} >
+                                                <tr key={lista._id} className='text-dark' >
                                                     <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
                                                     <td>{lista.role}</td>
                                                     <td className="d-none d-lg-block">{lista.personalID}</td>
@@ -134,6 +134,7 @@ const ListaDeUsuarios = () => {
                 dataUsers={dataUsers} 
                 estado = {'Nulo'}/>
             <MostrarDatosUser
+                estado={'Nulo'}
                 idUser={idUser}
                 isOpen={isDatosEdit}
                 cerrado={datosEditCerrado} />

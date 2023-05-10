@@ -87,7 +87,7 @@ const CargarResultado = () => {
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div className="input-group mb-2 d-flex text-center">
+                                <div className="input-group mb-2 d-flex text-center text-dark">
                                     <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Trisomia 21(T21)</MostrarText>
                                     <MostrarText className="flex-fill">
                                         {selected === 'Menor 1/10,000 (0.01%)'
@@ -111,7 +111,7 @@ const CargarResultado = () => {
                                     <InputCont className="flex-fill" placeholder="Recomendación" style={{ "fontSize": "0.9rem" }} {...register("recoT21")} />
                                 </div>
                                 {errors?.recoT21 && (<div className="mt-2 alert alert-danger" role="alert">{errors.recoT21.message}</div>)}
-                                <div className="input-group mb-2 d-flex text-center">
+                                <div className="input-group mb-2 d-flex text-center text-dark">
                                     <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Trisomia 18(T18)</MostrarText>
                                     <MostrarText className="flex-fill">
                                         {selectedB === 'Menor 1/10,000 (0.01%)'
@@ -135,7 +135,7 @@ const CargarResultado = () => {
                                     <InputCont className="flex-fill" placeholder="Recomendación" style={{ "fontSize": "0.9rem" }} {...register("recoT18")} />
                                 </div>
                                 {errors?.recoT18 && (<div className="mt-2 alert alert-danger" role="alert">{errors.recoT18.message}</div>)}
-                                <div className="input-group mb-2 d-flex text-center">
+                                <div className="input-group mb-2 d-flex text-center text-dark">
                                     <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Trisomia 13(T13)</MostrarText>
                                     <MostrarText className="flex-fill">
                                         {selectedC === 'Menor 1/10,000 (0.01%)'
@@ -159,7 +159,7 @@ const CargarResultado = () => {
                                     <InputCont className="flex-fill" placeholder="Recomendación" style={{ "fontSize": "0.9rem" }} {...register("recoT13")} />
                                 </div>
                                 {errors?.recoT13 && (<div className="mt-2 alert alert-danger" role="alert">{errors.recoT13.message}</div>)}
-                                <div className="input-group mb-2 d-flex text-center">
+                                <div className="input-group mb-2 d-flex text-center text-dark">
                                     <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Sexo Fetal</MostrarText>
                                     <SelectorA className="flex-fill" style={{ "fontSize": "0.9rem", "width": "7rem" }} {...register("SexoFetal")}>
                                         <option defaultValue>Femenino</option>
@@ -181,7 +181,7 @@ const CargarResultado = () => {
                                     <InputCont className="flex-fill" placeholder="Recomendación" style={{ "fontSize": "0.9rem" }} {...register("recoSexoFetal")} />
                                 </div>
                                 {errors?.recoSexoFetal && (<div className="mt-2 alert alert-danger" role="alert">{errors.recoSexoFetal.message}</div>)}
-                                <div className="input-group mb-4 d-flex text-center">
+                                <div className="input-group mb-4 d-flex text-center text-dark">
                                     <MostrarText className="flex-fill" style={{ "width": "8rem" }}>Análisis X,Y</MostrarText>
                                     <InputCont className="flex-fill text-center text-uppercase" placeholder="XX, XY, ..." style={{ "fontSize": "0.9rem", "width": "7rem" }} {...register("Analisis")} />
                                     <SelectorA

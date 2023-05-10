@@ -43,13 +43,13 @@ usersCtrl.createUser = async (req, res) => {
             name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion
         })
         newUser.password = await newUser.encryptPassword(password);
-        await newUser.save();
-        return res.json({ message: 'Usuario creado con exito' });
+        const idUser = await newUser.save();
+        return res.json({ message: 'Usuario creado con exito', idUser: idUser._id });
     }
 }
 
 //Petición editar datos de un usuario
-const saveEditedData = async ({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res,req }) => {
+const saveEditedData = async ({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req }) => {
     try {
         await UserModel.findById(req.params.id, async (err, doc) => {
             if (err) return false;
@@ -59,7 +59,7 @@ const saveEditedData = async ({ name, lastnameA, lastnameB, personalIDtype, pers
             doc.password = await bcrypt.hash(password, salt);
             doc.save();
         }).clone();
-        return res.json({ message: 'Usuario actualizado con exito' });
+        return res.json({ message: 'Usuario actualizado con exito', });
     } catch (e) {
         return res.json({ error: 'Usuario no actualizado' });
     }
@@ -74,20 +74,20 @@ usersCtrl.updateUser = async (req, res) => {
         if (emailUser) {
             return res.json({ error: 'El correo ya existe en la base de datos' })
         } else {
-            saveEditedData({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req})
+            saveEditedData({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req })
         }
     } else if (personalID !== ActualData.personalID) {
         if (numberIDUser) {
             return res.json({ error: 'El número de identificación ya existe en la base de datos' })
         } else {
-            saveEditedData({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req})
+            saveEditedData({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req })
         }
     } else if (password !== passwordConfirmation) {
         return res.json({ error: 'Las contraseñas no coinciden' })
     } else if (password.length < 6) {
         return res.json({ error: 'La contraseña debe tener más de 6 caracteres' })
     } else {
-        saveEditedData({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req})
+        saveEditedData({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req })
     }
 }
 
@@ -109,10 +109,10 @@ usersCtrl.usersPaciente = async (req, res) => {
     const today = new Date();
     if (sorted === 'Más antiguos') {
         if (estado === 'Ordenado') {
-            const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).sort({ createdAt: 1 });
+            const usuarios = await CitasModel.find({ estado: 'Nulo' }).populate('idUser').sort({ createdAt: -1 });
             return res.json(usuarios);
         } else if (estado === 'Agendado') {
-            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({ citadate: -1 });
+            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Agendado' }).populate('idUser').sort({ citadate: -1 });
             //const ids = dates.map(dataUser => { return dataUser.idUser });
             //const usuarios = await UserModel.find({ '_id': { $in: ids }, estado: estado, role: 'Paciente' }).clone();
             return res.json(usuarios);
@@ -139,10 +139,10 @@ usersCtrl.usersPaciente = async (req, res) => {
         }
     } else {
         if (estado === 'Ordenado') {
-            const usuarios = await UserModel.find({ role: 'Paciente', estado: estado }).sort({ createdAt: -1 });
+            const usuarios = await CitasModel.find({ estado: 'Nulo' }).populate('idUser').sort({ createdAt: 1 });
             return res.json(usuarios);
         } else if (estado === 'Agendado') {
-            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Nulo' }).populate('idUser').sort({ citadate: 1 });
+            const usuarios = await CitasModel.find({ citadate: { $gte: today.setDate(today.getDate() - 0.5) }, estado: 'Agendado' }).populate('idUser').sort({ citadate: 1 });
             //const ids = dates.map(dataUser => { return dataUser.idUser });
             //const usuarios = await UserModel.find({ '_id': { $in: ids }, estado: estado, role: 'Paciente' }).clone();
             return res.json(usuarios);
@@ -170,19 +170,71 @@ usersCtrl.usersPaciente = async (req, res) => {
     }
 }
 
-//Petición buscar y devolver un usuario según la cedula
+//Petición editar datos del paciente
+const saveEditedDataPaciente = async ({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req }) => {
+    try {
+        const idUser = await UserModel.findOne({ personalID: req.params.id }, async (err, doc) => {
+            if (err) return false;
+            doc.name = name; doc.lastnameA = lastnameA; doc.lastnameB = lastnameB; doc.personalIDtype = personalIDtype; doc.personalID = personalID; doc.datebirth = datebirth; doc.genero = genero; doc.bloodType = bloodType; doc.blood = blood; doc.EPS = EPS; doc.celular = celular; doc.celular2 = celular2; doc.direccion = direccion; doc.ciudad = ciudad; doc.departamento = departamento; doc.email = email; doc.role = role; doc.estado = estado; doc.embarazo = embarazo, doc.recomendacion = recomendacion;
+
+            const salt = await bcrypt.genSalt(10);
+            doc.password = await bcrypt.hash(password, salt);
+            doc.save();
+        }).clone();
+        return res.json({ message: 'Prueba ordenada exitosamente', idUser: idUser._id });
+    } catch (e) {
+        return res.json({ error: 'Ocurrió un error' });
+    }
+}
 usersCtrl.findAndUpdateOneStateUser = async (req, res) => {
-    const { estado } = req.body;
     const usuario = await UserModel.findOne({ personalID: req.params.id })
     if (usuario) {
+        const { name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, passwordConfirmation, role, estado, embarazo, recomendacion } = req.body;
         if (usuario.role === 'Paciente') {
-            await UserModel.findOneAndUpdate({ _id: usuario._id }, { estado: estado });
-            return res.json({ message: 'Prueba ordenada exitosamente' });
+            const emailUser = await UserModel.findOne({ email: email })
+            const numberIDUser = await UserModel.findOne({ personalID: personalID })
+            if (email !== usuario.email) {
+                if (emailUser) {
+                    return res.json({ error: 'El correo ya existe en la base de datos' })
+                } else {
+                    saveEditedDataPaciente({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req })
+                }
+            } else if (personalID !== usuario.personalID) {
+                if (numberIDUser) {
+                    return res.json({ error: 'El número de identificación ya existe en la base de datos' })
+                } else {
+                    saveEditedDataPaciente({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req })
+                }
+            } else if (password !== passwordConfirmation) {
+                return res.json({ error: 'Las contraseñas no coinciden' })
+            } else if (password.length < 6) {
+                return res.json({ error: 'La contraseña debe tener más de 6 caracteres' })
+            } else {
+                saveEditedDataPaciente({ name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion, res, req })
+            }
         } else {
-            return res.json({ error: 'El documento de identificación no corresponde a un paciente' })
+            return res.json({ error: 'El número de identificación ya existe en la base de datos' })
         }
     } else {
-        return res.json({ error: 'El documento de identificación no existe en la base de datos.' })
+        const { name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, passwordConfirmation, role, estado, embarazo, recomendacion } = req.body;
+        const emailUser = await UserModel.findOne({ email: email })
+        const numberIDUser = await UserModel.findOne({ personalID: personalID })
+        if (emailUser) {
+            return res.json({ error: 'El correo ya existe en la base de datos' })
+        } else if (numberIDUser) {
+            return res.json({ error: 'El número de identificación ya existe en la base de datos' })
+        } else if (password !== passwordConfirmation) {
+            return res.json({ error: 'Las contraseñas no coinciden' })
+        } else if (password.length < 6) {
+            return res.json({ error: 'La contraseña debe tener más de 6 caracteres' })
+        } else {
+            const newUser = new UserModel({
+                name, lastnameA, lastnameB, personalIDtype, personalID, datebirth, genero, bloodType, blood, EPS, celular, celular2, direccion, ciudad, departamento, email, password, role, estado, embarazo, recomendacion
+            })
+            newUser.password = await newUser.encryptPassword(password);
+            const idUser = await newUser.save();
+            return res.json({ message: 'Usuario creado con exito', idUser: idUser._id });
+        }
     }
 }
 

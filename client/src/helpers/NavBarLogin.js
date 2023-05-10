@@ -5,13 +5,12 @@ import routes from './Routes';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Bars } from './../images/bars.svg';
 
-
 const BotonBarra = ({siderbarClick}) => {
     const { islogged } = useAuth();
     if (!islogged()) {
         return <BotonBlanco to={routes.login} className="d-flex me-3 d-none d-md-block" >Ingresar</BotonBlanco>
     } else {
-        return <Bars type="button" id="sidebarCollapse" alt="" width="25" onClick={siderbarClick} />;
+        return <Bars type="button" alt="" id="sidebarCollapse" width="25" onClick={siderbarClick}/>;
     }
 }
 

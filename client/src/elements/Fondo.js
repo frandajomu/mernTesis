@@ -8,7 +8,7 @@ const Svg = styled.svg`
     bottom: 0;
     z-index: -100;
     path {
-        fill: rgba(135,182,194, .15);
+        fill: #005e9115;
     }
 `;
 

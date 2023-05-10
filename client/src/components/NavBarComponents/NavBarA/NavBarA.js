@@ -14,10 +14,10 @@ const NavA = ({hijoA}) => {
         <div>
             <div className="wrapper">
                 <div id="content" className="container-flex">
-                    <nav className="navbar navbar-expand-lg navbar-dark" style={{ 'backgroundColor': theme.moradoOscuro }}>
+                    <nav className="navbar navbar-expand-lg shadow-sm">
                         <div className="container py-lg-0 pe-lg-5 ps-lg-5">
                             <Link to={routes.home} >
-                                <LogoADN className="py-1 py-lg-0" alt="ADNLogo" width="185" />
+                                <LogoADN className="py-1 py-lg-0" alt="ADNLogo" width="185" fill={theme.naranjaClaro}/>
                             </Link>
                             <ul className="navbar-nav ms-auto mb-lg-0 d-none d-md-block">
                                 <li className="nav-item">

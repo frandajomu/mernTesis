@@ -116,12 +116,12 @@ loginCtrl.ForgetPassword = async (req, res) => {
             const token = JWT.sign(payload, secret, { expiresIn: '15m' })
             const link =  `http://localhost:3000/reset-password/${userID}/${token}`
             sendMail(email, link)
-            return res.json({ message: 'Revisa tu correo electronico' });
+            return res.json({ message: 'Revisa tu correo electrónico' });
         }else{
             return res.json({ error: 'Parece que algo fue mal' });
         }
     }catch(err){
-        return res.json({ error: 'Ocurrio un error' });
+        return res.json({ error: 'Ocurrió un error' });
     }
 }
 

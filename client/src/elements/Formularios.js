@@ -18,7 +18,6 @@ const ContenedorMayor = styled.div`
 
 const InputCont = styled.input`
     border-radius: 30px;
-    color: ${theme.moradoOscuro};
     padding: 0.2rem 1rem;
     border-width: 2px;
     border-style: solid;
@@ -29,7 +28,6 @@ const InputCont = styled.input`
 
 const InputText = styled.textarea`
     border-radius: 25px;
-    color: ${theme.moradoOscuro};
     padding: 0.3rem 1.1rem;
     border-width: 2px;
     border-style: solid;
@@ -40,7 +38,6 @@ const InputText = styled.textarea`
 
 const MostrarText = styled.span`
     border-radius: 25px;
-    color: ${theme.moradoOscuro};
     padding: 0.3rem 1.1rem;
     border-width: 2px;
     border-style: solid;
@@ -51,7 +48,6 @@ const MostrarText = styled.span`
 
 const SelectorA = styled.select`
     border-radius: 30px;
-    color: ${theme.moradoOscuro};
     padding: ${(props) => props.exam ? '0.2rem 1rem' : '0.2rem 1.5rem'}; 
     border-width: 2px;
     border-style: solid;
@@ -82,7 +78,6 @@ const InputContB = styled.div`
     input {
         box-sizing: border-box;
         border-radius: 30px;
-        color: ${theme.moradoOscuro};
         padding: 0.2rem 1.1rem;
         border-width: 2px;
         border-style: solid;
@@ -103,7 +98,6 @@ const InputContB = styled.div`
 /* Contendedores Lista de Usuarios */
 const DataUsuario = styled.td`
     border-radius: 30px;
-    color: ${theme.moradoOscuro};
     padding: 0.2rem 1rem;
     border-width: 2px;
     border-style: solid;

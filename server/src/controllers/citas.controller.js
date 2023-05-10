@@ -64,13 +64,13 @@ citasCtrl.createCita = async (req, res) => {
     } else {
         var turnoMaximo = 10;
     }
-    const { citadate, turno, idUser } = req.body;
+    const { citadate, turno, idUser, OrdenadoPor } = req.body;
     try {
         const turnoHabil = await CitasModel.findOne({ citadate: citadate, turno: turnoMaximo }).clone();
         if (turnoHabil) {
             return res.json({ error: 'El dia fijado para la cita no tiene turnos disponibles, seleccione otro dia' });
         } else {
-            const newCita = new CitasModel({ citadate, turno, idUser })
+            const newCita = new CitasModel({ citadate, turno, idUser, OrdenadoPor })
             await newCita.save();
             return res.json({ message: '¡Cita agendada exitosamente!' });
         }
@@ -79,14 +79,25 @@ citasCtrl.createCita = async (req, res) => {
     }
 }
 
-//Petición editar cita existente
+//Petición editar - crear cita
 citasCtrl.updateCita = async (req, res) => {
-    const { citadate, turno } = req.body;
+    const parametros = await ParamsModel.find();
+    if (parametros.length !== 0) {
+        var turnoMaximo = parametros[0].maxTurno;
+    } else {
+        var turnoMaximo = 10;
+    }
+    const { citadate, turno, estado } = req.body;
     try {
-        await CitasModel.findOneAndUpdate({ idUser: req.params.id }, { citadate: citadate, turno: turno });
-        return res.json({ message: 'Cita actualizada' });
+        const turnoHabil = await CitasModel.findOne({ citadate: citadate, turno: turnoMaximo }).clone();
+        if (turnoHabil) {
+            return res.json({ error: 'El dia fijado para la cita no tiene turnos disponibles, seleccione otro dia' });
+        } else {
+            await CitasModel.findOneAndUpdate({ _id: req.params.id }, { citadate: citadate, turno, estado: estado});
+            return res.json({ message: '¡Cita agendada exitosamente!' });
+        }
     } catch (e) {
-        return res.json({ error: 'Hubo un error, cita no actualizada' });
+        return res.json({ error: 'Hubo un error, cita no agendada' });
     }
 }
 

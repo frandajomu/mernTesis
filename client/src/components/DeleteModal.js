@@ -7,7 +7,7 @@ import theme from '../theme';
 import { ReactComponent as AlertaLogo } from './../images/AlertaLogo.svg';
 
 const DeleteModal = () => {
-    
+    //Todas las funciones de este modal están deshabilitadas debido a los últimos cambios realizados según las directrices.
     const {logout} = useAuth();
     const [DeleteMyPerfil] = userDeleteMyPerfil();
 
@@ -30,7 +30,7 @@ const DeleteModal = () => {
                     <div className="modal-content">
                         <div className="modal-header" style={{ "backgroundColor": theme.naranjaOscuro }}>
                             <div className="col d-flex justify-content-center">
-                                <h3 className="modal-title text-light" id="deleteModalLabel"><b>ADVERTENCÍA</b></h3>
+                                <h3 className="modal-title text-light" id="deleteModalLabel"><b>ADVERTENCIA</b></h3>
                             </div>
                             <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -40,7 +40,7 @@ const DeleteModal = () => {
                             </div>
                             <div className="col-sm-8 col-12">
                                 <p>¡Estas a punto de eliminar tu cuenta de usuario! </p>
-                                <p>Perderas el acceso de manera definitiva. Todos los datos creados con tu cuenta actual no se perderan.</p>
+                                <p>Perderás el acceso de manera definitiva. Todos los datos creados con tu cuenta actual no se perderán.</p>
                                 <p>¿Deseas continuar?</p>
                             </div>
                         </div>

@@ -1,11 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&display=swap');
 :root{
-    --moradoOscuro: #241A44;
-    --moradoClaro: #3B3470;
-    --naranjaOscuro: #ED6D1A;
-    --naranjaClaro: #E97D36;
-    --grisClaro: #E8EFF1;
-    --grisClaro2: #CBDDE2;
+    --moradoOscuro: #005e91;
+    --moradoClaro: #058ED9;
+    --naranjaOscuro: #005e91;
+    --naranjaClaro: #006ba5;
 }
 @media (max-width: 700px) {
 

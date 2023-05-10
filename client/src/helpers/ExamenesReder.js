@@ -22,7 +22,7 @@ const ExamenesRender = ({ infoList, dataUsers, estado, setOption }) => {
 
     useEffect(() => {
         setUsuarios(infoList)
-    },[infoList])
+    }, [infoList])
 
     //ID al dar click en eliminar un usuario para DeleteUsuario y EditModal
     const [idUsuario, setIDUser] = useState();
@@ -89,45 +89,32 @@ const ExamenesRender = ({ infoList, dataUsers, estado, setOption }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {estado === 'Ordenado' ?
-                                        usuarios.map((lista, index) => {
-                                            return (
-                                                <tr key={index} >
-                                                    <td>{lista.name + ' ' + lista.lastnameA + ' ' + lista.lastnameB}</td>
-                                                    <td>{lista?.embarazo && whatGestacion(lista?.embarazo) + ' dias'}</td>
-                                                    <td className="d-none d-lg-block">{lista.personalID}</td>
-                                                    <BotonesExamenesRender
-                                                        lista={lista}
-                                                        estado={estado}
-                                                        handleClick={handleClick}
-                                                        setIDUser={setIDUser}
-                                                    />
-                                                </tr>
-                                            );
-                                        })
-                                        :
-                                        usuarios.map((lista, index) => {
-                                            return (
-                                                <tr key={index} >
-                                                    <td>{lista.idUser.name + ' ' + lista.idUser.lastnameA + ' ' + lista.idUser.lastnameB}</td>
-                                                    <td>{optionCol === 'Cita' && lista?.citadate && formatearFecha(lista?.citadate)}
+                                    {usuarios.map((lista, index) => {
+                                        return (
+                                            <tr key={index} className='text-dark' >
+                                                <td>{lista?.idUser.name + ' ' + lista?.idUser.lastnameA + ' ' + lista?.idUser.lastnameB}</td>
+                                                {estado === 'Ordenado' ?
+                                                    <td>{lista?.idUser.embarazo && whatGestacion(lista?.idUser.embarazo) + ' dias'}</td>
+                                                    :
+                                                    <td>
+                                                        {optionCol === 'Cita' && lista?.citadate && formatearFecha(lista?.citadate)}
                                                         {optionCol === 'Turno' && lista?.turno}
                                                         {optionCol === 'Gestación' && lista?.idUser.embarazo && whatGestacion(lista?.idUser.embarazo) + ' dias'}
                                                         {optionCol === 'Celular' && lista?.idUser.celular}
                                                     </td>
-                                                    <td className="d-none d-lg-block">{lista.idUser.personalID}</td>
-                                                    <BotonesExamenesRender
-                                                        lista={lista}
-                                                        estado={estado}
-                                                        handleClick={handleClick}
-                                                        setIDUser={setIDUser}
-                                                        setIDCita={setIDCita}
-                                                    />
-                                                </tr>
-                                            );
-                                        })
+                                                }
+                                                <td className="d-none d-lg-block">{lista?.idUser.personalID}</td>
+                                                <BotonesExamenesRender
+                                                    lista={lista}
+                                                    estado={estado}
+                                                    handleClick={handleClick}
+                                                    setIDUser={setIDUser}
+                                                    setIDCita={setIDCita}
+                                                />
+                                            </tr>
+                                        );
+                                    })
                                     }
-
                                 </tbody>
                             </table>
                             {/*
@@ -171,6 +158,7 @@ const ExamenesRender = ({ infoList, dataUsers, estado, setOption }) => {
                 estado={estado}
                 dataUsers={dataUsers} />
             <MostrarDatosUser
+                estado={estado}
                 idUser={idUsuario}
                 isOpen={isDatosEdit}
                 cerrado={datosEditCerrado}

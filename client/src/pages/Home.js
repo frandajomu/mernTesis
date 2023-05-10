@@ -47,19 +47,19 @@ const Home = () => {
                             </div>
                             <div className="col-md-3 py-3 text-center">
                                 <CardsStyle className="card py-3">
-                                    <CardsC className="mx-auto" width="50%" alt="CardsC" />
+                                    <CardsC className="mx-auto" width="50%" alt="CardsC" fill={theme.moradoOscuro}/>
                                     <div className="card-body">
                                         <h4>Pertinente</h4>
-                                        <p className="card-text">Desde la decima semana de gestación.</p>
+                                        <p className="card-text">Desde la décima semana de gestación.</p>
                                     </div>
                                 </CardsStyle>
                             </div>
                             <div className="col-md-3 py-3 text-center">
                                 <CardsStyle className="card py-3">
-                                    <CardsD className="mx-auto" width="60%" alt="CardsD" />
+                                    <CardsD className="mx-auto" width="60%" alt="CardsD" fill={theme.naranjaClaro}/>
                                     <div className="card-body">
                                         <h4>Rápido</h4>
-                                        <p className="card-text">Resultados listos en menos de 14 dias.</p>
+                                        <p className="card-text">Resultados listos en menos de 14 días.</p>
                                     </div>
                                 </CardsStyle>
                             </div>
@@ -166,7 +166,7 @@ const Home = () => {
                 <footer className="mt-3 bg-light">
                     <div className="row d-flex h-100">
                         <div className="col-md-5 my-auto">
-                            <LogoADNB className="img-fluid mx-auto d-none d-md-block" alt="LogoFin" style={{ "width": "60%" }} />
+                            <LogoADNB fill={theme.naranjaClaro} className="img-fluid mx-auto d-none d-md-block" alt="LogoFin" style={{ "width": "60%" }} />
                         </div>
                         <TextosFooter className="col-md-4 py-4 ps-md-5 bg-primary text-light">
                             <h3>Conoce más</h3>

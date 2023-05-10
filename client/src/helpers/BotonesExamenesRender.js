@@ -17,13 +17,13 @@ const BotonesExamenesRender = ({ lista, estado, handleClick, setIDUser, setIDCit
             return (
                 <>
                     {usuario.role === roles.medico &&
-                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => handleClick(lista._id)}><IconoVerMas /></BotonIconoListaUsers></td>
+                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => { handleClick(lista.idUser._id); setIDCita(lista._id) }}><IconoVerMas /></BotonIconoListaUsers></td>
                     }
                     {usuario.role === roles.laboratorio &&
-                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => handleClick(lista._id)}><IconoCalendarCheck /></BotonIconoListaUsers></td>
+                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => { handleClick(lista.idUser._id); setIDCita(lista._id) }}><IconoCalendarCheck /></BotonIconoListaUsers></td>
                     }
                     {usuario.role === roles.admin &&
-                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => handleClick(lista._id)}><IconoVerMas /></BotonIconoListaUsers></td>
+                        <td className="px-0 mx-0"><BotonIconoListaUsers onClick={() => { handleClick(lista.idUser._id); setIDCita(lista._id) }}><IconoVerMas /></BotonIconoListaUsers></td>
                     }
                 </>
             );

@@ -16,7 +16,7 @@ const NavB = ({hijoB}) => {
         <div>
             <div className="wrapper">
                 <div id="content" className="container-flex">
-                    <nav className="navbar navbar-expand-lg navbar-dark" style={{ 'backgroundColor': theme.moradoOscuro }}>
+                    <nav className="navbar navbar-expand-lg navbar-dark" style={{ 'backgroundColor': theme.moradoClaro }}>
                         <div className="container py-lg-0 pe-lg-5 ps-lg-5">
                             <Link to={routes.home} >
                                 <LogoADN className="py-1 py-lg-0" alt="ADNLogo" width="185" />

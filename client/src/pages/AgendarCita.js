@@ -10,22 +10,23 @@ import '../css/Calendar.css';
 import { Helmet } from "react-helmet";
 import Fondo from "../elements/Fondo";
 import { BotonMorado } from "../elements/Botones";
-import useCreateCita from "../hooks/citas/useCreateCita";
 import { notError, notExito } from "../elements/notifyToasty";
 import useGetTurno from "../hooks/citas/useGetTurno";
 import { parseISO } from "date-fns";
 import { useNavigate, useParams } from "react-router-dom";
 import routes from "../helpers/Routes";
 import useConfigCitas from "../hooks/admin/useConfigCitas";
-import useGetUsuario from "../hooks/useGetUsuario";
 import useChangeState from "../hooks/citas/useChangeState";
+import useGetOneCita from "../hooks/citas/useGetOneCita";
+import useEditCita from "../hooks/citas/useEditCita";
 
 
 const AgendarCita = () => {
 
   //Recibiendo Cedula del usuario 
   const { id } = useParams();
-  const [usuario] = useGetUsuario({ id });
+  const [cita] = useGetOneCita({ id });
+  const usuario = cita?.idUser;
   const [EditEstadoPaciente] = useChangeState();
 
   //Obteniendo variables globales
@@ -46,12 +47,12 @@ const AgendarCita = () => {
   const [desableDate2, setdesableDate2] = useState([]);
 
 
-  //Función conocer al hacer clic sobre Dias desabilitados
+  //Función conocer al hacer clic sobre Dias deshabilitados
   const handleDisabledSelect = () => {
     notError({ textoNot: 'Estas tratando de seleccionar un dia no hábil' })
   };
 
-  //Obtención de fechas no habiles para selección
+  //Obtención de fechas no hábiles para selección
   const [turnoInfo, turnoDeseable] = useGetTurno()
 
   const FechasNoHabiles = async () => {
@@ -102,19 +103,19 @@ const AgendarCita = () => {
   }
 
   //Conexión base de datosEditCerrado
-  const [CreateCita] = useCreateCita();
+  const [EditCitaData] = useEditCita({ id });
   const datedb = {
     citadate: new Date(selectedDay.year, selectedDay.month - 1, selectedDay.day),
     turno: gotTurn,
-    idUser: usuario?._id
+    estado: 'Agendado'
   }
 
   const dataEstado = { 'estado': 'Agendado' }
   const navigate = useNavigate();
   const handleSubmit = async () => {
-    const res = await CreateCita(datedb)
+    const res = await EditCitaData(datedb, { id })
     if (res.message) {
-      const res2 = await EditEstadoPaciente(dataEstado, { id })
+      const res2 = await EditEstadoPaciente(dataEstado, { id: cita?.idUser._id })
       if (res2.message) {
         notExito({ textoNot: res.message })
         navigate(routes.pruebasAgendadas)

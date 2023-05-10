@@ -9,6 +9,7 @@ import useGetBars from '../hooks/estadisticas/useGetBars';
 import useGetLine from '../hooks/estadisticas/useGetLine';
 import useGetPie from '../hooks/estadisticas/useGetPie';
 import useGetTotalPruebas from '../hooks/estadisticas/useGetTotalPruebas';
+import theme from '../theme';
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, BarElement, LineElement, Title, Tooltip, Legend, Filler);
 
@@ -65,19 +66,26 @@ const Estadisticas = () => {
   //Total pruebas analizadas
   const TotalPruebas = useGetTotalPruebas();
 
-
+  const coloTrisomia13 = '#39C08F';
+  const matrizColoresPie = [
+    '#FF990095',
+    theme.moradoOscuro + '95',
+    theme.naranjaOscuro + '95',
+    coloTrisomia13 + '95',
+  ];
+  
   const dataBars = {
     labels: trisomia,
     datasets: [
       {
         label: 'Femenino',
         data: woman,
-        backgroundColor: 'rgb(36, 26, 68)',
+        backgroundColor: theme.moradoOscuro,
       },
       {
         label: 'Masculino',
         data: man,
-        backgroundColor: 'rgb(237, 109, 26)',
+        backgroundColor: theme.naranjaOscuro,
       },]
   }
 
@@ -88,27 +96,27 @@ const Estadisticas = () => {
         label: "Trisomía 21",
         data: scores,
         tension: 0.3,
-        borderColor: "rgb(36, 26, 68)",
-        pointBackgroundColor: 'rgb(36, 26, 68)',
-        backgroundColor: 'rgb(36, 26, 68)',
+        borderColor: theme.moradoOscuro,
+        pointBackgroundColor: theme.moradoOscuro,
+        backgroundColor: theme.moradoOscuro,
         pointRadius: 6,
       },
       {
         label: "Trisomía 18",
         tension: 0.3,
         data: scores2,
-        borderColor: "rgb(237, 109, 26)",
-        pointBackgroundColor: 'rgb(237, 109, 26)',
-        backgroundColor: 'rgb(237, 109, 26)',
+        borderColor: theme.naranjaOscuro,
+        pointBackgroundColor: theme.naranjaOscuro,
+        backgroundColor: theme.naranjaOscuro,
         pointRadius: 6,
       },
       {
         label: "Trisomía 13",
         tension: 0.3,
         data: scores3,
-        borderColor: "rgb(0, 138, 154)",
-        pointBackgroundColor: "rgb(0, 138, 154)",
-        backgroundColor: "rgb(0, 138, 154)",
+        borderColor: coloTrisomia13,
+        pointBackgroundColor: coloTrisomia13,
+        backgroundColor: coloTrisomia13,
         pointRadius: 6,
       },
     ]
@@ -120,18 +128,8 @@ const Estadisticas = () => {
       {
         label: '# of Votes',
         data: pie[0],
-        backgroundColor: [
-          'rgba(255, 158, 0, 0.7)',
-          'rgba(36, 26, 68, 0.7)',
-          'rgba(237, 109, 26, 0.7)',
-          'rgba(0, 138, 154, 0.7)',
-        ],
-        borderColor: [
-          'rgba(255, 158, 0, 0.7)',
-          'rgba(36, 26, 68, 0.7)',
-          'rgba(237, 109, 26, 0.7)',
-          'rgba(0, 138, 154, 0.7)',
-        ],
+        backgroundColor: matrizColoresPie,
+        borderColor: matrizColoresPie,
         borderWidth: 1,
       },
     ],

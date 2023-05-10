@@ -6,6 +6,7 @@ const citaSchema = new Schema(
         turno: { type: String, required: true },
         idUser: { type: Schema.Types.ObjectId, ref: 'User' },
         estado: { type: String, default: 'Nulo' },
+        OrdenadoPor: { type: String, default: '' },
     },
     {
         timestamps: true

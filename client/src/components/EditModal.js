@@ -106,26 +106,18 @@ const EditModal = ({ isOpen, cerrado, MyPerfil }) => {
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <div className="mb-3">
                                         <label className="form-label">Nombre</label>
-                                        <input type="text" className="form-control" {...register("name")} />
+                                        <input type="text" className='form-control disabled' disabled {...register("name")}/>
                                         {errors?.name && (<div className="form-text"><div className="alert alert-danger" role="alert">{errors.name.message}</div></div>)}
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Primer apellido</label>
-                                        <input type="text" className="form-control" {...register("lastnameA")} />
+                                        <input type="text" className="form-control" disabled {...register("lastnameA")} />
                                         {errors?.lastnameA && (<div className="form-text"><div className="alert alert-danger" role="alert">{errors.lastnameA.message}</div></div>)}
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Segundo apellido</label>
-                                        <input type="text" className="form-control" {...register("lastnameB")} />
+                                        <input type="text" className="form-control" disabled {...register("lastnameB")} />
                                         {errors?.lastnameB && (<div className="form-text"><div className="alert alert-danger" role="alert">{errors.lastnameB.message}</div></div>)}
-                                    </div>
-                                    <div className="mb-3">
-                                        <label className="form-label">Tipo de Identificación</label>
-                                        <select className="form-select" {...register("personalIDtype")}>
-                                            <option defaultValue>C.C.</option>
-                                            <option value="T.I.">T.I.</option>
-                                            <option value="NIT">NIT</option>
-                                        </select>
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label">Correo</label>
@@ -133,8 +125,16 @@ const EditModal = ({ isOpen, cerrado, MyPerfil }) => {
                                         {errors?.email && (<div className="form-text"><div className="alert alert-danger" role="alert">{errors.email.message}</div></div>)}
                                     </div>
                                     <div className="mb-3">
+                                        <label className="form-label">Tipo de Identificación</label>
+                                        <select className="form-select" disabled {...register("personalIDtype")}>
+                                            <option defaultValue>C.C.</option>
+                                            <option value="T.I.">T.I.</option>
+                                            <option value="NIT">NIT</option>
+                                        </select>
+                                    </div>
+                                    <div className="mb-3">
                                         <label className="form-label">Número de Identificación</label>
-                                        <input type="text" className="form-control" {...register("personalID")} />
+                                        <input type="text" className="form-control" disabled {...register("personalID")} />
                                         {errors?.personalID && (<div className="form-text"><div className="alert alert-danger" role="alert">{errors.personalID.message}</div></div>)}
                                     </div>
                                     <div className="mb-3">
@@ -156,7 +156,7 @@ const EditModal = ({ isOpen, cerrado, MyPerfil }) => {
                                             )}
                                         />
                                     </div>
-                                    <label className="form-label">Genero</label>
+                                    <label className="form-label">Grupo sanguíneo</label>
                                     <div className="mb-3 d-flex">
                                         <input type="text" className="form-control me-2" {...register("bloodType")} />
                                         <select className="form-select" {...register("blood")}>

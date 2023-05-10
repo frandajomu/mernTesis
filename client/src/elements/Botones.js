@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import theme from '../theme';
 
 const BotonBlanco = styled(Link)`
-    background: #ffff;
-    color: ${theme.moradoOscuro};
+    background: ${theme.moradoOscuro};
+    color: #ffff;
     border: none;
     border-radius: 30px;
     padding: 0.1rem 0.9rem;
@@ -18,13 +18,13 @@ const BotonBlanco = styled(Link)`
     transition: .3s ease all;
  
     &:hover {
-        color: ${theme.moradoOscuro};
-        background: ${theme.grisClaro}};
+        color: #ffff;
+        background: ${theme.moradoClaro}};
     }
 `;
 
 const BotonMorado = styled.button`
-    background: ${theme.moradoOscuro};
+    background: ${theme.naranjaOscuro};
     color: #ffff;
     border: none;
     border-radius: 30px;
@@ -39,7 +39,7 @@ const BotonMorado = styled.button`
  
     &:hover {
         color: #ffff;
-        background: ${theme.moradoClaro}};
+        background: ${theme.naranjaClaro}};
     }
 `;
 
@@ -121,7 +121,7 @@ const BotonNaranjaModal = styled.button`
 
 const BotonMoradoModal = styled.button`
     color: #ffff;
-    background: ${theme.moradoOscuro};
+    background: ${theme.naranjaOscuro};
     cursor: pointer;
     text-decoration: none;
     align-items: center;
@@ -129,12 +129,12 @@ const BotonMoradoModal = styled.button`
  
     &:hover {
         color: #ffff;
-        background: ${theme.moradoClaro};
+        background: ${theme.naranjaClaro};
     }
 `;
 
 const BotonFormulario = styled.button`
-    ${props =>  props.active ? css` {
+    ${props => props.active ? css` {
         color: #ffff;
         background: ${theme.moradoOscuro};
         border-color: ${theme.moradoOscuro};
@@ -165,7 +165,7 @@ const BotonFormulario = styled.button`
 
 const BotonIconoListaUsers = styled.button`
     outline: none;
-    background: ${theme.grisClaro};
+    background: ${theme.naranjaOpaco1};
     border: none;
     width: 1.5rem; 
     height: 1.5rem; 
@@ -178,12 +178,12 @@ const BotonIconoListaUsers = styled.button`
     justify-content: center;
  
     &:hover {
-        background: ${theme.grisClaro2};
+        background: ${theme.naranjaOpaco2};
     }
  
     svg {
         width: 0.8rem; /* 18px */
-        fill: ${theme.moradoOscuro}
+        fill: ${theme.naranjaOscuro}
     }
  
     @media (max-width: 50rem) { /* 80px */
@@ -191,4 +191,4 @@ const BotonIconoListaUsers = styled.button`
     }
 `;
 
-export {BotonBlanco, BotonMorado, BotonMoradoDelineado, BotonEditar, BotonEliminar, BotonNaranjaModal, BotonMoradoModal, BotonFormulario, BotonIconoListaUsers};
+export { BotonBlanco, BotonMorado, BotonMoradoDelineado, BotonEditar, BotonEliminar, BotonNaranjaModal, BotonMoradoModal, BotonFormulario, BotonIconoListaUsers };

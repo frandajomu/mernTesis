@@ -107,15 +107,15 @@ const Manual = ({ user }) => {
                         <p>Hola, bienvenido a la plataforma ADN Fetal en Sangre Materna un aplicativo web que te permitirá agendar, generar, realizar y ver los resultados de una prueba de una forma más fácil y práctica.</p>
 
                         <h3 id='GetStart'>Comenzando</h3>
-                        <p> Para ingresar al aplicativo web de ADN Fetal en Sangre Materna, se debe dirigir al siguiente enlace: <a href="https://adnfetaltest.herokuapp.com/">adnfetaltest.herokuapp.com</a>, se te redirigirá a la página de inicio de la plataforma.</p>
+                        <p> Para ingresar al aplicativo web de ADN Fetal en Sangre Materna, se debe dirigir al siguiente enlace: <a href="https://adnfetaltest.com/">adnfetaltest.com</a>, se te redirigirá a la página de inicio de la plataforma.</p>
                         <Images src={Inicio} alt='Inicio' />
 
                         <h3 id='LogIn'>¿Cómo ingresar?</h3>
-                        <p> Una vez estés en la página inicial de la plataforma, puedes dirigirte al botón de ingresar para desplegar, el módulo de Login del sistema, aquí deberás iniciar con el correo y contraseña que diste en el momento que el Administrador o Medico te pidieron al realizar el registro.</p>
+                        <p> Una vez estés en la página inicial de la plataforma, puedes dirigirte al botón de ingresar para desplegar el módulo de Login del sistema, aquí deberás iniciar con el correo y contraseña que diste en el momento que el Administrador o Medico te pidieron al realizar el registro.</p>
                         <Images src={Login} alt='Login' />
 
                         <h3 id='Forget'>Recuperar Clave</h3>
-                        <p> Si no recuerdas la contraseña, podrás recuperarla fácilmente, para esto dirígete a ingresar y presiona en ¿Olvidaste la contraseña?, cambiará el módulo de Login por el de Recuperar Contraseña, ingresa el correo con el que te encuentras registrado en la plataforma, al correo llegara un email con los pasos a seguir para restaurar la contraseña de ingreso.</p>
+                        <p> Si no recuerdas la contraseña podrás recuperarla fácilmente, para esto dirígete a ingresar y presiona en ¿Olvidaste la contraseña?, cambiará el módulo de Login por el de Recuperar Contraseña, ingresa el correo con el que te encuentras registrado en la plataforma, al correo llegará un email con los pasos a seguir para restaurar la contraseña de ingreso.</p>
                         <Images src={ForgetPass} alt='ForgetPass' />
                         <p>Ten en cuenta que el enlace solo estará habilitado por 15 min por la seguridad de tu cuenta, si pasas esos 15 minutos deberás realizar todo el proceso de cambiar contraseña desde cero. Asimismo, si ya utilizaste el link que se te envió a tu correo, es decir si ya cambiaste exitosamente la contraseña y vuelves a olvidarla, dicho enlace ya no te servirá, y deberás realizar la actualización de tu clave nuevamente haciendo todo el proceso de recuperación.</p>
                     </div>
@@ -123,28 +123,28 @@ const Manual = ({ user }) => {
                     {user.role !== roles.paciente ?
                         user.role !== roles.admin ?
                             <div className="col-12">
-                                {user.role === roles.medico &&
+                                {user.role === roles.medico && 
                                     <>
                                         <h3 id='OrdPrueba'>Ordenar Prueba</h3>
-                                        <p>Solo los medicos podran ingresar al modulo de ordenar pruebas, en el apartado de exámenes encontrará el módulo, siga los distintos pasos del formulario, no deberá dejar ninguna casilla sin llenar puesto que el formulario no se enviará. </p>
+                                        <p>Solo los medicos podrán ingresar al modulo de ordenar pruebas, en el apartado de exámenes encontrará el módulo, siga los distintos pasos del formulario, no deberá dejar ninguna casilla sin llenar puesto que el formulario no se enviará. </p>
                                         <Images src={OrdenarPrueba} alt='OrdPrueba' />
-                                        <p>Tenga en cuenta que si la paciente a la cual va a ordenar una prueba ya posee una cuenta de usuario, debido a que quizás ya es su segunda o tercera prueba, presione cuenta y de clic en la casilla la Paciente ya tiene cuenta, el formulario cambiara y solo se le pedirá el número de documento del paciente. Una vez realizado el registro de la prueba, se le redireccionara al módulo de Exámenes Ordenados</p>
+                                        <p>Tenga en cuenta que si la paciente a la cual va a ordenar una prueba ya posee una cuenta de usuario, debido a que quizás ya es su segunda o tercera prueba, el sistema le permitirá generar nuevas ordenes sin ningún problema, deberá ingresar los datos de la paciente cada vez que necesite una orden. Una vez realizado el registro de la prueba, se le redireccionará al módulo de Exámenes Ordenados</p>
                                     </>
                                 }
 
                                 <h3 id='PruebaOrd'>Pruebas Ordenadas</h3>
                                 {user.role === roles.medico &&
                                     <>
-                                        <p>El modulo sera una lista en donde prodra buscar el paciente según su Nombre o cedula, dar orden al listado de pruebas entre más recientes y más antiguos. Además, denotará las pruebas ordenadas del paciente, como médico solo podrá ver la información detallada del paciente dando clic en el botón con el icono más.</p>
+                                        <p>El modulo sera una lista en donde podrá buscar el paciente según su nombre o cédula, dar orden al listado de pruebas entre más recientes y más antiguos. Además, denotará las pruebas ordenadas del paciente, como médico solo podrá ver la información detallada del paciente dando clic en el botón con el icono más.</p>
                                         <Images src={OrMedico} alt='OrMedico' />
                                     </>
                                 }
 
                                 {user.role === roles.laboratorio &&
                                     <>
-                                        <p>A diferencia del rol de medico, como laboratorio debera agendar la cita de la prueba ordenada. Una vez allá ingresado al módulo de clic en el icono de calendario al lado del nombre de la paciente. Se abrirá un cuadro de dialogo, donde podrá cerciorarse que todos los datos coinciden con la paciente a agendar, si está seguro de clic en Agendar Examen. </p>
+                                        <p>A diferencia del rol de medico, como laboratorio deberá agendar la cita de la prueba ordenada. Una vez allá ingresado al módulo de clic en el icono de calendario al lado del nombre de la paciente. Se abrirá un cuadro de dialogo, donde podrá cerciorarse que todos los datos coinciden con la paciente a agendar, si está seguro de clic en Agendar Examen. </p>
                                         <Images src={OrLab} alt='OrLab' />
-                                        <p> Se abrirá una nueva pestaña para agendar la prueba, dependiendo de la configuración inicial que el Administrador allá realizado se permitirá agendar un límite de exámenes por día (turnos diarios), así como también se le limitara el máximo de días que tendrá permitido agendar un examen. seleccionar un día en el calendario y al lado del calendario aparecerá la información relevante del día y turno dado para el paciente, presione en Agendar, y se abrirá el módulo de Pruebas Agendadas. </p>
+                                        <p> Se abrirá una nueva pestaña para agendar la prueba, dependiendo de la configuración inicial que el Administrador allá realizado se permitirá agendar un límite de exámenes por día (turnos diarios), así como también se le limitara el máximo de días que tendrá permitido agendar un examen. Al seleccionar un día en el calendario aparecerá la información relevante del día y turno dado para el paciente, presione en Agendar, y se abrirá el módulo de Pruebas Agendadas. </p>
                                         <Images src={AgeCita} alt='AgeCita' />
 
                                         <h3 id='PruebaAge'>Pruebas Agendadas</h3>
@@ -152,9 +152,9 @@ const Manual = ({ user }) => {
                                         <Images src={AgenLab} alt='AgenLab' />
 
                                         <h3 id='PruebaRea'>Pruebas Realizadas</h3>
-                                        <p>En este modulo encontrará los exámenes que estarán en estado de espera de resultados. Tendrá la opción de cargar los resultados dando clic en el botón con el icono de upload. Verá una ventana flotante en donde debera presionar el boton cargar resultados.</p>
+                                        <p>En este modulo encontrará los exámenes que estarán en estado de espera de resultados. Tendrá la opción de cargar los resultados dando clic en el botón con el icono de upload. Verá una ventana flotante en donde deberá presionar el botón cargar resultados.</p>
                                         <Images src={RealizaLab} alt='RealizaLab' />
-                                        <p>Deberá diligenciar el formulario para Cargar los Resultados, al terminar de clic a subir datos, se notificará en la pantalla el éxito del proceso y se abrirá el Módulo de Resultados.</p>
+                                        <p>Diligencie el formulario para Cargar los Resultados, al terminar de clic a subir datos, se notificará en la pantalla el éxito del proceso y se abrirá el Módulo de Resultados.</p>
                                         <Images src={CargaResult} alt='CargaResult' />
 
                                         <h3 id='PruebaCan'>Pruebas Canceladas</h3>
@@ -180,7 +180,7 @@ const Manual = ({ user }) => {
                             :
                             <div className="col-12">
                                 <h3 id='AdminInicial'>Registro Administrador Inicial</h3>
-                                <p>Se permite la creación inicial exclusiva de un solo Administrador, ingresando al siguiente enlace <a href="https://adnfetaltest.herokuapp.com/registroAdmin">adnfetaltest.herokuapp.com/registroAdmin</a>. Una vez se ingrese al enlace, se topará con un formulario inicial, en el cual se deberá ingresar los distintos datos y seguir los distintos pasos hasta culminar con el formulario. Si ha completado correctamente el formulario aparecerá una breve notificación en la parte superior y se le redireccionará al módulo de Login.
+                                <p>Se permite la creación inicial exclusiva de un solo Administrador, ingresando al siguiente enlace <a href="https://adnfetaltest.com/registroAdmin">adnfetaltest.com/registroAdmin</a>. Una vez se ingrese al enlace, se topará con un formulario inicial, en el cual se deberá ingresar los distintos datos y seguir los distintos pasos hasta culminar con el formulario. Si ha completado correctamente el formulario aparecerá una breve notificación en la parte superior y se le redireccionará al módulo de Login.
                                 </p>
                                 <Images src={AdminInicial} alt='AdminInicial' />
                                 <p>Deberá tener extrema precaución con el correo y contraseña diligenciado como administrador, ya que, una vez creado el primer administrador, se bloqueará el acceso al link, y solo con el administrador inicial se podrá crear un nuevo usuario.</p>
@@ -188,7 +188,7 @@ const Manual = ({ user }) => {
                                 <h3 id='UserRegister'>Registro de Usuarios</h3>
                                 <p>Solo los usuarios Administradores tendrán permitido crear usuario distintos al rol de paciente, no existe ningún otro medio posible para registrarse en la plataforma. Realizado el login, diríjase al apartado de Admin y de clic en Agregar usuario. </p>
                                 <Images src={UserRegister} alt='UserRegister' />
-                                <p>Se debe diligenciar todos los datos, correo y contraseña de la cuenta, además de asignarle un rol al nuevo usuario. Si se completa correctamente el formulario de registro, se redireccionará al módulo de Lista de Usuarios. </p>
+                                <p>Se debe diligenciar todos los datos, correo y contraseña de la cuenta, además de asignarle un rol al usuario nuevo. Si se completa correctamente el formulario de registro se redireccionará al módulo de Lista de Usuarios. </p>
 
                                 <h3 id='UserList'>Lista de Usuarios</h3>
                                 <p>Podrás ver, editar o eliminar los datos de un usuario, para realizar esto, diríjase a Admin e ingrese a Lista de usuarios.</p>
@@ -207,7 +207,7 @@ const Manual = ({ user }) => {
                                 <Images src={ConfigDates} alt='ConfigDates' />
 
                                 <h3 id='AdminExam'>Exámenes</h3>
-                                <p>En el módulo de exámenes tendrá acceso a cinco submódulos (Pruebas ordenadas, agendadas, realizadas, canceladas y resultados) en los cuales como Administrador podrá ver y editar los datos de los pacientes, igualmente podrá eliminar cualquier registro del paciente, el funcionamiento es similar al apartado de Lista de Usuarios </p>
+                                <p>En el módulo de exámenes tendrá acceso a cinco submódulos (Pruebas ordenadas, agendadas, realizadas, canceladas y resultados) en los cuales como Administrador podrá ver y editar los datos de los pacientes, el funcionamiento es similar al apartado de Lista de Usuarios </p>
                                 <Images src={AdminExam} alt='AdminExam' />
 
                             </div>
@@ -228,9 +228,7 @@ const Manual = ({ user }) => {
                             <>
                                 <p>Podrá ver y editar los datos propios de su cuenta, así mismo podrá actualizar su contraseña si así lo desea. Para ubicarse en el módulo de Perfil, diríjase al menú lateral y de clic en Perfil</p>
                                 <Images src={Perfil} alt='Perfil' />
-                                <p>En la parte final de la pestaña Perfil encontrara las opciones de Editar Cuenta, Cambiar Contraseña o Eliminar Cuenta, en cada una de las acciones permitidas se abrirá una pestaña superpuesta en donde podrá editar o cambiar sus datos según las acciones que se indiquen en la pestaña, se le notificara al guardar o al realizar cualquier cambio.
-                                </p>
-                                <p>Tenga en cuenta que al eliminar su cuenta de Usuario, perderá de manera irrecuperable el acceso a la aplicación, sin embargo, ningún dato creado con su cuenta será eliminado, sino en cambio permanecerán almacenados, solo sus datos y cuentas se borrarán.
+                                <p>En la parte final de la pestaña Perfil encontrara las opciones de Editar Cuenta y Cambiar Contraseña, en cada una de las acciones permitidas se abrirá una pestaña superpuesta en donde podrá editar o cambiar sus datos según las acciones que se indiquen en la pestaña, se le notificara al guardar o al realizar cualquier cambio.
                                 </p>
                             </>
                             :
@@ -242,7 +240,7 @@ const Manual = ({ user }) => {
                         }
 
                         <h3 id='Ayuda'>Contacto & Ayuda</h3>
-                        <p>Como usuario podra generar una petición, queja o reclamo, que se notificará al correo de la plataforma, allí se le hará seguimiento por parte del Administrador. Para esto dirijase al modulo Conoce más, dentro de este podra ver la pestaña de Contacto & Ayuda, vera un formulario sencillo. Si realiza la acción correctamente se le notificará que se envio el mensaje correctamente.</p>
+                        <p>Como usuario podrá generar una petición, queja o reclamo, que se notificará al correo de la plataforma, allí se le hará seguimiento por parte del Administrador. Para esto diríjase al modulo Conoce más, dentro de este podrá ver la pestaña de Contacto & Ayuda, vera un formulario sencillo. Si realiza la acción correctamente se le notificará que se envió el mensaje correctamente.</p>
                         <Images src={Ayuda} alt='Ayuda' />
                     </div>
 

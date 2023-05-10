@@ -101,9 +101,9 @@ const sendMail = async (email, link) => {
                                             <p style="margin-top:0;margin-bottom:12px;">No te preocupes, sabemos que a veces nos
                                                 olvidamos de las cosas por el dia a dia que llevamos, por eso como equipo hemos
                                                 pensado en esas personas olvidadizas.</p>
-                                            <p>Para restaurar el acceso a la plataforma dirigite al boton que tienes aquí abajo.
-                                                Solo podras recuperar una sola vez tu contraseña con el link actual. </p>
-                                            <p>¡Aparte por tu seguridad el link estara habilitado solo por 15 minutos, asi que
+                                            <p>Para restaurar el acceso a la plataforma dirigite al botón que tienes aquí abajo.
+                                                Solo podrás recuperar una sola vez tu contraseña con el link actual. </p>
+                                            <p>¡Aparte por tu seguridad el link estará habilitado solo por 15 minutos, asi que
                                                 date prisa!</p>
                                             <p style="margin:0;"><a href='${link}'
                                                     style="background: #ED6D1A; text-decoration: none; padding: 10px 25px; color: #ffffff; border-radius: 4px; display:inline-block; mso-padding-alt:0;text-underline-color:#E97D36">Recuperar contraseña</span></a></p>
@@ -112,7 +112,7 @@ const sendMail = async (email, link) => {
                                 </tr>
                                 <tr>
                                     <td
-                                        style="margin-bottom:30px;padding:30px;text-align:center;font-size:12px;background-color:#3B3470;color:#cccccc;">
+                                        style="margin-bottom:30px;padding:30px;text-align:center;font-size:12px;background-color:#00517c;color:#cccccc;">
                                         <p style="margin:0 0 8px 0;"><a href="#" style="text-decoration:none;"><img
                                                     src="cid:getiImage" width="250" alt="f"
                                                     style="display:inline-block;color:#cccccc;"></a> <a href="#"

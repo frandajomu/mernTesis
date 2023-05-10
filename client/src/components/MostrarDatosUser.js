@@ -10,7 +10,7 @@ import useGetOneCita from '../hooks/citas/useGetOneCita';
 import BotonesModalMostrarUsuarios from '../helpers/BotonesModalMostrarUsuarios';
 import whatGestacion from '../helpers/whatGestacion';
 
-const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita }) => {
+const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita, estado }) => {
     //Obtenemos datos de usuario por ID
     const [UserList] = useGetUsuario({ id: idUser })
     const [cita] = useGetOneCita({ id: idCita });
@@ -40,7 +40,7 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita }) => {
     const location = useLocation();
     const editar = () => {
         if (UserList.role === 'Paciente') {
-            navigate(routes.editarAgenda(idUser), {state: {from: location}})
+            navigate(routes.editarAgenda(idUser), { state: { from: location } })
         } else {
             navigate(routes.editarUsuario(idUser))
         }
@@ -49,7 +49,7 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita }) => {
     }
 
     const agendarCita = () => {
-        navigate(routes.agendarCita(idUser))
+        navigate(routes.agendarCita(idCita))
         hideModal();
         cerrado();
     }
@@ -95,7 +95,7 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita }) => {
                                     <li className="list-group-item">Correo: {UserList?.email}</li>
                                     <li className="list-group-item">Fecha de nacimiento: {UserList?.datebirth && formatearFecha(UserList?.datebirth)}</li>
                                     <li className="list-group-item">Genero: {UserList?.genero}</li>
-                                    <li className="list-group-item">Grupo Sanguineo: {UserList?.bloodType + ' ' + UserList?.blood}</li>
+                                    <li className="list-group-item">Grupo sanguíneo: {UserList?.bloodType + ' ' + UserList?.blood}</li>
                                     <li className="list-group-item">EPS: {UserList?.EPS}</li>
                                 </ul>
                                 <div className="card-header text-center"><b>Datos de Contacto</b></div>
@@ -116,8 +116,9 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita }) => {
                                                     <li className="list-group-item">Turno: {cita?.turno ? cita?.turno : 'No Fijado'}</li>
                                                 </>
                                             }
-                                            <li className="list-group-item">Tiempo de Gestación: {UserList?.embarazo && whatGestacion(UserList?.embarazo) + ' dias ( ' + (whatGestacion(UserList?.embarazo)/7).toFixed(1) +' semanas )' }</li>
+                                            <li className="list-group-item">Tiempo de Gestación: {UserList?.embarazo && whatGestacion(UserList?.embarazo) + ' dias ( ' + (whatGestacion(UserList?.embarazo) / 7).toFixed(1) + ' semanas )'}</li>
                                             <li className="list-group-item">Recomendación: {UserList?.recomendacion}</li>
+                                            <li className="list-group-item">Ordenado por: {cita?.OrdenadoPor}</li>
                                         </ul>
                                     </>
                                 }
@@ -126,7 +127,7 @@ const MostrarDatosUser = ({ isOpen, cerrado, idUser, idCita }) => {
                         <div className="modal-footer">
                             <button type="button" className="btn btn-outline-secondary" onClick={hideModal}>Cancelar</button>
                             <BotonesModalMostrarUsuarios
-                                estado={UserList?.estado}
+                                estado={estado}
                                 editar={editar}
                                 agendarCita={agendarCita}
                                 cargarResult={cargarResult}
