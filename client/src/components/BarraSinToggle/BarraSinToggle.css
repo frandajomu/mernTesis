@@ -166,10 +166,10 @@ button.download {
 }
 
 #sidebarCollapse {
-    fill: #fff;
+    fill: var(--moradoOscuro);
 }
 #sidebarCollapse:hover {
-    fill: #E8EFF1;
+    fill: var(--moradoClaro);
 }
 
 /* ---------------------------------------------------
