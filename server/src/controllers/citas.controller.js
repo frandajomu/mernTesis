@@ -101,7 +101,7 @@ citasCtrl.updateCita = async (req, res) => {
     }
 }
 
-//Petición borrar usuario
+//Petición para eliminar un usuario
 citasCtrl.deleteCita = async (req, res) => {
     try {
         await CitasModel.findOneAndDelete({ _id: req.params.id })
