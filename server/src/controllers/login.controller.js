@@ -114,7 +114,7 @@ loginCtrl.ForgetPassword = async (req, res) => {
                 id: userID
             }
             const token = JWT.sign(payload, secret, { expiresIn: '15m' })
-            const link =  `http://localhost:3000/reset-password/${userID}/${token}`
+            const link =  `https://adnfetal.up.railway.app/reset-password/${userID}/${token}`
             sendMail(email, link)
             return res.json({ message: 'Revisa tu correo electrónico' });
         }else{
